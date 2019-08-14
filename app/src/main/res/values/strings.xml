@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MyFitness</string>
+    <string name="start">Inizia</string>
+    <string name="register">Registrati</string>
+    <string name="login">Accedi</string>
+    <string name="username">username</string>
+    <string name="password">password</string>
+    <string name="already_have_account">Hai già un account? Accedi</string>
+    <string name="mail">mail</string>
+</resources>
