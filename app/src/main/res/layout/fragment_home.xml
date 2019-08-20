@@ -2,16 +2,42 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".HomeFragment"
+             android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+             tools:context=".Fragments.HomeFragment"
              android:id="@+id/fragment_home">
 
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="THIS IS HOME FRAGMENT"
-            android:textAlignment="center"
-            android:gravity="center"
-    android:background="@color/colorPrimaryDark"/>
+            android:layout_height="match_parent">
 
+        <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" android:id="@+id/schede_recycler_view">
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/button_add_scheda"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/ic_notifications_black_24dp"/>
+        <Button
+                android:text="Richiedi scheda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/button_richiedi_scheda"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="8dp"
+                android:visibility="gone"/>
+        <Button
+                android:text="Crea scheda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/button_crea_scheda"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/button_richiedi_scheda"
+                android:visibility="gone"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

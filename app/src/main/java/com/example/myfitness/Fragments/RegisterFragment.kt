@@ -1,4 +1,4 @@
-package com.example.myfitness
+package com.example.myfitness.Fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.myfitness.Activities.MainActivity
+import com.example.myfitness.R
 import kotlinx.android.synthetic.main.fragment_register.view.*
 
 
@@ -22,24 +24,31 @@ class RegisterFragment : Fragment() {
         val view: View = inflater.inflate(R.layout.fragment_register, container, false)
 
         // Imposto il bottone SKIP
-        view.test_skip_register_button.setOnClickListener { view ->
+        view.test_skip_register_button.setOnClickListener {
             Log.d(TAG, "<<Click sul bottone skip>>")
             val intent = Intent(this.context, MainActivity::class.java)
             startActivity(intent)
         }
 
         // Imposto il bottone REGISTRATI
-        view.register_button.setOnClickListener { view ->
+        view.register_button.setOnClickListener {
             Log.d(TAG, "<<Click sul bottone registrati>>")
         }
 
         // Imposto il bottone HAI_GIA_UN_ACCOUNT
         view.switch_to_login_textView.setOnClickListener {
             Log.d(TAG, "<<Click sul bottone hai già un account>>")
-            fragmentManager!!.beginTransaction().replace(R.id.container_start, LoginFragment()).commit()
+            fragmentManager!!.beginTransaction().replace(
+                R.id.container_start,
+                LoginFragment()
+            ).addToBackStack(null).commit()
         }
 
-
         return view
+    }
+
+
+    override fun onPause() {
+        super.onPause()
     }
 }

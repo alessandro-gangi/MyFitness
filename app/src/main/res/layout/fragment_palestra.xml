@@ -3,14 +3,15 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context=".Fragments.NotificationsFragment"
-             android:id="@+id/fragment_notifications">
+             tools:context=".Fragments.PalestraFragment"
+             android:id="@+id/fragment_palestra">
 
     <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="THIS IS NOTIFICATIONS FRAGMENT"
+            android:text="THIS IS PALESTRA FRAGMENT"
             android:textAlignment="center"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:background="@color/cyan_300"/>
 
 </FrameLayout>
