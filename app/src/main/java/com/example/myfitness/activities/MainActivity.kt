@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity(), SchedeFragment.SchedeInteractionListen
             R.id.navigation_profile -> {
                 supportFragmentManager.beginTransaction().replace(
                     R.id.container_main,
-                    ProfileFragment()
+                    CreazioneSchedeFragment()
                 ).addToBackStack(null).commit()
                 return@OnNavigationItemSelectedListener true
             }
