@@ -9,18 +9,19 @@ import com.example.myfitness.R
 import com.example.myfitness.data.Esercizio
 import com.example.myfitness.data.MockSchede
 import com.example.myfitness.data.Scheda
+import com.example.myfitness.data.SchedaGiornaliera
 import kotlinx.android.synthetic.main.cardview_esercizio.view.*
 
 class EserciziAdapter: RecyclerView.Adapter<EsercizioViewHolder>(){
     val TAG = "EserciziAdapter"
 
     private val scheda1 : Scheda = MockSchede.mockScheda1
-    private val esercizi: ArrayList<Esercizio>? = scheda1.esercizi
+    private val schedaGiornaliera1: SchedaGiornaliera = scheda1.schedeGiornaliere[1]
 
 
     override fun getItemCount(): Int {
         //Qua in pratica si farà il return della "size" della lista degli allenatori di una certa palestra
-        return esercizi!!.size
+        return schedaGiornaliera1.esercizi.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EsercizioViewHolder {
@@ -31,11 +32,11 @@ class EserciziAdapter: RecyclerView.Adapter<EsercizioViewHolder>(){
     }
 
     override fun onBindViewHolder(viewHolder: EsercizioViewHolder, position: Int){
-        viewHolder.nome.text = esercizi!![position].nome
-        viewHolder.serie.text = esercizi!![position].serie.toString()
-        viewHolder.ripetizioni.text = esercizi!![position].ripetizioni.toString()
-        viewHolder.recupero.text = esercizi!![position].recupero.toString()
-        viewHolder.commento.text = esercizi!![position].commento
+        viewHolder.nome.text = schedaGiornaliera1.esercizi[position].nome
+        viewHolder.serie.text = schedaGiornaliera1.esercizi[position].serie.toString()
+        viewHolder.ripetizioni.text = schedaGiornaliera1.esercizi[position].ripetizioni.toString()
+        viewHolder.recupero.text = schedaGiornaliera1.esercizi[position].recupero.toString()
+        viewHolder.commento.text = schedaGiornaliera1.esercizi[position].commento
 
     }
 

@@ -30,7 +30,7 @@ class SchedeFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_schede, container, false)
         rootView.schede_recycler_view.layoutManager = LinearLayoutManager(activity)
         listener = activity as SchedeInteractionListener
-        rootView.schede_recycler_view.adapter = SchedeAdapter(MockSchede.schede){ schedaId ->
+        rootView.schede_recycler_view.adapter = SchedeAdapter(MockSchede.allMockSchede){ schedaId ->
             listener.onSchedaSelected(schedaId)
         }
 

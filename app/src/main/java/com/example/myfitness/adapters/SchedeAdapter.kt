@@ -36,8 +36,9 @@ class SchedeAdapter(val listaSchede: ArrayList<Scheda>, val clickListener: (sche
 
 
     override fun onBindViewHolder(viewHolder: SchedaViewHolder, position: Int){
-        viewHolder.numGiorni.text = "${listaSchede[position].numGiorni}) giorni"
+        viewHolder.numGiorni.text = "${listaSchede[position].schedeGiornaliere.size}) giorni"
         viewHolder.data.text = listaSchede[position].data
+
         viewHolder.view.setOnClickListener { clickListener(listaSchede[position].id.toLong()) }
         viewHolder.threeDotsMenu.setOnClickListener {
             showPopupMenu(viewHolder.threeDotsMenu)

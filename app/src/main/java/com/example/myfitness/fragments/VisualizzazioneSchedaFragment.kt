@@ -33,7 +33,7 @@ class VisualizzazioneSchedaFragment : Fragment() {
         super.onAttach(context)
         // fetch scheda dato id
         arguments?.getInt(SCHEDA_ID)?.let {schedaId ->
-            scheda = MockSchede.schede
+            scheda = MockSchede.allMockSchede
                 .find { it.id == schedaId }!!
         }
     }
@@ -47,7 +47,7 @@ class VisualizzazioneSchedaFragment : Fragment() {
         //DA ERRORE QUA DICENDO CHE LE TEXTVIEW SONO NULLE (E NON POSSONO ESSERLO)
         rootView.data_textView.text = scheda.data
         rootView.tipologia_textView.text = scheda.tipo
-        rootView.numGiorni_textView.text = scheda.numGiorni.toString()
+        rootView.numGiorni_textView.text = scheda.schedeGiornaliere.size.toString()
         rootView.commento_textView.text = scheda.commento
 
         return rootView
