@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp">
+
+            <TextView
+                    android:text="@string/nome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/nomeEsercizio_textView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_margin="8dp"
+                    android:layout_marginEnd="20dp"/>
+
+            <TextView
+                    android:text="@string/serie"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/serieEsercizio_textView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/nomeEsercizio_textView"
+                    android:layout_margin="8dp"
+                    android:layout_marginEnd="20dp"/>
+
+            <TextView
+                    android:text="@string/ripetizioni"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ripetizioniEsercizio_textView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/serieEsercizio_textView"
+                    android:layout_margin="8dp"
+                    android:layout_marginEnd="20dp"/>
+
+            <TextView
+                    android:text="@string/recupero"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/recuperoEsercizio_textView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/ripetizioniEsercizio_textView"
+                    android:layout_margin="8dp"
+                    android:layout_marginStart="20dp"/>
+
+            <TextView
+                    android:text="@string/commento"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/commentoEsercizio_textView"
+                    app:layout_constraintTop_toBottomOf="@id/nomeEsercizio_textView"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_margin="8dp"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

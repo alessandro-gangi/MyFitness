@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context=".fragments.VisualizzazioneSchedaFragment"
+             android:id="@+id/fragment_visualizzazione_scheda">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+        <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@android:color/holo_red_light"
+                android:id="@+id/scheda_imageView"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_margin="8dp"
+        />
+
+        <TextView
+                android:text="Data:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/data_intestazione_textView"
+                app:layout_constraintStart_toEndOf="@+id/scheda_imageView"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_margin="8dp"/>
+        <TextView
+                android:text="la data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/data_textView"
+                app:layout_constraintStart_toEndOf="@id/data_intestazione_textView"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_margin="8dp"/>
+
+
+        <TextView
+                android:text="Numero di giorni:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/numGiorni_intestazione_textView"
+                app:layout_constraintTop_toBottomOf="@+id/data_intestazione_textView"
+                app:layout_constraintStart_toEndOf="@+id/scheda_imageView"
+                android:layout_margin="8dp"/>
+        <TextView
+                android:text="i giorni"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/numGiorni_textView"
+                app:layout_constraintTop_toBottomOf="@+id/data_textView"
+                app:layout_constraintStart_toEndOf="@+id/numGiorni_intestazione_textView"
+                android:layout_margin="8dp"/>
+
+        <TextView
+                android:text="Tipologia:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tipologia_intestazione_textView"
+                app:layout_constraintStart_toEndOf="@+id/scheda_imageView"
+                app:layout_constraintTop_toBottomOf="@+id/numGiorni_intestazione_textView"
+                android:layout_margin="8dp"/>
+        <TextView
+                android:text="la tipologia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tipologia_textView"
+                app:layout_constraintStart_toEndOf="@+id/tipologia_intestazione_textView"
+                app:layout_constraintTop_toBottomOf="@+id/numGiorni_intestazione_textView"
+                android:layout_margin="8dp"/>
+
+        <TextView
+                android:text="@string/commento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/commento_textView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/scheda_imageView"
+                android:layout_margin="8dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/esercizi_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/commento_textView"
+        />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

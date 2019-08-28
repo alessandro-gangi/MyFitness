@@ -1,4 +1,4 @@
-package com.example.myfitness.Fragments
+package com.example.myfitness.fragments
 
 import android.os.Bundle
 import android.util.Log

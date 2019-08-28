@@ -1,4 +1,4 @@
-package com.example.myfitness.Data
+package com.example.myfitness.data
 
 class Model {
 

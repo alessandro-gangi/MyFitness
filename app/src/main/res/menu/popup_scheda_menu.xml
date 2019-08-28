@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+            android:id="@+id/popup_menu_item_visualizza_scheda"
+            android:title="@string/visualizza"/>
+
+    <item
+            android:id="@+id/popup_menu_item_seleziona_scheda"
+            android:title="@string/seleziona"/>
+
+    <item
+            android:id="@+id/popup_menu_item_elimina_scheda"
+            android:title="@string/elimina"/>
+
+
+</menu>

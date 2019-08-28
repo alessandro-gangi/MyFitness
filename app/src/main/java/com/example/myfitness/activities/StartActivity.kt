@@ -1,9 +1,9 @@
-package com.example.myfitness.Activities
+package com.example.myfitness.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.example.myfitness.Fragments.LogoFragment
+import com.example.myfitness.fragments.LogoFragment
 import com.example.myfitness.R
 
 class StartActivity : AppCompatActivity() {

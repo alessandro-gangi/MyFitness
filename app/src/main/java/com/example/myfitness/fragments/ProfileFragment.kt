@@ -1,4 +1,4 @@
-package com.example.myfitness.Fragments
+package com.example.myfitness.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,7 +8,8 @@ import android.view.ViewGroup
 import com.example.myfitness.R
 
 
-class NotificationsFragment : Fragment() {
+class ProfileFragment : Fragment() {
+    val TAG = "ProfileFragment"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +20,7 @@ class NotificationsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notifications, container, false)
+        return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
 }
