@@ -36,23 +36,32 @@ class RegisterFragment : Fragment() {
 
         val sharedPref: SharedPreferences = activity!!.getSharedPreferences(USER_DATA_PREFERENCE, Context.MODE_PRIVATE)
 
+        setupUI(view)
+
+        return view
+
+    }
+
+    private fun setupUI(view: View){
         val mail: EditText = view.mail_register_editText
         val username: EditText = view.username_register_editText
         val password: EditText = view.password_register_editText
-
         val registrati: Button = view.continua_registration_button
-        val accedi: TextView = view.switch_to_login_textView
+        val haiGiaUnAccount: TextView = view.switch_to_login_textView
         val skip: Button = view.test_skip_register_button
 
-
+        //setupSkipButton(skip)
+        //setupRegistratiButton(skip)
         // Imposto il bottone SKIP
         skip.setOnClickListener {
 
             // TEST PER SALVARE I MIEI DATI
+            /*
             sharedPref.edit().putString("USER_USERNAME", "ghingo").apply()
             sharedPref.edit().putString("USER_NAME", "Alessandro Gangi").apply()
             sharedPref.edit().putString("USER_DESC", "Ciao sono uno stronzo di merda figlio di puttana. Vivo ad Alpignano dove non c'è un cazzo" +
                     " e mel tempo libero non faccio un cazzo di niente. Andatevene tutti a fare in culo.").apply()
+            */
 
             val intent = Intent(this.context, MainActivity::class.java)
             startActivity(intent)
@@ -72,7 +81,7 @@ class RegisterFragment : Fragment() {
         }
 
         // Imposto il bottone HAI_GIA_UN_ACCOUNT
-        accedi.setOnClickListener {
+        haiGiaUnAccount.setOnClickListener {
             Log.d(TAG, "<<Click sul bottone hai già un account>>")
             fragmentManager!!.beginTransaction().replace(
                 R.id.container_start,
@@ -80,34 +89,33 @@ class RegisterFragment : Fragment() {
             ).addToBackStack(null).commit()
         }
 
-        return view
     }
 
 
 
-    private fun controlla_correttezza_username(usr: String?): Boolean{
+    private fun controlla_correttezza_username(usr: String): Boolean{
         var flag: Boolean = false
 
         //controllo correttezza username
-        if(usr != null) flag = true
+        if(usr.isNotEmpty()) flag = true
 
         return flag
 
 
     }
 
-    private fun controlla_correttezza_mail(mail: String?): Boolean{
+    private fun controlla_correttezza_mail(mail: String): Boolean{
         //controllo correttezza mail
-        if (mail != null)
+        if (mail.isNotEmpty())
             return android.util.Patterns.EMAIL_ADDRESS.matcher(mail).matches()
         return false
     }
 
-    private fun controlla_correttezza_password(pwd: String?): Boolean{
+    private fun controlla_correttezza_password(pwd: String): Boolean{
         var flag: Boolean = false
 
         //controllo correttezza password
-        if(pwd != null) flag = true
+        if(pwd.isNotEmpty()) flag = true
 
         return flag
 
