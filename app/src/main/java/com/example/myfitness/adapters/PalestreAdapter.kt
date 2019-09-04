@@ -66,7 +66,7 @@ class PalestraViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
     init {
         imgPalestra = itemView.scheda_imageView
         nome = itemView.nomePalestra_textView
-        threeDotsMenu = itemView.threeDots_textView
+        threeDotsMenu = itemView.threeDots_button
     }
 
 

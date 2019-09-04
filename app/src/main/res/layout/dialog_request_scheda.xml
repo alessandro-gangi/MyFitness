@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content" xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:padding="@dimen/spacing_large"
+        android:orientation="vertical"
+>
+
+
+    <EditText
+            android:id="@+id/numGiorni_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Numero di giorni"
+            android:layout_gravity="center"
+            android:inputType="number"
+            android:layout_margin="@dimen/spacing_medium"/>
+
+    <EditText
+            android:id="@+id/commento_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Commento"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/spacing_medium"/>
+
+
+
+
+</LinearLayout>

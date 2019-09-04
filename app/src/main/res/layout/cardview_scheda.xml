@@ -8,48 +8,91 @@
     <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp">
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:layout_marginBottom="@dimen/spacing_medium"
+            android:layout_marginStart="@dimen/spacing_large"
+            android:layout_marginEnd="@dimen/spacing_large">
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="5dp">
+                android:layout_margin="@dimen/spacing_small">
 
             <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:background="@color/colorPrimary"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:id="@+id/scheda_imageView"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_margin="@dimen/spacing_large"
                     tools:ignore="ContentDescription"/>
+
             <TextView
-                    android:text="3 giorni"
+                    android:text="Numero di giorni:"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/days_intest_textView"
+                    app:layout_constraintStart_toEndOf="@id/scheda_imageView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_margin="@dimen/spacing_large"/>
+
+            <TextView
+                    android:text="i giorni"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/days_textView"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@id/scheda_imageView"
+                    app:layout_constraintStart_toEndOf="@id/days_intest_textView"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:layout_margin="15dp"/>
+                    android:layout_margin="@dimen/spacing_large"/>
+
             <TextView
-                    android:text="19/08/2019"
+                    android:text="Data:"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/data_intest_textView"
+                    app:layout_constraintStart_toEndOf="@id/scheda_imageView"
+                    app:layout_constraintTop_toBottomOf="@id/days_intest_textView"
+                    android:layout_margin="@dimen/spacing_large"/>
+
+            <TextView
+                    android:text="la data"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/data_textView"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@id/scheda_imageView"
+                    app:layout_constraintStart_toEndOf="@id/data_intest_textView"
                     app:layout_constraintTop_toBottomOf="@id/days_textView"
-                    android:layout_margin="15dp"/>
+                    android:layout_margin="@dimen/spacing_large"/>
 
             <TextView
-                    android:text="@string/three_dots_vertical"
+                    android:text="Tipologia:"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/threeDots_textView"
+                    android:id="@+id/tipologia_intest_textView"
+                    app:layout_constraintStart_toEndOf="@id/scheda_imageView"
+                    app:layout_constraintTop_toBottomOf="@id/data_intest_textView"
+                    android:layout_margin="@dimen/spacing_large"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                    android:text="la tipologia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tipologia_textView"
+                    app:layout_constraintStart_toEndOf="@id/tipologia_intest_textView"
+                    app:layout_constraintTop_toBottomOf="@id/data_textView"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_margin="@dimen/spacing_large"/>
+
+            <Button
+                    android:text="@string/three_dots_vertical"
+                    android:background="@null"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/threeDots_button"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_margin="5dp"/>
+                    android:layout_margin="@dimen/spacing_small"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

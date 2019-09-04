@@ -1,4 +1,4 @@
-package com.example.myfitness.utility
+package com.example.myfitness.utilities
 
 import android.content.ContentValues.TAG
 import android.util.Log

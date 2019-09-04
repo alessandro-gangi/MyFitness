@@ -1,4 +1,6 @@
+
 package com.example.myfitness.fragments
+
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,6 +13,9 @@ import com.example.myfitness.R
 class NotificationsFragment : Fragment() {
     val TAG = "NotificationsFragment"
 
+    val MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: Int = 1
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -20,7 +25,10 @@ class NotificationsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notifications, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_notifications, container, false)
+
+        return view
     }
+
 
 }

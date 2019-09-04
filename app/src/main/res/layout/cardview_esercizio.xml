@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
@@ -9,12 +8,15 @@
     <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp">
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:layout_marginBottom="@dimen/spacing_medium"
+            android:layout_marginStart="@dimen/spacing_large"
+            android:layout_marginEnd="@dimen/spacing_large">
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="5dp">
+                android:layout_margin="@dimen/spacing_small">
 
             <TextView
                     android:text="@string/nome"
@@ -24,7 +26,8 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_margin="8dp"
-                    android:layout_marginEnd="20dp"/>
+                    android:layout_marginEnd="20dp"
+            android:textStyle="bold"/>
 
             <TextView
                     android:text="@string/serie"
@@ -33,8 +36,19 @@
                     android:id="@+id/serieEsercizio_textView"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/nomeEsercizio_textView"
-                    android:layout_margin="8dp"
-                    android:layout_marginEnd="20dp"/>
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="20dp"/>
+
+            <TextView
+                    android:text="x"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/simboloXEsercizio_textView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/serieEsercizio_textView"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"/>
 
             <TextView
                     android:text="@string/ripetizioni"
@@ -42,9 +56,18 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/ripetizioniEsercizio_textView"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/serieEsercizio_textView"
-                    android:layout_margin="8dp"
-                    android:layout_marginEnd="20dp"/>
+                    app:layout_constraintStart_toEndOf="@+id/simboloXEsercizio_textView"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"/>
+
+            <TextView
+                    android:text="@string/recupero"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/recuperoIntestEsercizio_textView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/recuperoEsercizio_textView"
+                    android:layout_margin="8dp"/>
 
             <TextView
                     android:text="@string/recupero"
@@ -52,9 +75,17 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/recuperoEsercizio_textView"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/ripetizioniEsercizio_textView"
-                    android:layout_margin="8dp"
-                    android:layout_marginStart="20dp"/>
+                    app:layout_constraintEnd_toStartOf="@+id/simboloMinEsercizio_textView"
+                    android:layout_margin="8dp"/>
+
+            <TextView
+                    android:text="min."
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/simboloMinEsercizio_textView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_margin="8dp"/>
 
             <TextView
                     android:text="@string/commento"
@@ -64,7 +95,8 @@
                     app:layout_constraintTop_toBottomOf="@id/nomeEsercizio_textView"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_margin="8dp"/>
+                    android:layout_margin="8dp"
+                    android:textStyle="italic"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,16 +2,359 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
-             android:layout_height="match_parent"
+             android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
              tools:context=".fragments.ProfileFragment"
              android:id="@+id/fragment_profile">
 
-    <TextView
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="THIS IS PROFILE FRAGMENT"
-            android:textAlignment="center"
-            android:gravity="center"
-            android:background="@color/colorAccent"/>
+            android:orientation="vertical">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/profile_header_layout">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profile_imageView"
+                    android:layout_width="150dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:contentDescription="immagine profilo"
+                    android:src="@color/grey_20"
+                    app:civ_border_width="0dp"
+                    android:layout_margin="@dimen/spacing_large"/>
+
+
+            <Button
+                    android:text="@string/three_dots_vertical"
+                    android:background="@null"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/threeDots_button"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_margin="@dimen/spacing_medium"/>
+
+            <Button
+                    android:background="@drawable/ic_tick_24px"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/confirm_changes_button"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_margin="@dimen/spacing_small"
+                    android:visibility="gone"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/nome_textView"
+                    app:layout_constraintStart_toEndOf="@id/profile_imageView"
+                    app:layout_constraintTop_toTopOf="@+id/profile_imageView"
+                    android:text="Nome"
+                    android:layout_margin="@dimen/spacing_large"
+                    android:maxWidth="150dp"
+                    android:maxLines="2"
+                    android:visibility="visible"/>
+            <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/nome_editText"
+                    app:layout_constraintStart_toEndOf="@id/profile_imageView"
+                    app:layout_constraintTop_toTopOf="@+id/profile_imageView"
+                    android:hint="@string/nome"
+                    android:layout_margin="@dimen/spacing_large"
+                    android:maxWidth="150dp"
+                    android:maxLines="1"
+                    android:visibility="gone"
+                    android:textSize="@dimen/text_small"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:maxWidth="200dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/descrizione_textView"
+                    app:layout_constraintStart_toEndOf="@id/profile_imageView"
+                    app:layout_constraintTop_toBottomOf="@+id/nome_textView"
+                    android:text="Breve descrizione"
+                    android:layout_margin="@dimen/spacing_large"
+                    android:textStyle="italic"
+                    android:maxLines="5"
+                    android:visibility="visible"/>
+            <EditText
+                    android:layout_width="wrap_content"
+                    android:maxWidth="200dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/descrizione_editText"
+                    app:layout_constraintStart_toEndOf="@id/profile_imageView"
+                    app:layout_constraintTop_toBottomOf="@+id/nome_editText"
+                    android:hint="Breve descrizione"
+                    android:layout_margin="@dimen/spacing_large"
+                    android:textStyle="italic"
+                    android:maxLines="5"
+                    android:visibility="gone"
+                    android:textSize="@dimen/text_small"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.cardview.widget.CardView
+                android:id="@+id/profilo_allenatore_cardview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xxlarge"
+                android:layout_marginBottom="@dimen/spacing_medium"
+                android:layout_marginStart="@dimen/spacing_large"
+                android:layout_marginEnd="@dimen/spacing_large"
+                android:visibility="visible">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/spacing_small">
+
+                <TextView
+                        android:id="@+id/title_allenatore_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/allenatore_imageView"
+                        android:text="Il tuo allenatore"
+                        android:textSize="30sp"
+                        android:layout_margin="@dimen/spacing_large"
+                        android:gravity="center"/>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/allenatore_imageView"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_width="70dp"
+                        android:layout_height="0dp"
+                        app:layout_constraintDimensionRatio="1:1"
+                        android:src="@color/grey_20"
+                        android:layout_margin="@dimen/spacing_large"
+                        tools:ignore="ContentDescription"/>
+
+                <TextView
+                        android:text="@string/nome"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/nomeAllenatore_textView"
+                        app:layout_constraintStart_toEndOf="@+id/allenatore_imageView"
+                        android:layout_margin="@dimen/spacing_large"
+                        app:layout_constraintTop_toBottomOf="@id/title_allenatore_textView"/>
+
+
+                <TextView
+                        android:text="Breve descrizione"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/descrizioneAllenatore_textView"
+                        app:layout_constraintStart_toEndOf="@+id/allenatore_imageView"
+                        app:layout_constraintTop_toBottomOf="@id/nomeAllenatore_textView"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_margin="@dimen/spacing_large"
+                        android:textStyle="italic"/>
+
+                <Button
+                        android:text="@string/three_dots_vertical"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@null"
+                        android:id="@+id/threeDots_allenatore_button"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_margin="@dimen/spacing_small"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+
+
+        <LinearLayout
+                android:id="@+id/profilo_selez_allen_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/spacing_large"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:visibility="gone">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="300dp"
+                    android:textSize="22sp"
+                    android:text="Non hai ancora selezionato un allenatore. Selezionane uno."
+                    android:layout_margin="@dimen/spacing_large"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:fabCustomSize="40dp"
+                    android:layout_gravity="center"
+                    android:id="@+id/button_add_allenatore"
+                    android:layout_margin="@dimen/spacing_large"
+                    android:src="@drawable/ic_add_white24dp"/>
+
+        </LinearLayout>
+
+
+
+
+        <androidx.cardview.widget.CardView
+                android:id="@+id/profilo_scheda_attuale_cardview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_medium"
+                android:layout_marginBottom="@dimen/spacing_medium"
+                android:layout_marginStart="@dimen/spacing_large"
+                android:layout_marginEnd="@dimen/spacing_large">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/spacing_small">
+
+                <TextView
+                        android:id="@+id/title_scheda_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/scheda_imageView"
+                        android:layout_margin="@dimen/spacing_large"
+                        android:text="Scheda attuale"
+                        android:textSize="30dp"
+                        android:gravity="center"/>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="70dp"
+                        android:layout_height="0dp"
+                        android:id="@+id/scheda_imageView"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_margin="@dimen/spacing_large"
+                        app:layout_constraintDimensionRatio="1:1"
+                        android:src="@color/grey_20"
+                        tools:ignore="ContentDescription"/>
+
+
+                <TextView
+                        android:text="Numero di giorni:"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/days_intest_textView"
+                        app:layout_constraintStart_toEndOf="@id/scheda_imageView"
+                        app:layout_constraintTop_toBottomOf="@id/title_scheda_textView"
+                        android:layout_margin="@dimen/spacing_large"/>
+
+                <TextView
+                        android:text="i giorni"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/days_textView"
+                        app:layout_constraintStart_toEndOf="@id/days_intest_textView"
+                        app:layout_constraintTop_toBottomOf="@id/title_scheda_textView"
+                        android:layout_margin="@dimen/spacing_large"/>
+
+                <TextView
+                        android:text="Data:"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/data_intest_textView"
+                        app:layout_constraintStart_toEndOf="@id/scheda_imageView"
+                        app:layout_constraintTop_toBottomOf="@id/days_intest_textView"
+                        android:layout_margin="@dimen/spacing_large"/>
+
+                <TextView
+                        android:text="la data"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/data_textView"
+                        app:layout_constraintStart_toEndOf="@id/data_intest_textView"
+                        app:layout_constraintTop_toBottomOf="@id/days_textView"
+                        android:layout_margin="@dimen/spacing_large"/>
+
+                <TextView
+                        android:text="Tipologia:"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tipologia_intest_textView"
+                        app:layout_constraintStart_toEndOf="@id/scheda_imageView"
+                        app:layout_constraintTop_toBottomOf="@id/data_intest_textView"
+                        android:layout_margin="@dimen/spacing_large"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <TextView
+                        android:text="la tipologia"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tipologia_textView"
+                        app:layout_constraintStart_toEndOf="@id/tipologia_intest_textView"
+                        app:layout_constraintTop_toBottomOf="@id/data_textView"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_margin="@dimen/spacing_large"/>
+
+                <Button
+                        android:text="@string/three_dots_vertical"
+                        android:background="@null"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:id="@+id/threeDots_scheda_button"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_margin="@dimen/spacing_small"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <LinearLayout
+                android:id="@+id/profilo_selez_scheda_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/spacing_large"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:visibility="gone">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="300dp"
+                    android:textSize="22sp"
+                    android:text="Non hai ancora selezionato la tua scheda attuale. Selezionane una."
+                    android:layout_margin="@dimen/spacing_large"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:fabCustomSize="40dp"
+                    android:layout_gravity="center"
+                    android:id="@+id/button_add_scheda_attuale"
+                    android:layout_margin="@dimen/spacing_large"
+                    android:src="@drawable/ic_add_white24dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <Button
+            android:id="@+id/diventa_allenatore_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:text="Diventa allenatore"
+            android:textColor="@color/white"
+            android:layout_gravity="bottom"/>
 
 </FrameLayout>

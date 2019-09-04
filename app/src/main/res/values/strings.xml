@@ -13,6 +13,7 @@
     <string name="title_home">Home</string>
     <string name="title_palestra">Palestra</string>
     <string name="title_profile">Profilo</string>
+    <string name="title_schede">Schede</string>
     <string name="title_notifications">Notifications</string>
     <string name="test_skip">skip</string>
     <string name="three_dots_vertical">&#8942;</string>
@@ -30,7 +31,12 @@
     <string name="ripetizioni">Ripetizioni</string>
     <string name="recupero">Recupero</string>
     <string name="commento">Commento</string>
+    <string name="modifica">Modifica</string>
+    <string name="richiedi">Richiedi</string>
+    <string name="annulla">Annulla</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 </resources>

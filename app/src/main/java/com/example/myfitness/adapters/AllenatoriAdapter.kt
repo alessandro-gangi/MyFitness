@@ -1,25 +1,32 @@
 package com.example.myfitness.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myfitness.R
+import com.example.myfitness.data.Utente
+import com.example.myfitness.dataManager.MyDataManager
 import kotlinx.android.synthetic.main.cardview_allenatore.view.*
 
-class AllenatoriAdapter: RecyclerView.Adapter<AllenatoreViewHolder>(){
+
+
+class AllenatoriAdapter(var listaAllenatori: ArrayList<Utente>): RecyclerView.Adapter<AllenatoreViewHolder>(){
     val TAG = "AllenatoriAdapter"
 
-    private val nomiAllenatori = arrayOf("Trainer One",
-        "Trainer Two", "Trainer Three", "Trainer Four",
-        "Trainer Five", "Trainer Six", "Trainer Seven",
-        "Trainer Eight")
+    var listaAllenatoriCopy: ArrayList<Utente>
 
+    init {
+        listaAllenatoriCopy = ArrayList()
+        listaAllenatoriCopy.addAll(listaAllenatori)
+    }
 
     override fun getItemCount(): Int {
         //Qua in pratica si farà il return della "size" della lista degli allenatori di una certa palestra
-        return nomiAllenatori.size
+        Log.d(TAG, "Size allenatori: ${listaAllenatori.size}")
+        return listaAllenatori.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AllenatoreViewHolder {
@@ -30,7 +37,8 @@ class AllenatoriAdapter: RecyclerView.Adapter<AllenatoreViewHolder>(){
     }
 
     override fun onBindViewHolder(viewHolder: AllenatoreViewHolder, position: Int){
-        viewHolder.nome.text = nomiAllenatori[position]
+        viewHolder.nome.text = listaAllenatori[position].nome
+        viewHolder.descrizione.text = listaAllenatori[position].descrizione
         viewHolder.threeDotsMenu.setOnClickListener {
             showPopupMenu(viewHolder.threeDotsMenu)
         }
@@ -56,17 +64,40 @@ class AllenatoriAdapter: RecyclerView.Adapter<AllenatoreViewHolder>(){
         popup.show()
     }
 
+
+    fun filter(text: String) {
+        listaAllenatori.clear()
+
+        if (text.isEmpty()) {
+            listaAllenatori.addAll(listaAllenatoriCopy)
+        }
+        else {
+            val result: ArrayList<Utente> = ArrayList()
+            for (allenatore in listaAllenatoriCopy) {
+                if (allenatore.nome.toLowerCase().contains(text.toLowerCase())) {
+                    result.add(allenatore)
+                }
+            }
+            listaAllenatori.addAll(result)
+
+        }
+        notifyDataSetChanged()
+    }
+
+
 }
 
 class AllenatoreViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
     var imgProfilo: ImageView
     var nome: TextView
-    var threeDotsMenu: TextView
+    var descrizione: TextView
+    var threeDotsMenu: Button
 
     init {
         imgProfilo = itemView.allenatore_imageView
         nome = itemView.nomeAllenatore_textView
-        threeDotsMenu = itemView.threeDots_textView
+        descrizione = itemView.descrizioneAllenatore_textView
+        threeDotsMenu = itemView.threeDots_button
     }
 
 

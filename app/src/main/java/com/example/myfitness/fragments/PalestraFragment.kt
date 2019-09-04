@@ -10,7 +10,11 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myfitness.adapters.AllenatoriAdapter
 import com.example.myfitness.R
+import com.example.myfitness.data.Utente
 import kotlinx.android.synthetic.main.cardview_allenatore.*
+import kotlinx.android.synthetic.main.cardview_palestra.*
+import kotlinx.android.synthetic.main.cardview_palestra.view.*
+import kotlinx.android.synthetic.main.fragment_palestra.*
 import kotlinx.android.synthetic.main.fragment_palestra.view.*
 
 
@@ -25,10 +29,10 @@ class PalestraFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_palestra, container, false)
         rootView.allenatori_recyclerView.layoutManager = LinearLayoutManager(activity)
-        rootView.allenatori_recyclerView.adapter = AllenatoriAdapter()
+        rootView.allenatori_recyclerView.adapter = AllenatoriAdapter(arrayListOf<Utente>())
 
-        rootView.threeDots_textView.setOnClickListener {
-            showPopupMenu(this.threeDots_textView)
+        rootView.threeDots_palestra_button.setOnClickListener {
+            showPopupMenu(this.threeDots_palestra_button)
         }
 
         return rootView

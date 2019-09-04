@@ -28,19 +28,11 @@ class LoginFragment : Fragment() {
 
         // Imposto il bottone NON_HAI_UN_ACCOUNT
         view.switch_to_register_textView.setOnClickListener {
-            Log.d(TAG, "<<Click sul bottone non hai un account>>")
-            fragmentManager!!.beginTransaction().replace(
-                R.id.container_start,
-                RegisterFragment()
-            ).addToBackStack(null).commit()
+            activity?.supportFragmentManager?.popBackStack()
         }
 
         return view
     }
 
-
-    override fun onPause() {
-        super.onPause()
-    }
 
 }
