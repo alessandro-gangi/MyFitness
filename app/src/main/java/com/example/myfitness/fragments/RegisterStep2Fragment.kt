@@ -32,8 +32,8 @@ import java.io.FileNotFoundException
 class RegisterStep2Fragment : Fragment() {
     val TAG = "RegisterFragment"
 
-    val IMAGE_PICK_CODE = 11
-    val READ_EXTERNAL_STORAGE_CODE = 1234
+    val IMAGE_PICK_CODE = 1
+    val READ_EXTERNAL_STORAGE_CODE = 2
 
     private var username: String? = null
     private var mail: String? = null
@@ -50,67 +50,95 @@ class RegisterStep2Fragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        Log.d(TAG, "on create view")
 
         val view: View = inflater.inflate(R.layout.fragment_register_step2, container, false)
 
-        //viewModel
-        val factory = InjectorUtils.provideUtentiViewModelFactory()
-        val viewModel = ViewModelProvider(this, factory).get(UtentiViewModel::class.java)
+        setupUI(view)
 
+        return view
+    }
+
+    private fun setupUI(view: View) {
         val nome: EditText = view.nome_register_editText
         val cognome: EditText = view.cognome_register_editText
         val eta: EditText = view.eta_register_editText
-        val sessoRadioGroup: RadioGroup = view.sesso_register_radio
-        val sessoMaschio: RadioButton = view.maschio_register_radio
-        val sessoFemmina: RadioButton = view.femmina_register_radio
+        val genereRadioGroup: RadioGroup = view.sesso_register_radio
+        val radioMaschio: RadioButton = view.maschio_register_radio
+        val radioFemmina: RadioButton = view.femmina_register_radio
 
         val imageView: ImageView = view.register_imageView
         val backButton: Button = view.back_register_button
         val completaRegistrazione: Button = view.completa_registrazione_button
 
-        // Imposto i radio buttons
-        sessoMaschio.setOnClickListener {
+        setupRadioButtons(radioMaschio, radioFemmina)
+        setupImmagine(imageView)
+        setupBackButton(backButton)
+        setupCompletaRegistrazione(completaRegistrazione, nome, cognome, eta, genereRadioGroup)
+
+
+
+    }
+
+    private fun setupRadioButtons(radioMaschio: RadioButton, radioFemmina: RadioButton) {
+
+        radioMaschio.setOnClickListener {
             onRadioButtonClicked(it)
         }
-        sessoFemmina.setOnClickListener {
+        radioFemmina.setOnClickListener {
             onRadioButtonClicked(it)
         }
 
+    }
 
-        // Imposto l'immagine
-        imageView.setOnClickListener{
-            impostaImmagine(it)
+    private fun setupImmagine(image: ImageView) {
+
+        image.setOnClickListener {
+            preparePermissionForPickingImage()
+
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(intent, IMAGE_PICK_CODE)
         }
 
-        // Imposto il back button
-        backButton.setOnClickListener {
+    }
+
+    private fun setupBackButton(back: Button) {
+
+        back.setOnClickListener {
             activity?.supportFragmentManager?.popBackStack()
         }
+    }
 
-        // Imposto il bottone COMPLETA REGISTRAZIONE
+    private fun setupCompletaRegistrazione(completaRegistrazione: Button, nome: EditText, cognome: EditText, eta: EditText,
+                                           genereRadioGroup: RadioGroup){
+
+        //viewModel
+        val factory = InjectorUtils.provideUtentiViewModelFactory()
+        val viewModel = ViewModelProvider(this, factory).get(UtentiViewModel::class.java)
+
+        //setup button
         completaRegistrazione.setOnClickListener {
-            val sessoCheckedRadioButton: RadioButton = view.findViewById(sessoRadioGroup.checkedRadioButtonId)
+            val sessoCheckedRadioButton: RadioButton = it.rootView.findViewById(genereRadioGroup.checkedRadioButtonId)
+            val genere: Char = sessoCheckedRadioButton.text[0]
 
-            val nuovoUtente: Utente_new = Utente_new(username!!, mail!!, password!!, false, nome.text.toString(),
-                cognome.text.toString(), eta.text.toString().toInt(), null, null, null, null,
-                sessoCheckedRadioButton.text[0], null, null)
-            viewModel.addUtente(nuovoUtente)
+            if(controllaCorrettezzaDati(nome.text.toString(), cognome.text.toString(), eta.text.toString().toInt())) {
+                val nuovoUtente: Utente_new = Utente_new(username!!, mail!!, password!!, false, nome.text.toString(),
+                    cognome.text.toString(), eta.text.toString().toInt(), null, null, null, null,
+                    genere, null, null)
 
-            val listaUtenti = viewModel.getUtenti().value!!
-            Toast.makeText(activity, "Utenti presenti: ${listaUtenti.size}", Toast.LENGTH_SHORT).show()
-            Log.d(TAG, "Utenti presenti:\n$listaUtenti" )
+                viewModel.addUtente(nuovoUtente)
 
-            // CONTROLLO DATI
+                //TESTING
+                val listaUtenti = viewModel.getUtenti().value!!
+                Toast.makeText(activity, "Utenti presenti: ${listaUtenti.size}", Toast.LENGTH_SHORT).show()
+                Log.d(TAG, "Utenti presenti:\n$listaUtenti")
 
-            //Completo la registrazione
-            //completaRegistrazione(Utente(username!!, mail!!, password!!, imageview.drawable, nome.text.toString(),
-            //    cognome.text.toString(), eta.text.toString().toInt(), 'M'))
+                passaAlLogin()
+            }
 
         }
 
 
-        return view
+
     }
 
 
@@ -123,23 +151,16 @@ class RegisterStep2Fragment : Fragment() {
             when (view.getId()) {
                 R.id.maschio_register_radio ->
                     if (checked) {
-                        Toast.makeText(activity, "Maschio", Toast.LENGTH_LONG).show()
+                        Toast.makeText(activity, "M", Toast.LENGTH_LONG).show()
                     }
                 R.id.femmina_register_radio ->
                     if (checked) {
-                        Toast.makeText(activity, "Femmina", Toast.LENGTH_LONG).show()
+                        Toast.makeText(activity, "F", Toast.LENGTH_LONG).show()
                     }
             }
         }
     }
 
-    fun impostaImmagine(immagine: View){
-        preparePermissionForPickingImage()
-
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, IMAGE_PICK_CODE)
-        Log.d(TAG, "finito di pickare")
-    }
 
     //handle result of picked image
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -147,11 +168,10 @@ class RegisterStep2Fragment : Fragment() {
 
         if (data != null) {
             val contentURI = data.data
-            var yourDrawable: Drawable
+            val yourDrawable: Drawable
             try {
                 val inputStream = activity!!.contentResolver.openInputStream(contentURI!!)
                 yourDrawable = Drawable.createFromStream(inputStream, contentURI.toString())
-                Toast.makeText(activity, "Image Show!", Toast.LENGTH_SHORT).show()
                 register_imageView!!.setImageDrawable(yourDrawable)
 
             } catch (e: FileNotFoundException) {
@@ -203,12 +223,38 @@ class RegisterStep2Fragment : Fragment() {
     }
 
 
-    private fun completaRegistrazione(utente: Utente){
-        Toast.makeText(activity, utente.toString(), Toast.LENGTH_LONG).show()
+    private fun controllaCorrettezzaDati(nome: String, cognome: String, eta: Int): Boolean{
+        var flag: Boolean = true
 
-        //FAI LA REGISTRAZIONE
+        //controllo correttezza nome
+        if(nome.isEmpty()){
+            Toast.makeText(activity, "Nome non valido", Toast.LENGTH_SHORT).show()
+            flag = flag and false
+        }
 
+        //controllo correttezza cognome
+        if(cognome.isEmpty()){
+            Toast.makeText(activity, "Cognome non valido", Toast.LENGTH_SHORT).show()
+            flag = flag and false
+        }
+
+        if(eta.compareTo(0) == 0){
+            Toast.makeText(activity, "Età non valida", Toast.LENGTH_SHORT).show()
+            flag = flag and false
+        }
+
+        return flag
     }
+
+    private fun passaAlLogin(){
+
+        //passo al fragment per continuare la registrazione
+        fragmentManager!!.beginTransaction().replace(
+            R.id.container_start,
+            LoginFragment()).commit()
+    }
+
+
 
 
 

@@ -7,7 +7,8 @@ data class Utente_new(val username: String, val mail: String, val password: Stri
 
     override fun toString(): String {
         return "Utente_new(username='$username', mail='$mail', password='$password', " +
-                "isAllenatore=$isAllenatore, nome='$nome', eta=$eta, descrizione='$descrizione', imageURI='$imageURI')"
+                "isAllenatore=$isAllenatore, nome='$nome', cognome='$cognome', " +
+                "eta=$eta, descrizione=$descrizione, imageURI=$imageURI, peso=$peso, " +
+                "altezza=$altezza, genere=$genere, allenatore=$allenatore, idScheda=$idScheda)"
     }
-
 }
