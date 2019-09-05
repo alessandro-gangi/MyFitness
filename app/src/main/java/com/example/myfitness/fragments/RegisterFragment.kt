@@ -1,8 +1,6 @@
 package com.example.myfitness.fragments
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,11 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.myfitness.activities.MainActivity
-import com.example.myfitness.data.Utente
 import com.example.myfitness.R
-import com.example.myfitness.dataManager.MyDataManager
 import kotlinx.android.synthetic.main.fragment_register.view.*
-import org.w3c.dom.Text
 
 
 class RegisterFragment : Fragment() {
@@ -106,7 +101,8 @@ class RegisterFragment : Fragment() {
         }
 
         //controllo correttezza username
-        if(mail.isEmpty() or !android.util.Patterns.EMAIL_ADDRESS.matcher(mail).matches()){
+        //if(mail.isEmpty() or !android.util.Patterns.EMAIL_ADDRESS.matcher(mail).matches()){
+        if(mail.isEmpty()){
             Toast.makeText(activity, "Mail non valida", Toast.LENGTH_SHORT).show()
             flag = flag and false
         }

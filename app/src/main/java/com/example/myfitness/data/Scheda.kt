@@ -1,12 +1,24 @@
 package com.example.myfitness.data
 
-import kotlin.collections.ArrayList
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 
-class Scheda(var id: Long, var data: String, var tipo: String, var schedeGiornaliere: ArrayList<SchedaGiornaliera>, var commento: String){
+@Entity(tableName = "schede_table")
+data class Scheda(@PrimaryKey var id: Int = -1,
+                  var num_giorni: Int = -1,
+                  var data: String = "",
+                  var tipo: String = "",
+                  var commento: String = "",
+                  var autore: String = "",
+                  var possessore: String = "",
+                  @Ignore var schede_giornaliere: ArrayList<SchedaGiornaliera> = ArrayList()
+)   {
 
-    var isCurrent: Boolean = false
 
     override fun toString(): String {
-        return "Scheda(id=$id, data='$data', tipo='$tipo', schedeGiornaliere=$schedeGiornaliere, commento='$commento')"
+        return "Scheda(id=$id, numGiorni=$num_giorni, data='$data', " +
+                "tipo='$tipo', commento='$commento', autore='$autore', " +
+                "possessore='$possessore', schedeGiornaliere=$schede_giornaliere)"
     }
 }

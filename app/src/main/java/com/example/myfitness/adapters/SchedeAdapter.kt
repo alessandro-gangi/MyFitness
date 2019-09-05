@@ -13,9 +13,14 @@ import kotlinx.android.synthetic.main.cardview_scheda.view.*
 
 
 
-class SchedeAdapter(val listaSchede: ArrayList<Scheda>, val clickListener: (schedaId: Long) -> Unit): RecyclerView.Adapter<SchedaViewHolder>(){
+class SchedeAdapter(val clickListener: (schedaId: Int) -> Unit): RecyclerView.Adapter<SchedaViewHolder>(){
     val TAG = "SchedeAdapter"
 
+    var listaSchede: ArrayList<Scheda> = ArrayList()
+
+    fun setListeSchede(nuovaListaSchede: List<Scheda>){
+        listaSchede = ArrayList(nuovaListaSchede)
+    }
 
     override fun getItemCount(): Int {
         return listaSchede.size
@@ -31,7 +36,7 @@ class SchedeAdapter(val listaSchede: ArrayList<Scheda>, val clickListener: (sche
 
 
     override fun onBindViewHolder(viewHolder: SchedaViewHolder, position: Int){
-        viewHolder.numGiorni.text = "${listaSchede[position].schedeGiornaliere.size}"
+        viewHolder.numGiorni.text = "${listaSchede[position].num_giorni}"
         viewHolder.data.text = listaSchede[position].data
         viewHolder.tipologia.text = listaSchede[position].tipo
 

@@ -11,9 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myfitness.adapters.AllenatoriAdapter
 import com.example.myfitness.R
 import com.example.myfitness.data.Utente
-import kotlinx.android.synthetic.main.cardview_allenatore.*
-import kotlinx.android.synthetic.main.cardview_palestra.*
-import kotlinx.android.synthetic.main.cardview_palestra.view.*
 import kotlinx.android.synthetic.main.fragment_palestra.*
 import kotlinx.android.synthetic.main.fragment_palestra.view.*
 

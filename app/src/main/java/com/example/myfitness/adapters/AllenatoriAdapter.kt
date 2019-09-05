@@ -8,7 +8,6 @@ import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myfitness.R
 import com.example.myfitness.data.Utente
-import com.example.myfitness.dataManager.MyDataManager
 import kotlinx.android.synthetic.main.cardview_allenatore.view.*
 
 

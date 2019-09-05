@@ -1,25 +1,29 @@
 package com.example.myfitness.data
 
-import android.graphics.drawable.Drawable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-class Utente(var username: String, var mail: String, var password: String) {
-
-    var image: Drawable? = null
-    var nome: String = ""
-    var descrizione: String = ""
-    var isAllenatore: Boolean = false
-
-
-    constructor(_username: String, _mail: String, _password: String, image: Drawable?, nome: String, descrizione: String, isAllenatore: Boolean): this(_username, _mail, _password){
-        this.image = image
-        this.nome = nome
-        this.descrizione = descrizione
-        this.isAllenatore = isAllenatore
-    }
+@Entity(tableName = "utenti_table")
+data class Utente(@PrimaryKey @ColumnInfo(name = "username")val username: String,
+             @ColumnInfo(name = "mail") val mail: String,
+             @ColumnInfo(name = "password") val password: String,
+             @ColumnInfo(name = "is_allenatore") val isAllenatore: Boolean,
+             @ColumnInfo(name = "nome") val nome: String,
+             @ColumnInfo(name = "cognome") val cognome: String,
+             @ColumnInfo(name = "eta") val eta: Int?,
+             @ColumnInfo(name = "descrizione") val descrizione: String?,
+             @ColumnInfo(name = "image_uri") val imageURI: String?,
+             @ColumnInfo(name = "peso") val peso: Double?,
+             @ColumnInfo(name = "altezza") val altezza: Int?,
+             @ColumnInfo(name = "genere") val genere: Char,
+             @ColumnInfo(name = "allenatore") val allenatore: String?,
+             @ColumnInfo(name = "id_scheda") val idScheda: Int?) {
 
     override fun toString(): String {
-        return "Utente(username='$username', mail='$mail', password='$password', image=$image, nome='$nome', descrizione='$descrizione', isAllenatore=$isAllenatore)"
+        return "Utente(username='$username', mail='$mail', password='$password', " +
+                "isAllenatore=$isAllenatore, nome='$nome', cognome='$cognome', " +
+                "eta=$eta, descrizione=$descrizione, imageURI=$imageURI, peso=$peso, " +
+                "altezza=$altezza, genere=$genere, allenatore=$allenatore, idScheda=$idScheda)"
     }
-
-
 }

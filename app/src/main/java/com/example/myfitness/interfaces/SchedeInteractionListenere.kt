@@ -1,7 +1,7 @@
 package com.example.myfitness.interfaces
 
 interface SchedeInteractionListener{
-    fun onSchedaSelected(schedaId: Long)
+    fun onSchedaSelected(schedaId: Int)
 
-    fun onEsercizioSelected(schedaId: Long, numGiorno: Int)
+    fun onEsercizioSelected(schedaId: Int, numGiorno: Int)
 }

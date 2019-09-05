@@ -1,10 +1,21 @@
 package com.example.myfitness.data
 
-import kotlin.collections.ArrayList
+import androidx.room.*
 
-class SchedaGiornaliera(var schedaId: Long, var numGiorno: Int, var esercizi: ArrayList<Esercizio>){
+@Entity
+(foreignKeys = arrayOf(ForeignKey(entity = Scheda::class,
+    parentColumns = arrayOf("id"),
+    childColumns = arrayOf("scheda"),
+    onDelete = ForeignKey.CASCADE)),
+tableName = "schede_giornaliere_table",
+primaryKeys = arrayOf("scheda", "num_giorno"))
+data class SchedaGiornaliera(var scheda: Int = -1,
+                             var num_giorno: Int = -1,
+                             @Ignore var esercizi: ArrayList<Esercizio> = ArrayList()
+) {
+
 
     override fun toString(): String {
-        return "SchedaGiornaliera(schedaId=$schedaId, numGiorno=$numGiorno, esercizi=$esercizi)"
+        return "SchedaGiornaliera(idScheda=$scheda, numGiorno=$num_giorno, esercizi=$esercizi)"
     }
 }

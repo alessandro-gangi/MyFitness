@@ -1,6 +1,5 @@
 package com.example.myfitness.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import androidx.fragment.app.Fragment
@@ -27,7 +26,7 @@ class VisualizzazioneSchedaFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         // fetch scheda
-        val schedaID: Long? = arguments?.getLong(SCHEDA_ID)
+        val schedaID: Int? = arguments?.getInt(SCHEDA_ID)
         if (schedaID != null)
             scheda = MyDataManager.retrieve_scheda_info(schedaID)
     }
@@ -53,7 +52,7 @@ class VisualizzazioneSchedaFragment : Fragment() {
     private fun setupViewPager(viewPager: ViewPager, tabLayout: TabLayout){
         val myAdapter = VisualSchedaPagerAdapter(childFragmentManager)
 
-        for (index in 0 until scheda.schedeGiornaliere.size)
+        for (index in 0 until scheda.schede_giornaliere.size)
             myAdapter.addFragment(VisualizzazioneEserciziFragment.newInstance(scheda.id, index), title = (index+1).toString())
 
         viewPager.adapter= myAdapter
@@ -72,9 +71,9 @@ class VisualizzazioneSchedaFragment : Fragment() {
         val SCHEDA_ID = "SCHEDA_ID"
 
         @JvmStatic
-        fun newInstance(schedaId: Long) = VisualizzazioneSchedaFragment().apply {
+        fun newInstance(schedaId: Int) = VisualizzazioneSchedaFragment().apply {
             arguments = Bundle().apply {
-                putLong(SCHEDA_ID, schedaId)
+                putInt(SCHEDA_ID, schedaId)
             }
         }
     }

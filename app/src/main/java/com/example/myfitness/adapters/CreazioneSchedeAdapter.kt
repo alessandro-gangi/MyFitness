@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myfitness.R
 import com.example.myfitness.data.Esercizio
 import com.example.myfitness.data.MockSchede
-import com.example.myfitness.data.Scheda
 import kotlinx.android.synthetic.main.cardview_creazione_esercizio.view.*
 
 class CreazioneSchedeAdapter: RecyclerView.Adapter<CreazioneEsercizioViewHolder>(){

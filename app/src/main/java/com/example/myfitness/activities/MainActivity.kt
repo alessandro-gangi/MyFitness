@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity(), SchedeInteractionListener {
     }
 
     //Quando clicchi sulla cardView di una scheda passa al fragment per la visualizzazione completa
-    override fun onSchedaSelected(schedaId: Long) {
+    override fun onSchedaSelected(schedaId: Int) {
         Toast.makeText(this, "Scheda $schedaId selected", Toast.LENGTH_SHORT).show()
         supportFragmentManager.beginTransaction()
             .replace(R.id.container_main, VisualizzazioneSchedaFragment.newInstance(schedaId))
@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity(), SchedeInteractionListener {
             .commit()
     }
 
-    override fun onEsercizioSelected(schedaId: Long, numGiorno: Int) {
+    override fun onEsercizioSelected(schedaId: Int, numGiorno: Int) {
         Toast.makeText(this, "Esercizio della scheda $schedaId nel giorno $numGiorno", Toast.LENGTH_SHORT).show()
 
         // TODO: passare al fragment modificaEsercizio come nel metodo sopra

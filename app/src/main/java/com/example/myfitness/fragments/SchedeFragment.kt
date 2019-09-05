@@ -1,8 +1,8 @@
 package com.example.myfitness.fragments
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,12 +10,15 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myfitness.dataManager.MyDataManager
 import com.example.myfitness.R
 import com.example.myfitness.adapters.SchedeAdapter
+import com.example.myfitness.data.MockSchede
 import com.example.myfitness.data.Scheda
 import com.example.myfitness.interfaces.SchedeInteractionListener
+import com.example.myfitness.viewmodel.SchedeViewModel
 import kotlinx.android.synthetic.main.dialog_request_scheda.view.*
 import kotlinx.android.synthetic.main.fragment_schede.*
 import kotlinx.android.synthetic.main.fragment_schede.view.*
@@ -23,14 +26,30 @@ import kotlinx.android.synthetic.main.fragment_schede.view.*
 
 class SchedeFragment : Fragment() {
     val TAG = "SchedeFragment"
+
+    //viewModel
+    private lateinit var schedeViewModel: SchedeViewModel
+    private lateinit var listaSchede: List<Scheda>
+
+    private lateinit var adapter: SchedeAdapter
     private lateinit var listener: SchedeInteractionListener
-    private lateinit var listaSchede: ArrayList<Scheda>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        listaSchede = MyDataManager.retrieve_all_schede_info()
+
+        schedeViewModel = ViewModelProvider(this).get(SchedeViewModel::class.java)
+
+        schedeViewModel.allSchede.observe(this, Observer {
+            it?.let {nuovaLista ->
+                adapter.setListeSchede(nuovaLista)
+            }
+        })
+
+        adapter = SchedeAdapter{ schedaId -> listener.onSchedaSelected(schedaId) }
+
         listener = activity as SchedeInteractionListener
 
+        Log.d(TAG, "OnCreate TERMINATO")
     }
 
 
@@ -42,9 +61,7 @@ class SchedeFragment : Fragment() {
 
 
         //MI SERVIREBBE CAPIRE MEGLIO LA SINTASSI "schedaId ->"
-        rootView.schede_recycler_view.adapter = SchedeAdapter(listaSchede){ schedaId ->
-            listener.onSchedaSelected(schedaId)
-        }
+        rootView.schede_recycler_view.adapter = adapter
 
         rootView.button_add_scheda.setOnClickListener {
             show3DotsPopupMenu(this.button_add_scheda)
@@ -86,8 +103,7 @@ class SchedeFragment : Fragment() {
         //sulla scheda che vuole richiedere
         //Es: num giorni + commento
 
-        val context = activity
-        val builder = AlertDialog.Builder(context)
+        val builder = AlertDialog.Builder(activity)
         builder.setTitle("Richiedi una scheda al tua allenatore")
 
 
@@ -127,6 +143,11 @@ class SchedeFragment : Fragment() {
     private fun createScheda(){
 
         //TODO: effettua il passaggio al fragment per creare la scheda
+
+        //test aggiungiamo una scheda alla recycler view
+
+        val schedaTest: Scheda = MockSchede.mockScheda1
+        schedeViewModel.addScheda(schedaTest)
     }
 
 

@@ -20,7 +20,7 @@ class VisualizzazioneEserciziFragment: Fragment() {
     val TAG = "VisualEserciziFragment"
 
     private lateinit var schedaGiornaliera: SchedaGiornaliera
-    private var schedaId: Long? = null
+    private var schedaId: Int? = null
     private var numGiorno: Int? = null
 
     lateinit var listener: SchedeInteractionListener
@@ -32,7 +32,7 @@ class VisualizzazioneEserciziFragment: Fragment() {
         listener = activity as SchedeInteractionListener
 
         // fetch scheda giornaliera
-        schedaId = arguments?.getLong(SCHEDA_ID)
+        schedaId = arguments?.getInt(SCHEDA_ID)
         numGiorno = arguments?.getInt(SCHEDA_NUM_GIORNO)
         schedaGiornaliera = MyDataManager.retrieve_scheda_giornaliera(schedaId!!, numGiorno!!)
     }
@@ -62,9 +62,9 @@ class VisualizzazioneEserciziFragment: Fragment() {
         val SCHEDA_NUM_GIORNO = "SCHEDA_NUM_GIORNO"
 
         @JvmStatic
-        fun newInstance(scheda_id: Long, numGiorno: Int) = VisualizzazioneEserciziFragment().apply {
+        fun newInstance(scheda_id: Int, numGiorno: Int) = VisualizzazioneEserciziFragment().apply {
             arguments = Bundle().apply {
-                putLong(SCHEDA_ID, scheda_id)
+                putInt(SCHEDA_ID, scheda_id)
                 putInt(SCHEDA_NUM_GIORNO, numGiorno)
             }
         }

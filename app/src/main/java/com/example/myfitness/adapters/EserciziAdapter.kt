@@ -6,13 +6,10 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myfitness.R
-import com.example.myfitness.data.Esercizio
-import com.example.myfitness.data.MockSchede
-import com.example.myfitness.data.Scheda
 import com.example.myfitness.data.SchedaGiornaliera
 import kotlinx.android.synthetic.main.cardview_esercizio.view.*
 
-class EserciziAdapter(val schedaGiornaliera: SchedaGiornaliera, val clickListener: (schedaId: Long, numGiorno: Int) -> Unit): RecyclerView.Adapter<EsercizioViewHolder>(){
+class EserciziAdapter(val schedaGiornaliera: SchedaGiornaliera, val clickListener: (schedaId: Int, numGiorno: Int) -> Unit): RecyclerView.Adapter<EsercizioViewHolder>(){
     val TAG = "EserciziAdapter"
 
     override fun getItemCount(): Int {
@@ -34,7 +31,7 @@ class EserciziAdapter(val schedaGiornaliera: SchedaGiornaliera, val clickListene
         viewHolder.recupero.text = schedaGiornaliera.esercizi[position].recupero.toString()
         viewHolder.commento.text = schedaGiornaliera.esercizi[position].commento
 
-        viewHolder.itemView.setOnClickListener { clickListener(schedaGiornaliera.schedaId, schedaGiornaliera.numGiorno) }
+        viewHolder.itemView.setOnClickListener { clickListener(schedaGiornaliera.scheda, schedaGiornaliera.num_giorno) }
     }
 
 

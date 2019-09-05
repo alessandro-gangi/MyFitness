@@ -1,7 +1,6 @@
 package com.example.myfitness.fragments
 
 
-import com.example.myfitness.utilities.InjectorUtils
 import android.Manifest
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -18,19 +17,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.app.ActivityCompat
-import com.example.myfitness.data.Utente
 import com.example.myfitness.R
 import kotlinx.android.synthetic.main.fragment_register_step2.*
 import kotlinx.android.synthetic.main.fragment_register_step2.view.*
 import android.graphics.drawable.Drawable
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.myfitness.data.Utente_new
-import com.example.myfitness.ui.utenti.UtentiViewModel
+import com.example.myfitness.data.Utente
+import com.example.myfitness.viewmodel.UtentiViewModel
 import java.io.FileNotFoundException
 
 
 class RegisterStep2Fragment : Fragment() {
     val TAG = "RegisterFragment"
+
+    //viewModel
+    private lateinit var utentiViewModel: UtentiViewModel
+    private lateinit var listaUtenti: List<Utente>
 
     val IMAGE_PICK_CODE = 1
     val READ_EXTERNAL_STORAGE_CODE = 2
@@ -39,9 +42,17 @@ class RegisterStep2Fragment : Fragment() {
     private var mail: String? = null
     private var password: String? = null
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "on create")
+
+        utentiViewModel = ViewModelProvider(this).get(UtentiViewModel::class.java)
+
+        utentiViewModel.allUtenti.observe(this, Observer {
+            listaUtenti = it
+        })
+
 
         // fetch dati utente precedentemente immessi
         username = arguments?.getString(USERNAME)
@@ -52,7 +63,6 @@ class RegisterStep2Fragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val view: View = inflater.inflate(R.layout.fragment_register_step2, container, false)
-
         setupUI(view)
 
         return view
@@ -73,11 +83,9 @@ class RegisterStep2Fragment : Fragment() {
         setupRadioButtons(radioMaschio, radioFemmina)
         setupImmagine(imageView)
         setupBackButton(backButton)
-        setupCompletaRegistrazione(completaRegistrazione, nome, cognome, eta, genereRadioGroup)
-
-
-
+        setupCompletaRegistrazioneButton(completaRegistrazione, nome, cognome, eta, genereRadioGroup)
     }
+
 
     private fun setupRadioButtons(radioMaschio: RadioButton, radioFemmina: RadioButton) {
 
@@ -108,12 +116,8 @@ class RegisterStep2Fragment : Fragment() {
         }
     }
 
-    private fun setupCompletaRegistrazione(completaRegistrazione: Button, nome: EditText, cognome: EditText, eta: EditText,
-                                           genereRadioGroup: RadioGroup){
-
-        //viewModel
-        val factory = InjectorUtils.provideUtentiViewModelFactory()
-        val viewModel = ViewModelProvider(this, factory).get(UtentiViewModel::class.java)
+    private fun setupCompletaRegistrazioneButton(completaRegistrazione: Button, nome: EditText, cognome: EditText,
+                                                 eta: EditText, genereRadioGroup: RadioGroup){
 
         //setup button
         completaRegistrazione.setOnClickListener {
@@ -121,17 +125,11 @@ class RegisterStep2Fragment : Fragment() {
             val genere: Char = sessoCheckedRadioButton.text[0]
 
             if(controllaCorrettezzaDati(nome.text.toString(), cognome.text.toString(), eta.text.toString().toInt())) {
-                val nuovoUtente: Utente_new = Utente_new(username!!, mail!!, password!!, false, nome.text.toString(),
+                val nuovoUtente = Utente(username!!, mail!!, password!!, false, nome.text.toString(),
                     cognome.text.toString(), eta.text.toString().toInt(), null, null, null, null,
                     genere, null, null)
 
-                viewModel.addUtente(nuovoUtente)
-
-                //TESTING
-                val listaUtenti = viewModel.getUtenti().value!!
-                Toast.makeText(activity, "Utenti presenti: ${listaUtenti.size}", Toast.LENGTH_SHORT).show()
-                Log.d(TAG, "Utenti presenti:\n$listaUtenti")
-
+                utentiViewModel.addUtente(nuovoUtente)
                 passaAlLogin()
             }
 
@@ -249,6 +247,7 @@ class RegisterStep2Fragment : Fragment() {
     private fun passaAlLogin(){
 
         //passo al fragment per continuare la registrazione
+        activity?.supportFragmentManager?.popBackStack()
         fragmentManager!!.beginTransaction().replace(
             R.id.container_start,
             LoginFragment()).commit()

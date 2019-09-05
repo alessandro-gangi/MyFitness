@@ -47,7 +47,7 @@ object MyDataManager {
         return schede
     }
 
-    fun retrieve_scheda_info(schedaId: Long): Scheda{
+    fun retrieve_scheda_info(schedaId: Int): Scheda{
         Log.d(TAG, "retrieve_scheda_info")
         Log.d(TAG, "id scheda: $schedaId")
 
@@ -65,7 +65,7 @@ object MyDataManager {
         return scheda
     }
 
-    fun retrieve_scheda_giornaliera(schedaId: Long, numGiorno: Int): SchedaGiornaliera{
+    fun retrieve_scheda_giornaliera(schedaId: Int, numGiorno: Int): SchedaGiornaliera{
         Log.d(TAG, "retrieve_scheda_giornaliera")
         Log.d(TAG, "id scheda: $schedaId and numgiorno: $numGiorno")
         // CONNESSIONE ALLA BASE DI DATI PER RECUPERARE
@@ -75,11 +75,11 @@ object MyDataManager {
             it.id == schedaId
         }!!
 
-        return scheda.schedeGiornaliere[numGiorno]
+        return scheda.schede_giornaliere[numGiorno]
 
     }
 
-
+    /*
     fun retrieve_all_allenatori(): ArrayList<Utente>{
         // CONNESSIONE ALLA BASE DI DATI PER RECUPERARE:
         // nome e descrizione
@@ -93,4 +93,5 @@ object MyDataManager {
 
         return MockUtenti.listaUtenti
     }
+    */
 }

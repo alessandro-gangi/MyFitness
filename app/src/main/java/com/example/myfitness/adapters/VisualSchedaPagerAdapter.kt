@@ -3,8 +3,6 @@ package com.example.myfitness.adapters
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.example.myfitness.data.Scheda
-import com.example.myfitness.fragments.VisualizzazioneEserciziFragment
 
 //class VisualSchedaPagerAdapter(fm: FragmentManager, val scheda: Scheda) : FragmentPagerAdapter(fm) {
 class VisualSchedaPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
