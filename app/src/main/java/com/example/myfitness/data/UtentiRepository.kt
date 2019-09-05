@@ -1,6 +1,12 @@
 package com.example.myfitness.data
 
+import android.util.Log
 import androidx.lifecycle.LiveData
+import com.example.myfitness.webService.ClientRetrofit
+import com.example.myfitness.webService.UserRetrofit
+import com.example.myfitness.webService.restService.UserRestService
+import retrofit.Callback
+import retrofit.Response
 
 // FakeQuoteDao must be passed in - it is a dependency
 // You could also instantiate the DAO right inside the class without all the fuss, right?
@@ -18,7 +24,31 @@ class UtentiRepository (private val utentiDao: UtentiDao){
 
     // The suspend modifier tells the compiler that this must be called from a
     // coroutine or another suspend function.
-    suspend fun addUtente(utente: Utente) = utentiDao.addUtente(utente)
+    val classService = UserRestService::class.java
+
+    fun addUtente(utente: Utente) {
+        //utentiDao.addUtente(utente)
+
+        ClientRetrofit.setService(classService).listUsers().also {
+            it.enqueue(object : Callback<List<UserRetrofit>> {
+                override fun onResponse(response: Response<List<UserRetrofit>>?) {
+                    if (response!!.code() == 200) {
+                        val response = response.body()!!
+
+                        val stringBuilder = "Result: $response"
+
+                        Log.d("UtenteRepository", stringBuilder)
+                    }
+                }
+
+                override fun onFailure(t: Throwable?) {
+                    Log.d("UtenteRepository", t!!.message)
+                }
+
+            })
+
+        }
+    }
 
     suspend fun deleteUtente(username: String) = utentiDao.deleteUtente(username)
 

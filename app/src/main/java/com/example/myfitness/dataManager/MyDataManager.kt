@@ -2,7 +2,6 @@ package com.example.myfitness.dataManager
 
 import android.util.Log
 import com.example.myfitness.data.*
-import com.example.myfitness.utilities.HTTPHandler
 import org.json.JSONObject
 
 object MyDataManager {
@@ -14,20 +13,20 @@ object MyDataManager {
 
     }
 
-    fun perform_registration(usr: String, mail: String, pwd: String): String? {
-        val registration = JSONObject()
-
-        registration.put("mail", mail)
-        registration.put("username", usr)
-        registration.put("password", pwd)
-
-        return HTTPHandler().postCall("/api/insert/member", registration)
-
-    }
-
-    fun perform_login(mail: String, pwd: String): Boolean {
-        return HTTPHandler().getCallLogin(mail, pwd)
-    }
+//    fun perform_registration(usr: String, mail: String, pwd: String): String? {
+//        val registration = JSONObject()
+//
+//        registration.put("mail", mail)
+//        registration.put("username", usr)
+//        registration.put("password", pwd)
+//
+//        return HTTPHandler().postCall("/api/insert/member", registration)
+//
+//    }
+//
+//    fun perform_login(mail: String, pwd: String): Boolean {
+//        return HTTPHandler().getCallLogin(mail, pwd)
+//    }
 
     fun retrieve_all_schede_info(): ArrayList<Scheda>{
         Log.d(TAG, "retrieve_all_schede_info")
