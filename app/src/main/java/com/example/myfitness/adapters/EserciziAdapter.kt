@@ -6,15 +6,22 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myfitness.R
-import com.example.myfitness.data.SchedaGiornaliera
+import com.example.myfitness.data.Esercizio
 import kotlinx.android.synthetic.main.cardview_esercizio.view.*
 
-class EserciziAdapter(val schedaGiornaliera: SchedaGiornaliera, val clickListener: (schedaId: Int, numGiorno: Int) -> Unit): RecyclerView.Adapter<EsercizioViewHolder>(){
+class EserciziAdapter(val clickListener: (numEsercizio: Int) -> Unit): RecyclerView.Adapter<EsercizioViewHolder>(){
     val TAG = "EserciziAdapter"
+
+    var listaEsercizi: ArrayList<Esercizio> = ArrayList()
+
+    fun setListaEsercizi(nuovaListaEsercizi: List<Esercizio>){
+        listaEsercizi = ArrayList(nuovaListaEsercizi)
+        notifyDataSetChanged()
+    }
 
     override fun getItemCount(): Int {
         //Qua in pratica si farà il return della "size" della lista degli allenatori di una certa palestra
-        return schedaGiornaliera.esercizi.size
+        return listaEsercizi.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EsercizioViewHolder {
@@ -25,13 +32,14 @@ class EserciziAdapter(val schedaGiornaliera: SchedaGiornaliera, val clickListene
     }
 
     override fun onBindViewHolder(viewHolder: EsercizioViewHolder, position: Int){
-        viewHolder.nome.text = schedaGiornaliera.esercizi[position].nome
-        viewHolder.serie.text = schedaGiornaliera.esercizi[position].serie.toString()
-        viewHolder.ripetizioni.text = schedaGiornaliera.esercizi[position].ripetizioni.toString()
-        viewHolder.recupero.text = schedaGiornaliera.esercizi[position].recupero.toString()
-        viewHolder.commento.text = schedaGiornaliera.esercizi[position].commento
+        viewHolder.nome.text = listaEsercizi[position].nome
+        viewHolder.serie.text = listaEsercizi[position].serie.toString()
+        viewHolder.ripetizioni.text = listaEsercizi[position].ripetizioni.toString()
+        viewHolder.recupero.text = listaEsercizi[position].recupero.toString()
+        viewHolder.commento.text = listaEsercizi[position].commento
 
-        viewHolder.itemView.setOnClickListener { clickListener(schedaGiornaliera.scheda, schedaGiornaliera.num_giorno) }
+        //TODO: rimettere a posto di sotto
+        viewHolder.itemView.setOnClickListener { clickListener(position) }
     }
 
 

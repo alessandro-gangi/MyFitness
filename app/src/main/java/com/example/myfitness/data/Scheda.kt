@@ -1,5 +1,6 @@
 package com.example.myfitness.data
 
+
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
@@ -12,13 +13,11 @@ data class Scheda(@PrimaryKey var id: Int = -1,
                   var commento: String = "",
                   var autore: String = "",
                   var possessore: String = "",
-                  @Ignore var schede_giornaliere: ArrayList<SchedaGiornaliera> = ArrayList()
+                  var esercizi: ArrayList<ArrayList<Esercizio>> = ArrayList()
 )   {
 
 
     override fun toString(): String {
-        return "Scheda(id=$id, numGiorni=$num_giorni, data='$data', " +
-                "tipo='$tipo', commento='$commento', autore='$autore', " +
-                "possessore='$possessore', schedeGiornaliere=$schede_giornaliere)"
+        return "Scheda(id=$id, num_giorni=$num_giorni, data='$data', tipo='$tipo', commento='$commento', autore='$autore', possessore='$possessore', esercizi=$esercizi)"
     }
 }

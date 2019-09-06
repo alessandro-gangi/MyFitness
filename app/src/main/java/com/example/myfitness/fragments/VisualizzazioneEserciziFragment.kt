@@ -6,35 +6,44 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myfitness.dataManager.MyDataManager
-
 import com.example.myfitness.R
 import com.example.myfitness.adapters.EserciziAdapter
-import com.example.myfitness.data.SchedaGiornaliera
-import com.example.myfitness.interfaces.SchedeInteractionListener
+import com.example.myfitness.data.Esercizio
+import com.example.myfitness.viewmodel.SchedeViewModel
 import kotlinx.android.synthetic.main.fragment_visualizzazione_esercizi.view.*
+import java.lang.Exception
 
 
 class VisualizzazioneEserciziFragment: Fragment() {
     val TAG = "VisualEserciziFragment"
 
-    private lateinit var schedaGiornaliera: SchedaGiornaliera
-    private var schedaId: Int? = null
-    private var numGiorno: Int? = null
+    private lateinit var schedeViewModel: SchedeViewModel
+    private lateinit var listaEsercizi: ArrayList<Esercizio>
 
-    lateinit var listener: SchedeInteractionListener
+    private lateinit var adapter: EserciziAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        listener = activity as SchedeInteractionListener
+        // fetch dat scheda giornaliera
+        val schedaId: Int? = arguments?.getInt(SCHEDA_ID)
+        val numGiorno: Int? = arguments?.getInt(SCHEDA_NUM_GIORNO)
 
-        // fetch scheda giornaliera
-        schedaId = arguments?.getInt(SCHEDA_ID)
-        numGiorno = arguments?.getInt(SCHEDA_NUM_GIORNO)
-        schedaGiornaliera = MyDataManager.retrieve_scheda_giornaliera(schedaId!!, numGiorno!!)
+        // viewModel
+        schedeViewModel = activity?.run {
+            ViewModelProvider(this).get(SchedeViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+
+        listaEsercizi = schedeViewModel.getSchedaGiornaliera(schedaId!!, numGiorno!!)
+
+        adapter = EserciziAdapter{numEsercizio -> onEsercizioSelected(numEsercizio)}
+        adapter.setListaEsercizi(listaEsercizi)
+
+
     }
 
     override fun onCreateView(
@@ -45,15 +54,15 @@ class VisualizzazioneEserciziFragment: Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_visualizzazione_esercizi, container, false)
         rootView.visual_esercizi_recyclerView.layoutManager = LinearLayoutManager(activity)
 
-        //bisognerà poi fare il ciocco di lucius per gestire il cambio di fragment (es. quando
-        // clicco su un esercizio per modificarlo) dall'activity principale
-
-        rootView.visual_esercizi_recyclerView.adapter = EserciziAdapter(schedaGiornaliera) { schedaId, numGiorno ->
-            listener.onEsercizioSelected(schedaId, numGiorno)
-        }
+        rootView.visual_esercizi_recyclerView.adapter = adapter
 
         return rootView
 
+    }
+
+
+    fun onEsercizioSelected( numEsercizio: Int) {
+        Toast.makeText(activity, "Esercizio selected: ${listaEsercizi[numEsercizio].nome}", Toast.LENGTH_SHORT).show()
     }
 
 

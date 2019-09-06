@@ -16,40 +16,38 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myfitness.R
 import com.example.myfitness.adapters.SchedeAdapter
 import com.example.myfitness.data.MockSchede
-import com.example.myfitness.data.Scheda
-import com.example.myfitness.interfaces.SchedeInteractionListener
 import com.example.myfitness.viewmodel.SchedeViewModel
 import kotlinx.android.synthetic.main.dialog_request_scheda.view.*
 import kotlinx.android.synthetic.main.fragment_schede.*
 import kotlinx.android.synthetic.main.fragment_schede.view.*
 
 
-class SchedeFragment : Fragment() {
+class SchedeFragment : Fragment(){
     val TAG = "SchedeFragment"
 
     //viewModel
     private lateinit var schedeViewModel: SchedeViewModel
-    private lateinit var listaSchede: List<Scheda>
 
     private lateinit var adapter: SchedeAdapter
-    private lateinit var listener: SchedeInteractionListener
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        schedeViewModel = ViewModelProvider(this).get(SchedeViewModel::class.java)
+        //schedeViewModel = ViewModelProvider(this).get(SchedeViewModel::class.java)
 
-        schedeViewModel.allSchede.observe(this, Observer {
-            it?.let {nuovaLista ->
-                adapter.setListeSchede(nuovaLista)
+        adapter = SchedeAdapter{ schedaId, command -> onSchedaClicked(schedaId, command) }
+
+        schedeViewModel = activity?.run {
+            ViewModelProvider(this).get(SchedeViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+
+        schedeViewModel.allSchede.observe(this, Observer { schede ->
+            schede?.let {
+                adapter.setListeSchede(it)
             }
         })
 
-        adapter = SchedeAdapter{ schedaId -> listener.onSchedaSelected(schedaId) }
-
-        listener = activity as SchedeInteractionListener
-
-        Log.d(TAG, "OnCreate TERMINATO")
     }
 
 
@@ -59,20 +57,19 @@ class SchedeFragment : Fragment() {
         rootView.schede_recycler_view.layoutManager = LinearLayoutManager(activity)
 
 
-
-        //MI SERVIREBBE CAPIRE MEGLIO LA SINTASSI "schedaId ->"
         rootView.schede_recycler_view.adapter = adapter
 
+
         rootView.button_add_scheda.setOnClickListener {
-            show3DotsPopupMenu(this.button_add_scheda)
+            showAddPopupMenu(this.button_add_scheda)
         }
 
         return rootView
     }
 
 
-    private fun show3DotsPopupMenu(view: View) {
-        var popup: PopupMenu? = null;
+    private fun showAddPopupMenu(view: View) {
+        val popup: PopupMenu?
         popup = PopupMenu(view.context, view)
         popup.inflate(R.menu.popup_add_scheda_menu)
 
@@ -99,7 +96,7 @@ class SchedeFragment : Fragment() {
     }
 
     private fun prepareRequestToCoach(){
-        //TODO: creare un dialogo dove l'utente mette le informazioni
+        //TODO: creare un dialog dove l'utente mette le informazioni
         //sulla scheda che vuole richiedere
         //Es: num giorni + commento
 
@@ -144,11 +141,36 @@ class SchedeFragment : Fragment() {
 
         //TODO: effettua il passaggio al fragment per creare la scheda
 
-        //test aggiungiamo una scheda alla recycler view
-
-        val schedaTest: Scheda = MockSchede.mockScheda1
-        schedeViewModel.addScheda(schedaTest)
+        //test aggiungiamo qualche scheda alla recycler view
+        schedeViewModel.addScheda(MockSchede.mockScheda1)
+        schedeViewModel.addScheda(MockSchede.mockScheda2)
+        schedeViewModel.addScheda(MockSchede.mockScheda3)
     }
 
 
+
+    fun onSchedaClicked(schedaId: Int, command: Char) {
+        when (command){
+            'V' -> {
+
+                schedeViewModel.selectScheda(schedaId)
+                Log.d(TAG, "Selected scheda: ${schedeViewModel.selectedScheda.value}")
+
+
+                fragmentManager!!.beginTransaction()
+                .replace(R.id.container_main, VisualizzazioneSchedaFragment.newInstance(schedaId))
+                .addToBackStack(null)
+                .commit()
+
+
+            }
+
+            'D' -> {
+                Log.d(TAG, "trying to delete scheda $schedaId")
+                schedeViewModel.deleteScheda(schedaId)
+            }
+
+            // 'S' -> imposta come corrente
+        }
+    }
 }

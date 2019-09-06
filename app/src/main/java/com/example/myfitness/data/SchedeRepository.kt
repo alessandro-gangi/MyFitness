@@ -1,14 +1,10 @@
 package com.example.myfitness.data
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 
-// FakeQuoteDao must be passed in - it is a dependency
-// You could also instantiate the DAO right inside the class without all the fuss, right?
-// No. This would break testability - you need to be able to pass a mock version of a DAO
-// to the repository (e.g. one that upon calling getQuotes() returns a dummy list of quotes for testing)
-// This is the core idea behind DEPENDENCY INJECTION - making things completely modular and independent.
-
 class SchedeRepository (private val schedeDao: SchedeDao){
+    private val TAG = "SchedeRepository"
 
 
     // Room executes all queries on a separate thread.
@@ -22,8 +18,12 @@ class SchedeRepository (private val schedeDao: SchedeDao){
 
     suspend fun deleteScheda(id: Int) = schedeDao.deleteScheda(id)
 
-    fun getScheda(id: Int) = schedeDao.getScheda(id)
+    fun getScheda(id: Int) :Scheda{
+        return schedeDao.getScheda(id)
+    }
 
-    fun getSchede() = schedeDao.getAllSchede()
+    fun getSchedaGiornaliera(id: Int, numGiorno: Int) :ArrayList<Esercizio>{
+        return getScheda(id).esercizi[numGiorno]
+    }
 
 }

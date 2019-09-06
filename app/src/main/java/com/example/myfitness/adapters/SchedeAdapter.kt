@@ -8,23 +8,27 @@ import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myfitness.R
 import com.example.myfitness.data.Scheda
+import com.example.myfitness.viewmodel.SchedeViewModel
 import kotlinx.android.synthetic.main.cardview_scheda.view.*
 
 
 
 
-class SchedeAdapter(val clickListener: (schedaId: Int) -> Unit): RecyclerView.Adapter<SchedaViewHolder>(){
+class SchedeAdapter(val clickListener: (schedaId: Int, command: Char) -> Unit): RecyclerView.Adapter<SchedaViewHolder>(){
     val TAG = "SchedeAdapter"
 
     var listaSchede: ArrayList<Scheda> = ArrayList()
 
     fun setListeSchede(nuovaListaSchede: List<Scheda>){
         listaSchede = ArrayList(nuovaListaSchede)
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
         return listaSchede.size
     }
+
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SchedaViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -42,7 +46,7 @@ class SchedeAdapter(val clickListener: (schedaId: Int) -> Unit): RecyclerView.Ad
 
         impostaImmagine(viewHolder.imgScheda, listaSchede[position].tipo)
 
-        viewHolder.view.setOnClickListener { clickListener(listaSchede[position].id) }
+        viewHolder.view.setOnClickListener { clickListener(listaSchede[position].id, 'V') }
         viewHolder.threeDotsMenu.setOnClickListener {
             showPopupMenu(viewHolder.threeDotsMenu, position)
         }
@@ -59,6 +63,7 @@ class SchedeAdapter(val clickListener: (schedaId: Int) -> Unit): RecyclerView.Ad
                 R.id.popup_menu_item_visualizza_scheda -> {
                     Toast.makeText(view.context, it.title, Toast.LENGTH_SHORT).show()
 
+                    clickListener(listaSchede[position].id, 'V')
                     // VISUALIZZA SCHEDA
                     // TODO: fare il passaggio di activity tramite interfaccia
                 }
@@ -76,8 +81,8 @@ class SchedeAdapter(val clickListener: (schedaId: Int) -> Unit): RecyclerView.Ad
                     //TODO: creare metodo in "dataManager" per eliminare la scheda
 
                     // ELIMINA SCHEDA
-                    listaSchede.removeAt(position)
-                    notifyDataSetChanged()
+                    clickListener(listaSchede[position].id, 'D')
+
 
                 }
             }

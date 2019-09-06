@@ -5,14 +5,15 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 
 // Annotates class to be a Room Database with a table (entity) of the Word class
-@Database(entities = arrayOf(Utente::class, Scheda::class, SchedaGiornaliera::class), version = 2)
+@Database(entities = arrayOf(Utente::class, Scheda::class), version = 4)
+@TypeConverters(DataConverter::class)
 abstract class MyDatabase : RoomDatabase() {
 
     abstract fun UtentiDao(): UtentiDao
     abstract fun SchedeDao(): SchedeDao
-    abstract fun SchedeGiornaliereDao(): SchedeGiornaliereDao
 
     companion object {
         // Singleton prevents multiple instances of database opening at the
@@ -30,7 +31,7 @@ abstract class MyDatabase : RoomDatabase() {
                     context.applicationContext,
                     MyDatabase::class.java,
                     "my_database"
-                ).fallbackToDestructiveMigration().build()
+                ).fallbackToDestructiveMigration().allowMainThreadQueries().build()
                 INSTANCE = instance
                 return instance
             }

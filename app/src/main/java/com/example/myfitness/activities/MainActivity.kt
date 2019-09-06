@@ -12,13 +12,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.example.myfitness.*
 import com.example.myfitness.fragments.*
-import com.example.myfitness.interfaces.SchedeInteractionListener
 
-class MainActivity : AppCompatActivity(), SchedeInteractionListener {
+class MainActivity : AppCompatActivity() {
 
     val TAG = "MainActivity"
 
@@ -84,16 +81,10 @@ class MainActivity : AppCompatActivity(), SchedeInteractionListener {
         false
     }
 
-    //Quando clicchi sulla cardView di una scheda passa al fragment per la visualizzazione completa
-    override fun onSchedaSelected(schedaId: Int) {
-        Toast.makeText(this, "Scheda $schedaId selected", Toast.LENGTH_SHORT).show()
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.container_main, VisualizzazioneSchedaFragment.newInstance(schedaId))
-            .addToBackStack(null)
-            .commit()
-    }
 
-    override fun onEsercizioSelected(schedaId: Int, numGiorno: Int) {
+
+    //override fun onEsercizioSelected(schedaId: Int, numGiorno: Int) {
+    fun onEsercizioSelected(schedaId: Int, numGiorno: Int) {
         Toast.makeText(this, "Esercizio della scheda $schedaId nel giorno $numGiorno", Toast.LENGTH_SHORT).show()
 
         // TODO: passare al fragment modificaEsercizio come nel metodo sopra

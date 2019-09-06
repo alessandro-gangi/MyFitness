@@ -7,7 +7,6 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myfitness.R
 import com.example.myfitness.adapters.AllenatoriAdapter
-import com.example.myfitness.dataManager.MyDataManager
 import android.view.*
 import android.widget.SearchView
 import com.example.myfitness.data.Utente
