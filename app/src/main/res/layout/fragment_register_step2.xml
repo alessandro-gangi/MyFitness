@@ -3,7 +3,7 @@
              xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context=".fragments.RegisterStep2Fragment"
+             tools:context=".view.fragments.RegisterStep2Fragment"
              android:id="@+id/fragment_register_step2">
 
     <androidx.constraintlayout.widget.ConstraintLayout

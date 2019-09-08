@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+            android:id="@+id/popup_menu_item_commento"
+            android:title="@string/aggiungi_modifica_commento"/>
+
+    <item
+            android:id="@+id/popup_menu_item_guarda_video"
+            android:title="@string/guarda_video"/>
+
+    <item
+            android:id="@+id/popup_menu_item_modifica_esercizio"
+            android:title="@string/modifica"/>
+
+    <item
+            android:id="@+id/popup_menu_item_elimina_esercizio"
+            android:title="@string/elimina"/>
+
+
+</menu>

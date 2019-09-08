@@ -7,7 +7,7 @@
 
     <item
             android:id="@+id/popup_menu_item_seleziona_scheda"
-            android:title="@string/seleziona"/>
+            android:title="@string/scheda_corrente"/>
 
     <item
             android:id="@+id/popup_menu_item_elimina_scheda"

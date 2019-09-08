@@ -34,6 +34,11 @@
     <string name="modifica">Modifica</string>
     <string name="richiedi">Richiedi</string>
     <string name="annulla">Annulla</string>
+    <string name="scheda_corrente">Seleziona come scheda corrente</string>
+    <string name="aggiungi_commento">Aggiungi commento</string>
+    <string name="guarda_video">Guarda video</string>
+    <string name="aggiungi">Aggiungi</string>
+    <string name="aggiungi_modifica_commento">Aggiungi/modifica commento</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

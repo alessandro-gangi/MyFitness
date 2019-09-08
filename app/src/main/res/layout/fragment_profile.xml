@@ -3,7 +3,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
-             tools:context=".fragments.ProfileFragment"
+             tools:context=".view.fragments.ProfileFragment"
              android:id="@+id/fragment_profile">
 
     <LinearLayout
@@ -20,7 +20,7 @@
             <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/profile_imageView"
                     android:layout_width="150dp"
-                    android:layout_height="0dp"
+                    android:layout_height="150dp"
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -74,6 +74,31 @@
                     android:visibility="gone"
                     android:textSize="@dimen/text_small"/>
 
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cognome_textView"
+                    app:layout_constraintStart_toEndOf="@id/nome_textView"
+                    app:layout_constraintTop_toTopOf="@+id/profile_imageView"
+                    android:text="Cognome"
+                    android:layout_margin="@dimen/spacing_large"
+                    android:maxWidth="150dp"
+                    android:maxLines="2"
+                    android:visibility="visible"/>
+            <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cognome_editText"
+                    app:layout_constraintStart_toEndOf="@id/profile_imageView"
+                    app:layout_constraintTop_toBottomOf="@+id/nome_editText"
+                    android:hint="@string/cognome"
+                    android:layout_margin="@dimen/spacing_large"
+                    android:maxWidth="150dp"
+                    android:maxLines="1"
+                    android:visibility="gone"
+                    android:textSize="@dimen/text_small"/>
+
             <TextView
                     android:layout_width="wrap_content"
                     android:maxWidth="200dp"
@@ -92,7 +117,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/descrizione_editText"
                     app:layout_constraintStart_toEndOf="@id/profile_imageView"
-                    app:layout_constraintTop_toBottomOf="@+id/nome_editText"
+                    app:layout_constraintTop_toBottomOf="@+id/cognome_editText"
                     android:hint="Breve descrizione"
                     android:layout_margin="@dimen/spacing_large"
                     android:textStyle="italic"
@@ -183,8 +208,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="@dimen/spacing_large"
-                android:layout_marginBottom="@dimen/spacing_large"
+                android:layout_margin="@dimen/spacing_large"
                 android:visibility="gone">
 
             <TextView
@@ -193,7 +217,7 @@
                     android:maxWidth="300dp"
                     android:textSize="22sp"
                     android:text="Non hai ancora selezionato un allenatore. Selezionane uno."
-                    android:layout_margin="@dimen/spacing_large"/>
+                    android:layout_margin="@dimen/spacing_medium"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:layout_width="40dp"
@@ -201,7 +225,7 @@
                     app:fabCustomSize="40dp"
                     android:layout_gravity="center"
                     android:id="@+id/button_add_allenatore"
-                    android:layout_margin="@dimen/spacing_large"
+                    android:layout_margin="@dimen/spacing_medium"
                     android:src="@drawable/ic_add_white24dp"/>
 
         </LinearLayout>
@@ -227,14 +251,14 @@
                         android:id="@+id/title_scheda_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/scheda_imageView"
                         android:layout_margin="@dimen/spacing_large"
-                        android:text="Scheda attuale"
+                        android:gravity="center"
+                        android:text="La tua scheda"
                         android:textSize="30dp"
-                        android:gravity="center"/>
+                        app:layout_constraintStart_toEndOf="@id/scheda_imageView"
+                        app:layout_constraintTop_toTopOf="parent"/>
 
-                <de.hdodenhof.circleimageview.CircleImageView
+                <ImageView
                         android:layout_width="70dp"
                         android:layout_height="0dp"
                         android:id="@+id/scheda_imageView"
@@ -322,8 +346,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="@dimen/spacing_large"
-                android:layout_marginBottom="@dimen/spacing_large"
+                android:layout_margin="@dimen/spacing_large"
                 android:visibility="gone">
 
             <TextView
@@ -332,7 +355,7 @@
                     android:maxWidth="300dp"
                     android:textSize="22sp"
                     android:text="Non hai ancora selezionato la tua scheda attuale. Selezionane una."
-                    android:layout_margin="@dimen/spacing_large"/>
+                    android:layout_margin="@dimen/spacing_medium"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:layout_width="40dp"
@@ -340,7 +363,7 @@
                     app:fabCustomSize="40dp"
                     android:layout_gravity="center"
                     android:id="@+id/button_add_scheda_attuale"
-                    android:layout_margin="@dimen/spacing_large"
+                    android:layout_margin="@dimen/spacing_medium"
                     android:src="@drawable/ic_add_white24dp"/>
 
         </LinearLayout>

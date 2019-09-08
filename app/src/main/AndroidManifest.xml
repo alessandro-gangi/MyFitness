@@ -13,10 +13,10 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
 
-        <activity android:name=".activities.MainActivity">
+        <activity android:name=".view.activities.MainActivity">
         </activity>
         <activity
-                android:name=".activities.StartActivity"
+                android:name=".view.activities.StartActivity"
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

@@ -5,7 +5,7 @@
         android:id="@+id/relative_layout_start"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activities.StartActivity">
+        tools:context=".view.activities.StartActivity">
 
     <FrameLayout
             android:id="@+id/container_start"

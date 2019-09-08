@@ -3,7 +3,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context=".fragments.AllenatoriFragment"
+             tools:context=".view.fragments.AllenatoriFragment"
              android:id="@+id/fragment_allenatori">
 
     <androidx.recyclerview.widget.RecyclerView

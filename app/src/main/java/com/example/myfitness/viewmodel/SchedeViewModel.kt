@@ -1,49 +1,59 @@
 package com.example.myfitness.viewmodel
 
 import android.app.Application
-import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import com.example.myfitness.data.*
+import androidx.lifecycle.*
+import com.example.myfitness.model.SchedeRepository
+import com.example.myfitness.model.dataClasses.Esercizio
+import com.example.myfitness.model.dataClasses.Scheda
+import com.example.myfitness.model.local.MyDatabase
 import kotlinx.coroutines.launch
 
 
 class SchedeViewModel (application: Application): AndroidViewModel(application){
     private val TAG = "SchedeViewModel"
 
-    // The ViewModel maintains a reference to the repository to get data.
-    private val repository: SchedeRepository
-    // LiveData gives us updated words when they change.
-    val allSchede: LiveData<List<Scheda>>
+    private val username: MutableLiveData<String> = MutableLiveData()
 
-    var selectedScheda: MutableLiveData<Scheda>
+    val schedeUtente = Transformations.switchMap(username){ repository.observeSchede(it)}
+    val currentSchedaUtente = Transformations.switchMap(username){ repository.observeCurrentScheda(it)}
+
+    // Repo
+    private val repository: SchedeRepository
+
 
     init {
-        // Gets reference to WordDao from WordRoomDatabase to construct
-        // the correct WordRepository.
         val schedeDao = MyDatabase.getDatabase(application).SchedeDao()
-        repository = SchedeRepository(schedeDao)
+        repository = SchedeRepository(schedeDao) //TODO:FRA -> questo diventerà SchedeRepository(schedeDao, webService)
+    }
 
-        allSchede = repository.allSchede
-        selectedScheda = MutableLiveData()
+
+    fun setUsername(username: String){
+        this.username.value = username
+
+        // scarica i dati dal server e li salva nel db (per adesso la commento)
+        /*
+        viewModelScope.launch {
+            repository.fetchSchedeUtente(username)
+        }
+        */
     }
 
 
     fun addScheda(scheda: Scheda) = viewModelScope.launch{repository.addScheda(scheda)}
 
+    fun updateScheda(scheda: Scheda) = viewModelScope.launch{repository.updateScheda(scheda)}
+
     fun deleteScheda(id: Int) = viewModelScope.launch {repository.deleteScheda(id)}
 
     fun getScheda(id: Int) : Scheda = repository.getScheda(id)
 
-    fun selectScheda(id: Int){
-        selectedScheda = MutableLiveData(repository.getScheda(id))
-    }
+    fun setAsCurrentScheda(idScheda: Int) = viewModelScope.launch {repository.setAsCurrentScheda(idScheda, username.value!!)}
+
+    fun removeCurrentScheda() = viewModelScope.launch { repository.removeCurrentScheda(username.value!!) }
 
     fun getSchedaGiornaliera(id: Int, numGiorno: Int) :ArrayList<Esercizio> = repository.getSchedaGiornaliera(id, numGiorno)
 
-
+    fun deleteAllUserSchede() = viewModelScope.launch { repository.deleteAllUserSchede(username.value!!) }
 
 
 

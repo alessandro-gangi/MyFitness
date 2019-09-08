@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content" xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:padding="@dimen/spacing_large"
+        android:orientation="vertical"
+>
+
+
+    <EditText
+            android:id="@+id/serie_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/serie"
+            android:layout_gravity="left"
+            android:layout_margin="@dimen/spacing_medium"
+            android:inputType="number"/>
+
+    <EditText
+            android:id="@+id/ripetizioni_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/ripetizioni"
+            android:layout_gravity="left"
+            android:layout_margin="@dimen/spacing_medium"
+            android:inputType="number"/>
+
+    <EditText
+            android:id="@+id/recupero_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Recupero (min)"
+            android:layout_gravity="left"
+            android:layout_margin="@dimen/spacing_medium"
+            android:inputType="numberDecimal"/>
+
+
+
+
+</LinearLayout>
