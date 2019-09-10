@@ -12,14 +12,26 @@ import kotlinx.android.synthetic.main.cardview_allenatore.view.*
 
 
 
-class AllenatoriAdapter(var listaAllenatori: ArrayList<Utente>): RecyclerView.Adapter<AllenatoreViewHolder>(){
+class AllenatoriAdapter(val menuClickListener: (numEsercizio: Int, itemClicked: Int) -> Unit): RecyclerView.Adapter<AllenatoreViewHolder>(){
     val TAG = "AllenatoriAdapter"
 
-    var listaAllenatoriCopy: ArrayList<Utente>
+    private var listaAllenatori: ArrayList<Utente> = ArrayList()
+
+    private var listaAllenatoriCopy: ArrayList<Utente> = ArrayList()
 
     init {
-        listaAllenatoriCopy = ArrayList()
         listaAllenatoriCopy.addAll(listaAllenatori)
+        Log.d(TAG, "INIT lista: $listaAllenatori")
+        Log.d(TAG, "INIT lista_copy: $listaAllenatoriCopy")
+    }
+
+    fun setListaAllenatori(nuovaListaAllenatori: List<Utente>){
+        listaAllenatori = ArrayList(nuovaListaAllenatori)
+        listaAllenatoriCopy = listaAllenatori
+
+        Log.d(TAG, "lista: $listaAllenatori")
+        Log.d(TAG, "lista_copy: $listaAllenatoriCopy")
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
@@ -39,24 +51,18 @@ class AllenatoriAdapter(var listaAllenatori: ArrayList<Utente>): RecyclerView.Ad
         viewHolder.nome.text = listaAllenatori[position].nome
         viewHolder.descrizione.text = listaAllenatori[position].descrizione
         viewHolder.threeDotsMenu.setOnClickListener {
-            showPopupMenu(viewHolder.threeDotsMenu)
+            showPopupMenu(viewHolder.threeDotsMenu, position)
         }
     }
 
 
-    private fun showPopupMenu(view: View) {
+    private fun showPopupMenu(view: View, numAllenatore: Int) {
         var popup: PopupMenu? = null;
         popup = PopupMenu(view.context, view)
         popup.inflate(R.menu.popup_allenatore_card_menu)
 
         popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener {
-
-            when (it!!.itemId) {
-                R.id.popup_menu_item_seleziona_allenatore -> {
-                    //Do something...
-                    Toast.makeText(view.context, it.title, Toast.LENGTH_SHORT).show()
-                }
-            }
+            menuClickListener(numAllenatore, it.itemId)
             true
         })
 
@@ -65,11 +71,16 @@ class AllenatoriAdapter(var listaAllenatori: ArrayList<Utente>): RecyclerView.Ad
 
 
     fun filter(text: String) {
+        Log.d(TAG, "1 FILTER lista: $listaAllenatori")
+        Log.d(TAG, "1 FILTER lista_copy: $listaAllenatoriCopy")
         listaAllenatori.clear()
 
         if (text.isEmpty()) {
             listaAllenatori.addAll(listaAllenatoriCopy)
+            Log.d(TAG, "2 FILTER lista: $listaAllenatori")
+            Log.d(TAG, "2 FILTER lista_copy: $listaAllenatoriCopy")
         }
+
         else {
             val result: ArrayList<Utente> = ArrayList()
             for (allenatore in listaAllenatoriCopy) {
@@ -77,7 +88,11 @@ class AllenatoriAdapter(var listaAllenatori: ArrayList<Utente>): RecyclerView.Ad
                     result.add(allenatore)
                 }
             }
+            Log.d(TAG, "3 FILTER lista: $listaAllenatori")
+            Log.d(TAG, "3 FILTER lista_copy: $listaAllenatoriCopy")
             listaAllenatori.addAll(result)
+            Log.d(TAG, "4 FILTER lista: $listaAllenatori")
+            Log.d(TAG, "4 FILTER lista_copy: $listaAllenatoriCopy")
 
         }
         notifyDataSetChanged()

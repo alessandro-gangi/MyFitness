@@ -13,7 +13,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
 
-        <activity android:name=".view.activities.MainActivity">
+        <activity android:name=".view.activities.MainActivity"
+            android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
                 android:name=".view.activities.StartActivity"

@@ -5,4 +5,8 @@
             android:id="@+id/popup_menu_item_modifica_profilo"
             android:title="@string/modifica"/>
 
+    <item
+            android:id="@+id/popup_menu_item_logout"
+            android:title="@string/logout"/>
+
 </menu>

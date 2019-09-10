@@ -29,6 +29,8 @@
     <!--genaral text dimensions-->
     <dimen name="text_small">14sp</dimen>
     <dimen name="text_medium">17sp</dimen>
+    <dimen name="text_xmedium">20sp</dimen>
+    <dimen name="text_large">25sp</dimen>
     <dimen name="text_xlarge">30sp</dimen>
 
 </resources>

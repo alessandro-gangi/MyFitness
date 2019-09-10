@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_large"
+        android:orientation="vertical"
+>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <TextView
+                android:id="@+id/numGiorni_richiedi_scheda_dialog"
+                android:layout_width="120sp"
+                android:layout_height="wrap_content"
+                android:text="Numero di giorni"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/spacing_large"/>
+
+        <NumberPicker
+                android:id="@+id/numGiorni_picker_richiedi_scheda_dialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></NumberPicker>
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <TextView
+                android:id="@+id/tipologia_richiedi_scheda_dialog"
+                android:layout_width="120sp"
+                android:layout_height="wrap_content"
+                android:text="Tipologia"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/spacing_large"/>
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <RadioGroup
+                    android:id="@+id/tipologia_radio_group_richiedi_scheda_dialog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                <RadioButton
+                        android:id="@+id/radio_forza_richiedi_scheda_dialog"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Forza"/>
+
+                <RadioButton
+                        android:id="@+id/radio_massa_richiedi_scheda_dialog"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Massa"/>
+
+                <RadioButton
+                        android:id="@+id/radio_definizione_richiedi_scheda_dialog"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Definizione"/>
+
+                <RadioButton
+                        android:id="@+id/radio_nonSpecificare_richiedi_scheda_dialog"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Non Specificare"
+                        android:checked="true"/>
+            </RadioGroup>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <EditText
+            android:id="@+id/commento_richiedi_scheda_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Commento"
+            android:inputType="text"
+            android:maxLength="150"
+            android:layout_gravity="start"
+            android:layout_margin="@dimen/spacing_medium"/>
+
+
+</LinearLayout>

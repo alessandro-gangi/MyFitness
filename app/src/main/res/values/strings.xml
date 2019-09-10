@@ -21,6 +21,8 @@
     <string name="nome_palestra">Nome palestra</string>
     <string name="giorni">Giorni</string>
     <string name="elimina">Elimina</string>
+    <string name="crea">Crea</string>
+    <string name="logout">Logout</string>
     <string name="visualizza">Visualizza</string>
     <string name="seleziona">Seleziona</string>
     <string name="nome">Nome</string>
@@ -38,6 +40,9 @@
     <string name="aggiungi_commento">Aggiungi commento</string>
     <string name="guarda_video">Guarda video</string>
     <string name="aggiungi">Aggiungi</string>
+    <string name="forza">Forza</string>
+    <string name="massa">Massa</string>
+    <string name="definizione">Definizione</string>
     <string name="aggiungi_modifica_commento">Aggiungi/modifica commento</string>
 
     <!-- TODO: Remove or change this placeholder text -->

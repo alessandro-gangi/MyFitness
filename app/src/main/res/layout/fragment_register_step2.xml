@@ -89,13 +89,11 @@
                                  android:layout_width="wrap_content"
                                  android:layout_height="wrap_content"
                                  android:text="Maschio"
-                                 android:onClick="onRadioButtonClicked"
                                  android:checked="true"/>
                     <RadioButton android:id="@+id/femmina_register_radio"
                                  android:layout_width="wrap_content"
                                  android:layout_height="wrap_content"
-                                 android:text="Femmina"
-                                 android:onClick="onRadioButtonClicked"/>
+                                 android:text="Femmina"/>
                 </RadioGroup>
 
             </LinearLayout>

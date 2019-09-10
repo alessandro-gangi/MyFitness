@@ -10,10 +10,16 @@ interface UtentiDao {
     //NOME TABELLA: utenti_table
 
     @Query("SELECT * from utenti_table ORDER BY username ASC")
-    fun getUtenti(): LiveData<List<Utente>>
+    fun getObservableUtenti(): LiveData<List<Utente>>
 
-    @Query("SELECT * from utenti_table WHERE username = :username")
-    fun getUtente(username: String): LiveData<Utente?>
+    @Query("SELECT * from utenti_table WHERE is_allenatore = 1 ORDER BY username ASC")
+    fun getObservableAllenatori(): LiveData<List<Utente>>
+
+    @Query("SELECT * from utenti_table WHERE username = :username LIMIT 1")
+    fun getUtente(username: String): Utente?
+
+    @Query("SELECT * from utenti_table WHERE username = :username LIMIT 1")
+    fun getObservableUtente(username: String): LiveData<Utente?>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun addUtente(utente: Utente)

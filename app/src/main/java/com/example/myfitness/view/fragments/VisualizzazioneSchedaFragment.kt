@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.example.myfitness.R
@@ -30,7 +31,7 @@ class VisualizzazioneSchedaFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // fetch dati scheda
+        // Fetch dati scheda
         val schedaID: Int? = arguments?.getInt(SCHEDA_ID)
 
         schedeViewModel = activity?.run {
@@ -38,10 +39,6 @@ class VisualizzazioneSchedaFragment : Fragment() {
         } ?: throw Exception("Invalid Activity")
 
         scheda = schedeViewModel.getScheda(schedaID!!)
-        Log.d(TAG, "Ricevuta scheda: $scheda")
-
-        // alternativa:
-        //scheda = schedeViewModel.getScheda(schedaID!!).value!!  --> Le GET danno sempre Null
 
 
     }
@@ -54,10 +51,12 @@ class VisualizzazioneSchedaFragment : Fragment() {
         //imposto i tab con il pager
         setupViewPager(rootView.visual_scheda_view_pager, rootView.visual_scheda_tab_layout)
 
+
         return rootView
     }
 
     private fun setupUI(view: View){
+        activity!!.title = "Visualizzazione scheda"
         view.data_textView.text = scheda.data
         view.tipologia_textView.text = scheda.tipo
         view.commento_textView.text = scheda.commento

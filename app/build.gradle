@@ -26,10 +26,19 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+    google()
+}
+
 dependencies {
 
     def room_version = "2.2.0-beta01"
     def lifecycle_version = "2.2.0-alpha03"
+
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    kapt 'com.github.bumptech.glide:compiler:4.9.0'
 
     // Room
     implementation "androidx.room:room-runtime:$room_version"

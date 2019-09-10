@@ -22,4 +22,10 @@
         <item name="android:background">@drawable/rounded_shape</item>
     </style>
 
+    <!-- Margin style for menus -->
+    <style name="OverflowMenuStyle" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <item name="android:dropDownHorizontalOffset">-16dp</item>
+        <item name="android:dropDownVerticalOffset">16dp</item>
+    </style>
+
 </resources>

@@ -27,29 +27,37 @@ import androidx.core.app.ActivityCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.example.myfitness.R
 import com.example.myfitness.model.dataClasses.Scheda
 import com.example.myfitness.model.dataClasses.Utente
 import com.example.myfitness.viewmodel.SchedeViewModel
 import com.example.myfitness.viewmodel.UtentiViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.cardview_scheda.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
+import kotlinx.android.synthetic.main.fragment_profile.view.data_textView
+import kotlinx.android.synthetic.main.fragment_profile.view.days_textView
+import kotlinx.android.synthetic.main.fragment_profile.view.scheda_imageView
+import kotlinx.android.synthetic.main.fragment_profile.view.threeDots_button
+import kotlinx.android.synthetic.main.fragment_profile.view.tipologia_textView
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.io.FileNotFoundException
 
 
 class ProfileFragment : Fragment() {
     val TAG = "ProfileFragment"
 
-    private val USER_DATA_PREFERENCE: String = "USER_PREFERENCE"
+    private lateinit var sharedPref: SharedPreferences
+    private val USER_DATA_PREFERENCE: String = "USER_DATA_PREFERENCE"
+
     private val MY_PACKAGE_NAME: String = "com.example.myfitness"
     private val READ_EXTERNAL_STORAGE_CODE = 1
     private val IMAGE_PICK_CODE = 2
 
     private var isUserModifyingData: Boolean = false
-
-    private lateinit var sharedPref: SharedPreferences
 
 
     //viewModel
@@ -57,17 +65,19 @@ class ProfileFragment : Fragment() {
     private lateinit var schedeViewModel: SchedeViewModel
 
     private var utente: Utente? = null
+    private var allenatore: Utente? = null
     private var currentScheda: Scheda? = null
 
-    private val username = "ghingo" //TODO: da tenere solo per i test
+    private lateinit var username: String
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //sharedPref = activity!!.getSharedPreferences(USER_DATA_PREFERENCE, Context.MODE_PRIVATE)
-        //val username: String? = sharedPref.getString("USER_USERNAME", "")
+        sharedPref = activity!!.getSharedPreferences(USER_DATA_PREFERENCE, Context.MODE_PRIVATE)
+        val USERNAME_KEY = "USERNAME"
+        username = sharedPref.getString(USERNAME_KEY, "") ?: ""
 
         utentiViewModel = activity?.run {
             ViewModelProvider(this).get(UtentiViewModel::class.java)
@@ -79,7 +89,6 @@ class ProfileFragment : Fragment() {
 
         utentiViewModel.setUsername(username)
         schedeViewModel.setUsername(username)
-
 
     }
 
@@ -94,14 +103,22 @@ class ProfileFragment : Fragment() {
 
         schedeViewModel.currentSchedaUtente.observe(this, Observer {
             currentScheda = it
-            impostaLayoutSchedaCorrente(view)
+            impostaSchedaCorrente(view)
         })
 
         utentiViewModel.utente.observe(this, Observer {
             utente = it
-            Log.d(TAG, "Osservo -> imposto dati utente nuovi: $utente")
-            imposta_dati_utente(view)
+            impostaDatiUtente(view)
+            Log.d(TAG, "Utente: $utente")
         })
+
+
+        utentiViewModel.allenatore.observe(this, Observer {
+            allenatore = it
+            impostaAllenatoreCorrente(view)
+            Log.d(TAG, "Allenatore: $allenatore")
+        })
+
 
         return view
     }
@@ -112,21 +129,17 @@ class ProfileFragment : Fragment() {
 
         // per modificare i dati del profilo
         view.threeDots_button.setOnClickListener {
-            showEditProfilePopupMenu(it)
+            showHeaderProfilePopupMenu(it)
         }
 
         // per confermare le modifiche fatte
         view.confirm_changes_button.setOnClickListener {
             confirm_changes(view)
-            //TODO: salva i nuovi dati nella base di dati
-            //saveData()
         }
 
         //per cambiare la foto profilo
         view.profile_imageView.setOnClickListener {
-            if(isUserModifyingData){
-                selezionaImmagine()
-            }
+            if(isUserModifyingData) selezionaImmagine()
         }
 
         //per cambiare/eliminare l'allenatore
@@ -156,7 +169,7 @@ class ProfileFragment : Fragment() {
 
     }
 
-    private fun imposta_dati_utente(view: View){
+    private fun impostaDatiUtente(view: View){
         utente?.let {
             val username: String = utente!!.username
             val nome: String = utente!!.nome
@@ -184,15 +197,11 @@ class ProfileFragment : Fragment() {
 
             when (it!!.itemId) {
                 R.id.popup_menu_item_modifica_allenatore_profilo -> {
-                    //TODO: Cambia allenatore
                     cambiaAllenatore()
                 }
 
                 R.id.popup_menu_item_elimina_allenatore_profilo -> {
-                    //TODO: creare metodo per eliminare allenatore
-                    //eliminaAllenatore()
-                    view.rootView.profilo_allenatore_cardview.visibility = View.GONE
-                    view.rootView.profilo_selez_allen_layout.visibility = View.VISIBLE
+                    eliminaAllenatore()
                 }
             }
             true
@@ -223,7 +232,7 @@ class ProfileFragment : Fragment() {
         popup.show()
     }
 
-    private fun showEditProfilePopupMenu(view: View) {
+    private fun showHeaderProfilePopupMenu(view: View) {
         val popup: PopupMenu?
         popup = PopupMenu(view.context, view)
         popup.inflate(R.menu.popup_profilo_menu)
@@ -234,11 +243,19 @@ class ProfileFragment : Fragment() {
                 R.id.popup_menu_item_modifica_profilo -> {
                     modify_profile_data(view.rootView)
                 }
+
+                R.id.popup_menu_item_logout -> {
+                    logout()
+                }
             }
             true
         })
 
         popup.show()
+    }
+
+    private fun logout(){
+        //TODO: logout
     }
 
     private fun modify_profile_data(view: View){
@@ -274,6 +291,7 @@ class ProfileFragment : Fragment() {
             utente!!.cognome = nuovoCognome
             utente!!.descrizione = nuovaDescrizione
             utente!!.imageURI = nuovaImmagine
+
             utentiViewModel.updateUtente(utente!!)
 
             //riporto visibili gli stessi componenti iniziali
@@ -309,9 +327,18 @@ class ProfileFragment : Fragment() {
             val contentURI = data.data
             val yourDrawable: Drawable
             try {
+                //TODO: Fai funzionare con Glide
+                /*
                 val inputStream = activity!!.contentResolver.openInputStream(contentURI!!)
                 yourDrawable = Drawable.createFromStream(inputStream, contentURI.toString())
                 profile_imageView!!.setImageDrawable(yourDrawable)
+
+
+                Glide.with(activity!!)
+                    .load(contentURI!!.path!!)
+                    .into(profile_imageView)
+
+                    */
 
             } catch (e: FileNotFoundException) {
                 Log.d(TAG, errorMsg)
@@ -370,7 +397,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun cambiaScheda(){
-        val msg: String = "Seleziona la tua scheda dal tab \"schede\""
+        val msg = "Seleziona la tua scheda dal tab \"schede\""
         Toast.makeText(activity, msg, Toast.LENGTH_LONG).show()
 
         fragmentManager!!.beginTransaction().replace(
@@ -380,12 +407,19 @@ class ProfileFragment : Fragment() {
         activity!!.nav_view_main.selectedItemId = R.id.navigation_schede
     }
 
-    private fun impostaLayoutSchedaCorrente(view: View){
+    private fun impostaSchedaCorrente(view: View){
         if(currentScheda != null) {
             view.rootView.profilo_scheda_attuale_cardview.visibility = View.VISIBLE
             view.rootView.profilo_selez_scheda_layout.visibility = View.GONE
 
             view.days_textView.text = currentScheda!!.num_giorni.toString()
+
+            var tmpNumEsercizi = 0
+            for (i in 0 until currentScheda!!.esercizi.size){
+                tmpNumEsercizi += currentScheda!!.esercizi[i].size
+            }
+            view.numEsercizi_profile_textView.text = tmpNumEsercizi.toString()
+
             view.data_textView.text = currentScheda!!.data
             view.tipologia_textView.text = currentScheda!!.tipo
 
@@ -401,9 +435,28 @@ class ProfileFragment : Fragment() {
         }
     }
 
+    private fun impostaAllenatoreCorrente(view: View){
+        if(allenatore != null) {
+            view.rootView.profilo_allenatore_cardview.visibility = View.VISIBLE
+            view.rootView.profilo_selez_allen_layout.visibility = View.GONE
+
+            view.nomeAllenatore_textView.text = allenatore!!.nome
+            view.descrizioneAllenatore_textView.text = allenatore!!.descrizione
+
+        }
+        else{
+            view.rootView.profilo_allenatore_cardview.visibility = View.GONE
+            view.rootView.profilo_selez_allen_layout.visibility = View.VISIBLE
+        }
+    }
+
     private fun eliminaSchedaAttuale(view: View){
         schedeViewModel.removeCurrentScheda()
+    }
 
+    private fun eliminaAllenatore(){
+        utente!!.allenatore = null
+        utentiViewModel.updateUtente(utente!!)
     }
 
     private fun apriScheda(){

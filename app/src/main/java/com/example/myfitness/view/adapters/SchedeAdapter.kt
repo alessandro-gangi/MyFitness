@@ -18,7 +18,7 @@ class SchedeAdapter(val clickListener: (schedaId: Int, command: Char) -> Unit): 
 
     var listaSchede: ArrayList<Scheda> = ArrayList()
 
-    fun setListeSchede(nuovaListaSchede: List<Scheda>){
+    fun setListaSchede(nuovaListaSchede: List<Scheda>){
         listaSchede = ArrayList(nuovaListaSchede)
         notifyDataSetChanged()
     }
@@ -40,6 +40,12 @@ class SchedeAdapter(val clickListener: (schedaId: Int, command: Char) -> Unit): 
 
     override fun onBindViewHolder(viewHolder: SchedaViewHolder, position: Int){
         viewHolder.numGiorni.text = "${listaSchede[position].num_giorni}"
+
+        var tmpNumEsercizi = 0
+        for (i in 0 until listaSchede[position].esercizi.size){
+            tmpNumEsercizi += listaSchede[position].esercizi[i].size
+        }
+        viewHolder.numEsercizi.text = tmpNumEsercizi.toString()
         viewHolder.data.text = listaSchede[position].data
         viewHolder.tipologia.text = listaSchede[position].tipo
 
@@ -104,6 +110,7 @@ class SchedeAdapter(val clickListener: (schedaId: Int, command: Char) -> Unit): 
 class SchedaViewHolder(val view: View): RecyclerView.ViewHolder(view){
     var imgScheda: ImageView
     var numGiorni: TextView
+    var numEsercizi: TextView
     var tipologia: TextView
     var data: TextView
     var threeDotsMenu: TextView
@@ -111,6 +118,7 @@ class SchedaViewHolder(val view: View): RecyclerView.ViewHolder(view){
     init {
         imgScheda = itemView.scheda_imageView
         numGiorni = itemView.days_textView
+        numEsercizi = itemView.numEsercizi_textView
         tipologia = itemView.tipologia_textView
         data = itemView.data_textView
         threeDotsMenu = itemView.threeDots_button

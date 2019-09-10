@@ -20,9 +20,6 @@ import kotlinx.android.synthetic.main.fragment_register.view.*
 class RegisterFragment : Fragment() {
     val TAG = "RegisterFragment"
 
-    //for sharedPreferences
-    //private val USER_DATA_PREFERENCE: String = "USER_PREFERENCE"
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,21 +55,17 @@ class RegisterFragment : Fragment() {
 
         skip.setOnClickListener {
 
-            // TEST PER SALVARE I MIEI DATI
-            /*
-            sharedPref.edit().putString("USER_USERNAME", "ghingo").apply()
-            */
-
             //TODO: test inserimento utenti (DA RIMUOVERE)
             val utentiViewModel = activity?.run {
                 ViewModelProvider(this).get(UtentiViewModel::class.java)
             } ?: throw Exception("Invalid Activity")
 
-            //utentiViewModel.addUtente(MockUtenti.mockUtenteAle)
-            //utentiViewModel.addUtente(MockUtenti.mockUtenteFra)
+            utentiViewModel.deleteUtente("ghingo")
+            utentiViewModel.addUtente(MockUtenti.mockUtenteAle)
+            utentiViewModel.addUtente(MockUtenti.mockUtenteFra)
+            utentiViewModel.addUtente(MockUtenti.mockUtenteLuca)
 
-            val intent = Intent(this.context, MainActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this.context, MainActivity::class.java))
 
         }
     }

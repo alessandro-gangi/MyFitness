@@ -11,7 +11,7 @@ import com.example.myfitness.model.dataClasses.Esercizio
 import kotlinx.android.synthetic.main.cardview_esercizio.view.*
 import org.w3c.dom.Text
 
-class EserciziAdapter(val clickListener: (numEsercizio: Int) -> Unit): RecyclerView.Adapter<EsercizioViewHolder>(){
+class EserciziAdapter(val menuClickListener: (numEsercizio: Int, itemClicked: Int) -> Unit): RecyclerView.Adapter<EsercizioViewHolder>(){
     val TAG = "EserciziAdapter"
 
     var listaEsercizi: ArrayList<Esercizio> = ArrayList()
@@ -58,7 +58,24 @@ class EserciziAdapter(val clickListener: (numEsercizio: Int) -> Unit): RecyclerV
 
         viewHolder.commento.text = listaEsercizi[position].commento
 
-        viewHolder.itemView.setOnClickListener { clickListener(position) }
+        //viewHolder.itemView.setOnClickListener { clickListener(position) }
+
+        viewHolder.itemView.setOnClickListener {
+            showEsercizioPopupMenu(it, position)
+        }
+    }
+
+
+    private fun showEsercizioPopupMenu(view: View, numEsercizio: Int) {
+        val popup: PopupMenu?
+        popup = PopupMenu(view.context, view)
+        popup.inflate(R.menu.popup_esercizio_menu)
+
+        popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener {
+            menuClickListener(numEsercizio, it.itemId)
+            true
+        })
+        popup.show()
     }
 
 

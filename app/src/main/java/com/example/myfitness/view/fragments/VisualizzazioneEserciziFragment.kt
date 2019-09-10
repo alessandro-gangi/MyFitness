@@ -3,13 +3,11 @@ package com.example.myfitness.view.fragments
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -20,7 +18,7 @@ import com.example.myfitness.model.dataClasses.Esercizio
 import com.example.myfitness.model.dataClasses.Scheda
 import com.example.myfitness.viewmodel.SchedeViewModel
 import kotlinx.android.synthetic.main.dialog_aggiungi_commento_esercizio.view.*
-import kotlinx.android.synthetic.main.fragment_visualizzazione_esercizi.view.*
+import kotlinx.android.synthetic.main.tab_visualizzazione_esercizi.view.*
 import java.lang.Exception
 import android.content.Intent
 import android.net.Uri
@@ -47,7 +45,7 @@ class VisualizzazioneEserciziFragment: Fragment() {
         numGiorno = arguments?.getInt(SCHEDA_NUM_GIORNO)
 
         // Adapter
-        adapter = EserciziAdapter { numEsercizio -> onEsercizioSelected(numEsercizio) }
+        adapter = EserciziAdapter { numEsercizio, itemClicked -> onMenuEsercizioItemClicked(numEsercizio, itemClicked) }
 
 
         // viewModel
@@ -69,7 +67,7 @@ class VisualizzazioneEserciziFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val rootView = inflater.inflate(R.layout.fragment_visualizzazione_esercizi, container, false)
+        val rootView = inflater.inflate(R.layout.tab_visualizzazione_esercizi, container, false)
         rootView.visual_esercizi_recyclerView.layoutManager = LinearLayoutManager(activity)
 
         rootView.visual_esercizi_recyclerView.adapter = adapter
@@ -79,44 +77,30 @@ class VisualizzazioneEserciziFragment: Fragment() {
     }
 
 
-    fun onEsercizioSelected( numEsercizio: Int) {
+    fun onMenuEsercizioItemClicked( numEsercizio: Int, itemClicked: Int) {
         Toast.makeText(activity, "Esercizio selected: ${listaEsercizi[numEsercizio].nome}", Toast.LENGTH_SHORT).show()
-        showEsercizioPopupMenu(view!!, numEsercizio)  //TODO: la posizione dove compare il menu è sballata
-        //mostrare menu per aggiungere commento
 
-    }
-
-    private fun showEsercizioPopupMenu(view: View, numEsercizio: Int) {
-        val popup: PopupMenu?
-        popup = PopupMenu(view.context, view)
-        popup.inflate(R.menu.popup_esercizio_menu)
-
-        popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener {
-
-            when (it!!.itemId) {
-                R.id.popup_menu_item_commento -> {
-                    aggiungiCommento(numEsercizio)
-                }
-
-                R.id.popup_menu_item_guarda_video -> {
-                    Toast.makeText(view.context, it.title, Toast.LENGTH_SHORT).show()
-                    guardaVideo(numEsercizio)
-                }
-
-                R.id.popup_menu_item_modifica_esercizio -> {
-                    Toast.makeText(view.context, it.title, Toast.LENGTH_SHORT).show()
-                    modificaEsercizio(numEsercizio)
-                }
-
-                R.id.popup_menu_item_elimina_esercizio -> {
-                    Toast.makeText(view.context, it.title, Toast.LENGTH_SHORT).show()
-                    eliminaEsercizio(numEsercizio)
-                }
+        when (itemClicked) {
+            R.id.popup_menu_item_commento -> {
+                aggiungiCommento(numEsercizio)
             }
-            true
-        })
-        popup.show()
+
+            R.id.popup_menu_item_guarda_video -> {
+                guardaVideo(numEsercizio)
+            }
+
+            R.id.popup_menu_item_modifica_esercizio -> {
+                modificaEsercizio(numEsercizio)
+            }
+
+            R.id.popup_menu_item_elimina_esercizio -> {
+                eliminaEsercizio(numEsercizio)
+            }
+        }
+
     }
+
+
 
 
     private fun aggiungiCommento(numEsercizio: Int){
