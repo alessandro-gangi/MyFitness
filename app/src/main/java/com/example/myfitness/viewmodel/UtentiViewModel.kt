@@ -5,6 +5,8 @@ import androidx.lifecycle.*
 import com.example.myfitness.model.local.MyDatabase
 import com.example.myfitness.model.UtentiRepository
 import com.example.myfitness.model.dataClasses.Utente
+import com.example.myfitness.webService.ClientRetrofit
+import com.example.myfitness.webService.restService.UserRestService
 import kotlinx.coroutines.launch
 
 class UtentiViewModel (application: Application): AndroidViewModel(application){
@@ -20,7 +22,8 @@ class UtentiViewModel (application: Application): AndroidViewModel(application){
 
     init {
         val utentiDao = MyDatabase.getDatabase(application).UtentiDao()
-        repository = UtentiRepository(utentiDao) //TODO:FRA -> questo diventerà UtentiRepository(utentiDao, webService)
+        val webService = ClientRetrofit.setService(UserRestService::class.java)
+        repository = UtentiRepository(utentiDao, webService) //TODO:FRA -> questo diventerà UtentiRepository(utentiDao, webService)
 
     }
 

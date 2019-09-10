@@ -16,7 +16,7 @@ interface UtentiDao {
     fun getUtente(username: String): LiveData<Utente?>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addUtente(utente: Utente)
+    fun addUtente(utente: Utente)
 
     @Update
     suspend fun updateUtente(utente: Utente)
