@@ -50,25 +50,29 @@ import java.io.FileNotFoundException
 class ProfileFragment : Fragment() {
     val TAG = "ProfileFragment"
 
+    // SharedPref
     private lateinit var sharedPref: SharedPreferences
     private val USER_DATA_PREFERENCE: String = "USER_DATA_PREFERENCE"
+    val USERNAME_KEY = "USERNAME"
+    private lateinit var username: String
 
+    // Picking photos
     private val MY_PACKAGE_NAME: String = "com.example.myfitness"
     private val READ_EXTERNAL_STORAGE_CODE = 1
     private val IMAGE_PICK_CODE = 2
 
+    // Flag for modifying profile
     private var isUserModifyingData: Boolean = false
 
 
-    //viewModel
+    // ViewModel
     private lateinit var utentiViewModel: UtentiViewModel
     private lateinit var schedeViewModel: SchedeViewModel
 
+    // Variables
     private var utente: Utente? = null
     private var allenatore: Utente? = null
     private var currentScheda: Scheda? = null
-
-    private lateinit var username: String
 
 
 
@@ -76,7 +80,6 @@ class ProfileFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         sharedPref = activity!!.getSharedPreferences(USER_DATA_PREFERENCE, Context.MODE_PRIVATE)
-        val USERNAME_KEY = "USERNAME"
         username = sharedPref.getString(USERNAME_KEY, "") ?: ""
 
         utentiViewModel = activity?.run {
@@ -104,6 +107,7 @@ class ProfileFragment : Fragment() {
         schedeViewModel.currentSchedaUtente.observe(this, Observer {
             currentScheda = it
             impostaSchedaCorrente(view)
+            Log.d(TAG, "Scheda correntr: $currentScheda")
         })
 
         utentiViewModel.utente.observe(this, Observer {
@@ -134,7 +138,7 @@ class ProfileFragment : Fragment() {
 
         // per confermare le modifiche fatte
         view.confirm_changes_button.setOnClickListener {
-            confirm_changes(view)
+            confirmChanges(view)
         }
 
         //per cambiare la foto profilo
@@ -171,14 +175,13 @@ class ProfileFragment : Fragment() {
 
     private fun impostaDatiUtente(view: View){
         utente?.let {
-            val username: String = utente!!.username
+            val username: String = utente!!.usernameId
             val nome: String = utente!!.nome
             val cognome: String = utente!!.cognome
             val descrizione: String? = utente!!.descrizione
 
-            if(utente!!.imageURI != null && view.profile_imageView.width > 0 && view.profile_imageView.height > 0) {
-                val immagine: ByteArray? = utente!!.imageURI
-                setByteArrayImgToImageView(immagine, view.profile_imageView)
+            if(utente?.imageURI != null && view.profile_imageView.width > 0 && view.profile_imageView.height > 0) {
+                Glide.with(this).load(utente?.imageURI).into(view.profile_imageView)
             }
 
             view.nome_textView.text = nome
@@ -276,13 +279,15 @@ class ProfileFragment : Fragment() {
         isUserModifyingData = true
     }
 
-    private fun confirm_changes(view: View){
+    private fun confirmChanges(view: View){
 
         //salvo i dati del nuovo utente
         val nuovoNome = view.nome_editText.text.toString()
         val nuovoCognome = view.cognome_editText.text.toString()
         val nuovaDescrizione = view.descrizione_editText.text.toString()
-        val nuovaImmagine: ByteArray? = convertImageForDb(view.profile_imageView)
+        //val nuovaImmagine: ByteArray? = convertImageForDb(view.profile_imageView)
+        val nuovaImmagineUri: String? = view.profile_imageView.getTag(1).toString()
+
 
         //TODO: controllare i dati delle varie editText
         if(nuovoNome.isNotEmpty() && nuovoCognome.isNotEmpty()) {
@@ -290,7 +295,7 @@ class ProfileFragment : Fragment() {
             utente!!.nome = nuovoNome
             utente!!.cognome = nuovoCognome
             utente!!.descrizione = nuovaDescrizione
-            utente!!.imageURI = nuovaImmagine
+            utente!!.imageURI = nuovaImmagineUri
 
             utentiViewModel.updateUtente(utente!!)
 
@@ -333,12 +338,11 @@ class ProfileFragment : Fragment() {
                 yourDrawable = Drawable.createFromStream(inputStream, contentURI.toString())
                 profile_imageView!!.setImageDrawable(yourDrawable)
 
+                */
 
-                Glide.with(activity!!)
-                    .load(contentURI!!.path!!)
-                    .into(profile_imageView)
+                Glide.with(this).load(contentURI).into(profile_imageView)
+                profile_imageView.setTag(1, contentURI)
 
-                    */
 
             } catch (e: FileNotFoundException) {
                 Log.d(TAG, errorMsg)

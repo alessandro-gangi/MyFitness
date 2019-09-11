@@ -14,6 +14,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.example.myfitness.R
+import com.example.myfitness.model.dataClasses.MockUtenti
 import com.example.myfitness.view.activities.MainActivity
 import com.example.myfitness.viewmodel.UtentiViewModel
 import kotlinx.android.synthetic.main.fragment_login.view.*
@@ -69,6 +70,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun login(username: String, password: String){
+
         val response: Boolean = utentiViewModel.login(username, password)
         if(response){
             utentiViewModel.setUsername(username)

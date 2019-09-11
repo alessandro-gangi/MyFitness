@@ -4,10 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.myfitness.model.dataClasses.Utente
 import com.example.myfitness.model.local.UtentiDao
-import com.example.myfitness.webService.ClientRetrofit
-import com.example.myfitness.webService.UserRetrofit
 import com.example.myfitness.webService.restService.UserRestService
-import javax.security.auth.callback.Callback
 
 
 class UtentiRepository (private val utentiDao: UtentiDao){

@@ -10,7 +10,7 @@ import com.example.myfitness.model.dataClasses.Scheda
 import com.example.myfitness.model.dataClasses.Utente
 
 // Annotates class to be a Room Database with a table (entity) of the Word class
-@Database(entities = arrayOf(Utente::class, Scheda::class), version = 7)
+@Database(entities = arrayOf(Utente::class, Scheda::class), version = 9)
 @TypeConverters(DataConverter::class)
 abstract class MyDatabase : RoomDatabase() {
 

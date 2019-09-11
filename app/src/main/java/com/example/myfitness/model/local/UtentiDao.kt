@@ -9,16 +9,16 @@ interface UtentiDao {
 
     //NOME TABELLA: utenti_table
 
-    @Query("SELECT * from utenti_table ORDER BY username ASC")
+    @Query("SELECT * from utenti_table ORDER BY usernameId ASC")
     fun getObservableUtenti(): LiveData<List<Utente>>
 
-    @Query("SELECT * from utenti_table WHERE is_allenatore = 1 ORDER BY username ASC")
+    @Query("SELECT * from utenti_table WHERE flagAllenatore = 1 ORDER BY usernameId ASC")
     fun getObservableAllenatori(): LiveData<List<Utente>>
 
-    @Query("SELECT * from utenti_table WHERE username = :username LIMIT 1")
+    @Query("SELECT * from utenti_table WHERE usernameId = :username LIMIT 1")
     fun getUtente(username: String): Utente?
 
-    @Query("SELECT * from utenti_table WHERE username = :username LIMIT 1")
+    @Query("SELECT * from utenti_table WHERE usernameId = :username LIMIT 1")
     fun getObservableUtente(username: String): LiveData<Utente?>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -27,7 +27,7 @@ interface UtentiDao {
     @Update
     suspend fun updateUtente(utente: Utente)
 
-    @Query("DELETE FROM utenti_table WHERE username = :username")
+    @Query("DELETE FROM utenti_table WHERE usernameId = :username")
     suspend fun deleteUtente(username: String)
 
     @Query("DELETE FROM utenti_table")

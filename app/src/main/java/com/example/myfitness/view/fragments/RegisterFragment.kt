@@ -60,7 +60,7 @@ class RegisterFragment : Fragment() {
                 ViewModelProvider(this).get(UtentiViewModel::class.java)
             } ?: throw Exception("Invalid Activity")
 
-            utentiViewModel.deleteUtente("ghingo")
+            //utentiViewModel.deleteUtente("ghingo")
             utentiViewModel.addUtente(MockUtenti.mockUtenteAle)
             utentiViewModel.addUtente(MockUtenti.mockUtenteFra)
             utentiViewModel.addUtente(MockUtenti.mockUtenteLuca)

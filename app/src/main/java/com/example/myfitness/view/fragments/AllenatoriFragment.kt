@@ -112,7 +112,7 @@ class AllenatoriFragment : Fragment() {
 
     private fun impostaAllenatoreCorrente(numAllenatore: Int){
         if(utente != null) {
-            utente!!.allenatore = listaAllenatori[numAllenatore].username
+            utente!!.allenatore = listaAllenatori[numAllenatore].usernameId
             utentiViewModel.updateUtente(utente!!)
 
             activity?.supportFragmentManager?.popBackStack()
