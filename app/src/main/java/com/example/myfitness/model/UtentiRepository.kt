@@ -5,17 +5,13 @@ import androidx.lifecycle.LiveData
 import com.example.myfitness.model.dataClasses.Utente
 import com.example.myfitness.model.local.UtentiDao
 import com.example.myfitness.webService.restService.UserRestService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
-class UtentiRepository (private val utentiDao: UtentiDao){
-
-    //TODO:FRA Allora dovremmo passare al costruttore della Repository anche il webService (oltre che il DAO).
-    // Dovrebbe venire una roba del genere:
-    // class UtentiRepository (private val utentiDao: UtentiDao, private val webService: webService){
-    // --> in questo modo chiamiamo poi i metodi facendo webService.addUtente(utente)  (ad esempio..)
-
-
-    val classService = UserRestService::class.java
+class UtentiRepository (private val utentiDao: UtentiDao, private val webService: UserRestService){
+    val TAG = "UtentiRepository"
 
     val allAllenatori = utentiDao.getObservableAllenatori()
 
@@ -29,54 +25,95 @@ class UtentiRepository (private val utentiDao: UtentiDao){
     }
 
 
-    suspend fun addUtente(utente: Utente) {
-        utentiDao.addUtente(utente) //aggiungo l'utente alla base di dati interna
+    fun addUtente(utente: Utente) {
+        utentiDao.addUtente(utente)
 
-        //TODO:FRA Questa era roba tua che ho commentato perchè altrimenti non va sul mio
-        // in ogni caso qua si dovrebbe aggiungere l'utente (anche) alla base di dati esterna -> webService.addUtente(utente)
-        /*
-        ClientRetrofit.setService(classService).listUsers().also {
-            it.enqueue(object : Callback<List<UserRetrofit>> {
-                override fun onResponse(response: Response<List<UserRetrofit>>?) {
-                    if (response!!.code() == 200) {
-                        val response = response.body()!!
 
-                        val stringBuilder = "Result: $response"
-
-                        Log.d("UtenteRepository", stringBuilder)
-                    }
+        webService.addUser(utente).also {
+            it.enqueue(object : Callback<String> {
+                override fun onResponse(call: Call<String>, response: Response<String>) {
+                    Log.d(TAG, response.body()!!.toString())
                 }
 
-                override fun onFailure(t: Throwable?) {
-                    Log.d("UtenteRepository", t!!.message)
+                override fun onFailure(call: Call<String>, t: Throwable) {
+                    Log.d(TAG, t.message!!)
+                }
+            })
+        }
+    }
+
+    suspend fun deleteUtente(username: String) {
+        utentiDao.deleteUtente(username)
+
+        webService.deleteUser(username)
+            .enqueue(object : Callback<String> {
+                override fun onResponse(call: Call<String>, response: Response<String>) {
+                    Log.d("deleteUserServer: ", response.body().toString())
                 }
 
+                override fun onFailure(call: Call<String>, t: Throwable) {
+                    Log.d("deleteUserServer: ", t.message!!)
+                }
+            })
+    }
+
+    suspend fun updateUtente(utente: Utente) {
+        utentiDao.updateUtente(utente)
+
+        webService.updateUserById(utente.usernameId, utente).also {
+            it.enqueue(object : Callback<Utente> {
+                override fun onResponse(call: Call<Utente>, response: Response<Utente>) {
+                    val userUpdate = response.body()!!
+                    Log.d("updateUserByIdServer", userUpdate.toString())
+                }
+
+                override fun onFailure(call: Call<Utente>, t: Throwable) {
+                    Log.d("updateUserByIdServer", t.message!!)
+                }
             })
 
         }
-        */
-    }
-
-    suspend fun deleteUtente(username: String){
-        utentiDao.deleteUtente(username)
-
-        //TODO:FRA Eliminare l'utente dalla base di dati esterna -> webService.deleteUtente(username)
-    }
-
-    suspend fun updateUtente(utente: Utente){
-        utentiDao.updateUtente(utente)
-
-        //TODO:FRA Aggiornare l'utente nella base di dati esterna -> webService.updateUtente(username)
     }
 
     fun getUtente(username: String) = utentiDao.getUtente(username)
 
     fun getUtenti() = utentiDao.getObservableUtenti()
 
-    suspend fun fetchUtente(username: String){
-        //TODO:FRA In questo metodo devi pescare l'utente dalla base di dati esterna e metterlo in quella interna
-        //una roba del genere..
-        //utentiDao.addUtente(webService.getUtente(username))
+
+    fun getUtentiServer() {
+        //per il momento mostra gli utenti solamente tramite Log
+        webService.listUsers().enqueue(object : Callback<List<Utente>> {
+
+            override fun onResponse(call: Call<List<Utente>>, response: Response<List<Utente>>) {
+                val userList = response.body()!!.toMutableList()
+
+                for (i in userList.indices)
+                    Log.d("listUsersServer", userList[i].toString())
+            }
+
+            override fun onFailure(call: Call<List<Utente>>, t: Throwable) {
+                Log.d("listUsersServer", t.message!!)
+            }
+        })
+    }
+
+    suspend fun fetchUtente(usernameId: String) {
+        webService.getUserById(usernameId).also {
+            it.enqueue(object : Callback<Utente> {
+                override fun onResponse(call: Call<Utente>, response: Response<Utente>) {
+                    val user = response.body()!!
+
+                    utentiDao.addUtente(user)
+
+                    Log.d("fetchUtente", user.toString())
+                }
+
+                override fun onFailure(call: Call<Utente>, t: Throwable) {
+                    Log.d("fetchUtente", t.message!!)
+                }
+            })
+
+        }
     }
 
     fun login(usr: String, pwd: String): Boolean{
