@@ -1,4 +1,4 @@
-package com.example.myfitness.webService
+package com.example.myfitness.model.webService
 
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose

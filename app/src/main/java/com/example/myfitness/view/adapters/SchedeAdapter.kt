@@ -47,6 +47,7 @@ class SchedeAdapter(val clickListener: (schedaId: Int, command: Char) -> Unit): 
         }
         viewHolder.numEsercizi.text = tmpNumEsercizi.toString()
         viewHolder.data.text = listaSchede[position].data
+        viewHolder.autore.text = "(${listaSchede[position].autore})"
         viewHolder.tipologia.text = listaSchede[position].tipo
 
         impostaImmagine(viewHolder.imgScheda, listaSchede[position].tipo)
@@ -113,6 +114,7 @@ class SchedaViewHolder(val view: View): RecyclerView.ViewHolder(view){
     var numEsercizi: TextView
     var tipologia: TextView
     var data: TextView
+    var autore: TextView
     var threeDotsMenu: TextView
 
     init {
@@ -121,6 +123,7 @@ class SchedaViewHolder(val view: View): RecyclerView.ViewHolder(view){
         numEsercizi = itemView.numEsercizi_textView
         tipologia = itemView.tipologia_textView
         data = itemView.data_textView
+        autore = itemView.autore_textView
         threeDotsMenu = itemView.threeDots_button
 
     }

@@ -21,7 +21,11 @@ object MockUtenti {
         "Luca", "Cillario", 24, "Ciao sono Luca Cillario", null, 64.0,
         173, 'M', null, null)
 
-    var allMockUtenti : ArrayList<Utente> = arrayListOf(mockUtenteAle, mockUtenteFra)
+    var mockUtenteAndre: Utente = Utente("andrepiro", "piro@gmail.com", "piropass", true,
+        "Andrea", "Pirone", 24, "Ciao sono Pironizer", null, 71.0,
+        176, 'M', null, null)
+
+
 
 
 }

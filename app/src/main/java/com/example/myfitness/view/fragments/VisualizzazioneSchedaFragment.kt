@@ -58,9 +58,14 @@ class VisualizzazioneSchedaFragment : Fragment() {
     private fun setupUI(view: View){
         activity!!.title = "Visualizzazione scheda"
         view.data_textView.text = scheda.data
+        view.autore_textView.text = scheda.autore
         view.tipologia_textView.text = scheda.tipo
-        view.commento_textView.text = scheda.commento
-        view.commento_textView.movementMethod = (ScrollingMovementMethod())
+        view.giorni_textView.text = scheda.esercizi.size.toString()
+        if(scheda.commento.isNotEmpty()) {
+            view.commento_textView.text = scheda.commento
+            view.commento_textView.movementMethod = (ScrollingMovementMethod())
+        } else view.commento_textView.visibility = View.GONE
+
         imposta_immagine(view.scheda_imageView, scheda.tipo)
     }
 

@@ -34,8 +34,9 @@ import com.example.myfitness.model.dataClasses.Utente
 import com.example.myfitness.viewmodel.SchedeViewModel
 import com.example.myfitness.viewmodel.UtentiViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.cardview_scheda.view.*
+import kotlinx.android.synthetic.main.cardview_allenatore.*
 import kotlinx.android.synthetic.main.fragment_profile.*
+import kotlinx.android.synthetic.main.fragment_profile.allenatore_imageView
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 import kotlinx.android.synthetic.main.fragment_profile.view.data_textView
 import kotlinx.android.synthetic.main.fragment_profile.view.days_textView
@@ -112,6 +113,7 @@ class ProfileFragment : Fragment() {
 
         utentiViewModel.utente.observe(this, Observer {
             utente = it
+            //utentiViewModel.setUsername(utente?.usernameId ?: "")
             impostaDatiUtente(view)
             Log.d(TAG, "Utente: $utente")
         })
@@ -180,8 +182,8 @@ class ProfileFragment : Fragment() {
             val cognome: String = utente!!.cognome
             val descrizione: String? = utente!!.descrizione
 
-            if(utente?.imageURI != null && view.profile_imageView.width > 0 && view.profile_imageView.height > 0) {
-                Glide.with(this).load(utente?.imageURI).into(view.profile_imageView)
+            if(utente?.imageURI != null){
+                //TODO: prendi immagine dal file system e caricale nella imageview
             }
 
             view.nome_textView.text = nome
@@ -285,8 +287,6 @@ class ProfileFragment : Fragment() {
         val nuovoNome = view.nome_editText.text.toString()
         val nuovoCognome = view.cognome_editText.text.toString()
         val nuovaDescrizione = view.descrizione_editText.text.toString()
-        //val nuovaImmagine: ByteArray? = convertImageForDb(view.profile_imageView)
-        val nuovaImmagineUri: String? = view.profile_imageView.getTag(1).toString()
 
 
         //TODO: controllare i dati delle varie editText
@@ -295,7 +295,12 @@ class ProfileFragment : Fragment() {
             utente!!.nome = nuovoNome
             utente!!.cognome = nuovoCognome
             utente!!.descrizione = nuovaDescrizione
-            utente!!.imageURI = nuovaImmagineUri
+
+            //TODO:
+            // 1) prendere l'immagine da view.profile_imageView
+            // 2) caricala sul file system online --> che ti restituisce l'url
+            // 3) salva l'url nel campo imageUri dell'utente
+            // ----> update utente
 
             utentiViewModel.updateUtente(utente!!)
 
@@ -332,18 +337,7 @@ class ProfileFragment : Fragment() {
             val contentURI = data.data
             val yourDrawable: Drawable
             try {
-                //TODO: Fai funzionare con Glide
-                /*
-                val inputStream = activity!!.contentResolver.openInputStream(contentURI!!)
-                yourDrawable = Drawable.createFromStream(inputStream, contentURI.toString())
-                profile_imageView!!.setImageDrawable(yourDrawable)
-
-                */
-
                 Glide.with(this).load(contentURI).into(profile_imageView)
-                profile_imageView.setTag(1, contentURI)
-
-
             } catch (e: FileNotFoundException) {
                 Log.d(TAG, errorMsg)
             }
@@ -425,6 +419,7 @@ class ProfileFragment : Fragment() {
             view.numEsercizi_profile_textView.text = tmpNumEsercizi.toString()
 
             view.data_textView.text = currentScheda!!.data
+            view.autore_textView.text = "(${currentScheda!!.autore})"
             view.tipologia_textView.text = currentScheda!!.tipo
 
             when (currentScheda!!.tipo.toLowerCase()){
@@ -445,7 +440,13 @@ class ProfileFragment : Fragment() {
             view.rootView.profilo_selez_allen_layout.visibility = View.GONE
 
             view.nomeAllenatore_textView.text = allenatore!!.nome
+            view.cognomeAllenatore_textView.text = allenatore!!.cognome
             view.descrizioneAllenatore_textView.text = allenatore!!.descrizione
+
+            if(utente?.imageURI != null) {
+                //TODO: recupera immagine dal file system esterno e
+                // caricala con Glyde nella imageView
+            }
 
         }
         else{

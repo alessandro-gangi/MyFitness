@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity() {
     val TAG = "MainActivity"
 
     private val SCHEDA_ID_SEND_CODE: String = "SCHEDA_ID"
+    private lateinit var navView: BottomNavigationView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,7 +31,7 @@ class MainActivity : AppCompatActivity() {
             ProfileFragment()
         ).commit()
 
-        val navView: BottomNavigationView = findViewById(R.id.nav_view_main)
+        navView = findViewById(R.id.nav_view_main)
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
     }
@@ -59,17 +60,19 @@ class MainActivity : AppCompatActivity() {
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
-                supportFragmentManager.beginTransaction().replace(
-                    R.id.container_main,
-                    ProfileFragment()
-                ).commit()
+                if(navView.selectedItemId != item.itemId)
+                    supportFragmentManager.beginTransaction().replace(
+                        R.id.container_main,
+                        ProfileFragment()
+                    ).commit()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_schede -> {
-                supportFragmentManager.beginTransaction().replace(
-                    R.id.container_main,
-                    SchedeFragment()
-                ).commit()
+                if(navView.selectedItemId != item.itemId)
+                    supportFragmentManager.beginTransaction().replace(
+                        R.id.container_main,
+                        SchedeFragment()
+                    ).commit()
                 return@OnNavigationItemSelectedListener true
             }
         }

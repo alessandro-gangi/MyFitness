@@ -1,7 +1,6 @@
-package com.example.myfitness.webService.restService
+package com.example.myfitness.model.webService.restService
 
 import com.example.myfitness.model.dataClasses.Utente
-import com.example.myfitness.webService.User
 import retrofit2.Call
 import retrofit2.http.*
 

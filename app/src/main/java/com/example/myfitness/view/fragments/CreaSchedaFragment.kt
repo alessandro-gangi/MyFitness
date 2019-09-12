@@ -80,12 +80,7 @@ class CreaSchedaFragment : Fragment() {
     }
 
     private fun setupUI(view: View){
-        activity!!.title = "Creazione scheda"
-        view.data_textView.text = data
-        view.tipologia_textView.text = tipologia
-        view.commento_textView.text = commento
-        view.commento_textView.movementMethod = (ScrollingMovementMethod())
-        imposta_immagine(view.utente_imageView, tipologia)
+        activity!!.title = "Crea una scheda per $username"
 
         view.finisci_scheda_button.setOnClickListener {
             finisciScheda()
@@ -129,15 +124,22 @@ class CreaSchedaFragment : Fragment() {
 
             activity?.supportFragmentManager?.popBackStack()
         }
-        else Toast.makeText(activity, "Controlla i dati di tutti gli esercizi", Toast.LENGTH_LONG).show()
 
     }
 
     private fun controllaScheda(scheda: Scheda): Boolean{
         var response = true
         for (i in 0 until scheda.num_giorni){
+            if(scheda.esercizi[i].isEmpty()){
+                val msg = "Deve essere presente almeno un esercizio per ogni giorno"
+                Toast.makeText(activity, msg, Toast.LENGTH_LONG).show()
+                response = false
+                break
+            }
             for (j in 0 until scheda.esercizi[i].size)
                 if (scheda.esercizi[i][j].nome.isEmpty()){
+                    val msg = "Specificare il nome di tutti gli esercizi inseriti"
+                    Toast.makeText(activity, msg, Toast.LENGTH_LONG).show()
                     response = false
                     break
                 }

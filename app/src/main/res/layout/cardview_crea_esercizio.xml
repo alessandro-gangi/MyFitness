@@ -40,7 +40,8 @@
                     android:id="@+id/serieEsercizio_editText"
                     app:layout_constraintTop_toBottomOf="@id/nomeEsercizio_editText"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_margin="@dimen/spacing_large"
+                    android:layout_marginStart="@dimen/spacing_large"
+                    android:layout_marginEnd="@dimen/spacing_large"
                     android:nextFocusDown="@id/ripetizioniEsercizio_editText"
                     android:maxLength="2"/>
 
@@ -52,7 +53,8 @@
                     android:id="@+id/ripetizioniEsercizio_editText"
                     app:layout_constraintTop_toBottomOf="@id/nomeEsercizio_editText"
                     app:layout_constraintStart_toEndOf="@+id/serieEsercizio_editText"
-                    android:layout_margin="@dimen/spacing_large"
+                    android:layout_marginStart="@dimen/spacing_large"
+                    android:layout_marginEnd="@dimen/spacing_large"
                     android:nextFocusDown="@id/recuperoEsercizio_editText"
                     android:maxLength="2"/>
 
@@ -64,7 +66,8 @@
                     android:id="@+id/recuperoEsercizio_editText"
                     app:layout_constraintTop_toBottomOf="@id/nomeEsercizio_editText"
                     app:layout_constraintStart_toEndOf="@+id/ripetizioniEsercizio_editText"
-                    android:layout_margin="@dimen/spacing_large"
+                    android:layout_marginStart="@dimen/spacing_large"
+                    android:layout_marginEnd="@dimen/spacing_large"
                     android:maxLength="5"/>
 
             <EditText
@@ -75,7 +78,10 @@
                     app:layout_constraintTop_toBottomOf="@id/serieEsercizio_editText"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_margin="@dimen/spacing_large"
+                    android:layout_marginStart="@dimen/spacing_large"
+                    android:layout_marginEnd="@dimen/spacing_large"
+                    android:inputType="text"
+                    android:maxLines="3"
                     android:maxLength="150"/>
 
             <Button

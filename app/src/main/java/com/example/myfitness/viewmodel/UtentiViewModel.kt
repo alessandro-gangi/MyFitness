@@ -5,8 +5,8 @@ import androidx.lifecycle.*
 import com.example.myfitness.model.local.MyDatabase
 import com.example.myfitness.model.UtentiRepository
 import com.example.myfitness.model.dataClasses.Utente
-import com.example.myfitness.webService.ClientRetrofit
-import com.example.myfitness.webService.restService.UserRestService
+import com.example.myfitness.model.webService.ClientRetrofit
+import com.example.myfitness.model.webService.restService.UserRestService
 import kotlinx.coroutines.launch
 
 class UtentiViewModel (application: Application): AndroidViewModel(application){
@@ -15,7 +15,7 @@ class UtentiViewModel (application: Application): AndroidViewModel(application){
     private val username: MutableLiveData<String> = MutableLiveData()
 
     val utente = Transformations.switchMap(username){ repository.observeUtente(it)}
-    val allenatore = Transformations.switchMap(username){ repository.observeAllenatore(it)}
+    val allenatore = Transformations.switchMap(utente){ repository.observeAllenatore(it!!)}
 
 
     var allAllenatori: LiveData<List<Utente>>
@@ -38,9 +38,10 @@ class UtentiViewModel (application: Application): AndroidViewModel(application){
     fun setUsername(username: String){
         this.username.value = username
 
-        viewModelScope.launch {
-            repository.fetchUtente(username)
-        }
+        if(utente == null)
+            viewModelScope.launch {
+                repository.fetchUtente(username)
+            }
     }
 
     fun updateUtente(utente: Utente) = viewModelScope.launch {repository.updateUtente(utente)}

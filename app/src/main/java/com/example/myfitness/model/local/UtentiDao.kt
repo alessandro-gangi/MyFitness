@@ -25,11 +25,11 @@ interface UtentiDao {
     fun addUtente(utente: Utente)
 
     @Update
-    suspend fun updateUtente(utente: Utente)
+    fun updateUtente(utente: Utente)
 
     @Query("DELETE FROM utenti_table WHERE usernameId = :username")
-    suspend fun deleteUtente(username: String)
+    fun deleteUtente(username: String)
 
     @Query("DELETE FROM utenti_table")
-    suspend fun deleteAllUtenti()
+    fun deleteAllUtenti()
 }

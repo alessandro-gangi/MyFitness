@@ -38,14 +38,14 @@ class SchedeRepository (private val schedeDao: SchedeDao){
         return schedeDao.getScheda(id)
     }
 
-    suspend fun setAsCurrentScheda(idScheda: Int, username: String){
+    fun setAsCurrentScheda(idScheda: Int, username: String){
         schedeDao.removeCurrentScheda(username)
         schedeDao.setAsCurrentScheda(idScheda, username)
 
         //TODO:FRA idem su base di dati esterna
     }
 
-    suspend fun removeCurrentScheda(username: String){
+    fun removeCurrentScheda(username: String){
         schedeDao.removeCurrentScheda(username)
 
         //TODO:FRA idem su base di dati esterna
@@ -55,7 +55,7 @@ class SchedeRepository (private val schedeDao: SchedeDao){
         return getScheda(id).esercizi[numGiorno]
     }
 
-    suspend fun deleteAllUserSchede(username: String){
+    fun deleteAllUserSchede(username: String){
         schedeDao.deleteAllUserSchede(username)
 
         //TODO:FRA idem su base di dati esterna
@@ -67,7 +67,7 @@ class SchedeRepository (private val schedeDao: SchedeDao){
 
     fun observeCurrentScheda(username: String): LiveData<Scheda?> = schedeDao.getCurrentScheda(username)
 
-    suspend fun fetchUtente(username: String){
+    fun fetchSchede(username: String){
         //TODO:FRA In questo metodo devi pescare le schede dell'utente dalla base di dati esterna e metterlo in quella interna
         //una roba del genere..
         //schedeDao.addSchede(webService.getSchede(username)) dove webService.getSchede(username) ritorna una List<Scheda>

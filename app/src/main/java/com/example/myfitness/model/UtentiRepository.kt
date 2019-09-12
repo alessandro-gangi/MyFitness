@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.myfitness.model.dataClasses.Utente
 import com.example.myfitness.model.local.UtentiDao
-import com.example.myfitness.webService.restService.UserRestService
+import com.example.myfitness.model.webService.restService.UserRestService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,15 +19,14 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
     //Serve a fornire i dati sempre aggiornati dell'utente dell'app
     fun observeUtente(username: String): LiveData<Utente?> = utentiDao.getObservableUtente(username)
 
-    fun observeAllenatore(username: String): LiveData<Utente?> {
-        val utente = utentiDao.getUtente(username)
-        return utentiDao.getObservableUtente(utente?.allenatore ?: "")
-    }
+    fun observeAllenatore(utente: Utente): LiveData<Utente?> = utentiDao.getObservableUtente(utente.allenatore ?: "")
+
 
 
     fun addUtente(utente: Utente) {
         utentiDao.addUtente(utente)
 
+        return //TODO: blocco la parte server finchè non viene sistemato il campo uri a String
 
         webService.addUser(utente).also {
             it.enqueue(object : Callback<String> {
@@ -42,33 +41,37 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
         }
     }
 
-    suspend fun deleteUtente(username: String) {
+    fun deleteUtente(username: String) {
         utentiDao.deleteUtente(username)
+
+        return //TODO: blocco la parte server finchè non viene sistemato il campo uri a String
 
         webService.deleteUser(username)
             .enqueue(object : Callback<String> {
                 override fun onResponse(call: Call<String>, response: Response<String>) {
-                    Log.d("deleteUserServer: ", response.body().toString())
+                    Log.d(TAG, response.body().toString())
                 }
 
                 override fun onFailure(call: Call<String>, t: Throwable) {
-                    Log.d("deleteUserServer: ", t.message!!)
+                    Log.d(TAG, t.message!!)
                 }
             })
     }
 
-    suspend fun updateUtente(utente: Utente) {
+    fun updateUtente(utente: Utente) {
         utentiDao.updateUtente(utente)
+
+        return //TODO: blocco la parte server finchè non viene sistemato il campo uri a String
 
         webService.updateUserById(utente.usernameId, utente).also {
             it.enqueue(object : Callback<Utente> {
                 override fun onResponse(call: Call<Utente>, response: Response<Utente>) {
                     val userUpdate = response.body()!!
-                    Log.d("updateUserByIdServer", userUpdate.toString())
+                    Log.d(TAG, userUpdate.toString())
                 }
 
                 override fun onFailure(call: Call<Utente>, t: Throwable) {
-                    Log.d("updateUserByIdServer", t.message!!)
+                    Log.d(TAG, t.message!!)
                 }
             })
 
@@ -88,28 +91,28 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
                 val userList = response.body()!!.toMutableList()
 
                 for (i in userList.indices)
-                    Log.d("listUsersServer", userList[i].toString())
+                    Log.d(TAG, userList[i].toString())
             }
 
             override fun onFailure(call: Call<List<Utente>>, t: Throwable) {
-                Log.d("listUsersServer", t.message!!)
+                Log.d(TAG, t.message!!)
             }
         })
     }
 
-    suspend fun fetchUtente(usernameId: String) {
+    fun fetchUtente(usernameId: String) {
         webService.getUserById(usernameId).also {
             it.enqueue(object : Callback<Utente> {
                 override fun onResponse(call: Call<Utente>, response: Response<Utente>) {
-                    val user = response.body()!!
+                    val user = response.body()
 
-                    utentiDao.addUtente(user)
+                    utentiDao.addUtente(user!!)
 
-                    Log.d("fetchUtente", user.toString())
+                    Log.d(TAG, user.toString())
                 }
 
                 override fun onFailure(call: Call<Utente>, t: Throwable) {
-                    Log.d("fetchUtente", t.message!!)
+                    Log.d(TAG, t.message!!)
                 }
             })
 

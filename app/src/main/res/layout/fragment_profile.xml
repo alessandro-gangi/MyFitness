@@ -134,16 +134,13 @@
                 android:id="@+id/profilo_allenatore_cardview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xxlarge"
-                android:layout_marginBottom="@dimen/spacing_medium"
-                android:layout_marginStart="@dimen/spacing_large"
-                android:layout_marginEnd="@dimen/spacing_large"
+                android:layout_margin="@dimen/spacing_large"
                 android:visibility="visible">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="@dimen/spacing_small">
+                    android:paddingBottom="@dimen/spacing_xlarge">
 
                 <TextView
                         android:id="@+id/title_allenatore_textView"
@@ -152,33 +149,32 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         android:text="Il tuo allenatore"
+                        android:layout_margin="@dimen/spacing_xlarge"
                         style="@style/TextAppearance.AppCompat.Title"
                         android:textSize="30sp"
-                        android:layout_margin="@dimen/spacing_large"
                         android:gravity="center"/>
 
                 <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/allenatore_imageView"
                         android:layout_width="70dp"
-                        android:layout_height="0dp"
+                        android:layout_height="70dp"
                         android:layout_margin="@dimen/spacing_large"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
                         android:src="@color/grey_20"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintDimensionRatio="1:1"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/title_allenatore_textView" app:layout_constraintTop_toTopOf="parent"
-                        tools:ignore="ContentDescription"/>
+                        app:layout_constraintStart_toEndOf="@+id/title_allenatore_textView"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.99"
+                        tools:ignore="ContentDescription" />
 
                 <TextView
                         android:text="@string/nome"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/nomeAllenatore_textView"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:layout_margin="@dimen/spacing_large"
+                        android:layout_marginTop="@dimen/spacing_medium"
+                        android:layout_marginEnd="@dimen/spacing_medium"
+                        app:layout_constraintStart_toStartOf="@id/title_allenatore_textView"
                         app:layout_constraintTop_toBottomOf="@id/title_allenatore_textView"/>
 
                 <TextView
@@ -186,20 +182,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/cognomeAllenatore_textView"
+                        android:layout_marginTop="@dimen/spacing_medium"
+                        android:layout_marginStart="@dimen/spacing_medium"
                         app:layout_constraintStart_toEndOf="@+id/nomeAllenatore_textView"
-                        android:layout_margin="@dimen/spacing_large"
                         app:layout_constraintTop_toBottomOf="@id/title_allenatore_textView"/>
 
 
                 <TextView
                         android:text="Breve descrizione"
-                        android:layout_width="wrap_content"
+                        android:layout_width="220dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/descrizioneAllenatore_textView"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/nomeAllenatore_textView"
                         app:layout_constraintTop_toBottomOf="@id/nomeAllenatore_textView"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_margin="@dimen/spacing_large"
+                        android:layout_marginTop="@dimen/spacing_medium"
                         android:textStyle="italic"/>
 
                 <Button
@@ -255,7 +251,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="@dimen/spacing_large">
+                    android:paddingBottom="@dimen/spacing_xlarge">
 
                 <TextView
                         android:text="La tua scheda"
@@ -266,7 +262,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         style="@style/TextAppearance.AppCompat.Title"
-                        android:layout_margin="@dimen/spacing_large"/>
+                        android:layout_margin="@dimen/spacing_xlarge"/>
 
 
                 <ImageView
@@ -280,9 +276,9 @@
 
                 <TextView
                         android:id="@+id/tipologia_textView"
-                        android:layout_width="80dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/spacing_large"
+                        android:layout_margin="@dimen/spacing_xlarge"
                         android:textAlignment="center"
                         android:text="la tipologia"
                         android:textColor="@color/black"
@@ -291,12 +287,13 @@
 
                 <TextView
                         android:id="@+id/days_intest_textView"
-                        android:layout_width="60dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/spacing_large"
+                        android:layout_margin="@dimen/spacing_xlarge"
                         android:text="Giorni"
                         android:textAlignment="center"
-                        android:textColor="@color/black" app:layout_constraintStart_toStartOf="@+id/title_scheda_textView"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/data_textView"/>
 
                 <TextView
@@ -312,9 +309,9 @@
 
                 <TextView
                         android:id="@+id/esercizi_intest_textView"
-                        android:layout_width="60dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/spacing_large"
+                        android:layout_margin="@dimen/spacing_xlarge"
                         android:text="Esercizi"
                         android:textAlignment="center"
                         android:textColor="@color/black"
@@ -336,11 +333,21 @@
                         android:id="@+id/data_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/spacing_medium"
                         android:text="la data"
                         android:textColor="@color/grey_20"
                         android:textSize="@dimen/text_medium"
                         app:layout_constraintStart_toStartOf="@id/title_scheda_textView"
+                        app:layout_constraintTop_toBottomOf="@id/title_scheda_textView"/>
+
+                <TextView
+                        android:id="@+id/autore_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="autore"
+                        android:layout_marginStart="@dimen/spacing_medium"
+                        android:textColor="@color/grey_20"
+                        android:textSize="@dimen/text_medium"
+                        app:layout_constraintStart_toEndOf="@id/data_textView"
                         app:layout_constraintTop_toBottomOf="@id/title_scheda_textView"/>
 
                 <Button
@@ -361,6 +368,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:textSize="@dimen/text_xmedium"
+                        android:textStyle="bold"
                         android:textColor="@color/colorAccent"
                         android:layout_margin="@dimen/spacing_large"
                 />

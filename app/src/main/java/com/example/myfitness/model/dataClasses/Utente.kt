@@ -18,6 +18,10 @@ data class Utente(@PrimaryKey @ColumnInfo(name = "usernameId")val usernameId: St
              @ColumnInfo(name = "altezza") var altezza: Int?,
              @ColumnInfo(name = "genere") var genere: Char,
              @ColumnInfo(name = "allenatore") var allenatore: String?,
+
+             //@ColumnInfo(name = "schede_create") var schedeCreate: List<Scheda>,
+             //@ColumnInfo(name = "schede_possedute") var schedePossedute: List<Scheda>,
+
              @ColumnInfo(name = "id_scheda") var idScheda: Int?) {
 
     override fun toString(): String {

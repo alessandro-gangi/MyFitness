@@ -16,28 +16,28 @@ interface SchedeDao {
     fun getScheda(schedaId: Int): Scheda
 
     @Query("UPDATE schede_table SET is_current = 1 WHERE possessore = :username AND id = :idScheda")
-    suspend fun setAsCurrentScheda(idScheda: Int, username: String)
+    fun setAsCurrentScheda(idScheda: Int, username: String)
 
     @Query("UPDATE schede_table SET is_current = 0 WHERE possessore = :username")
-    suspend fun removeCurrentScheda(username: String)
+    fun removeCurrentScheda(username: String)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addScheda(scheda: Scheda)
+    fun addScheda(scheda: Scheda)
 
     @Update
-    suspend fun updateScheda(scheda: Scheda)
+    fun updateScheda(scheda: Scheda)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addSchede(scheda: List<Scheda>)
+    fun addSchede(scheda: List<Scheda>)
 
     @Query("DELETE FROM schede_table WHERE id = :schedaId")
-    suspend fun deleteScheda(schedaId: Int)
+    fun deleteScheda(schedaId: Int)
 
     @Query("DELETE FROM schede_table WHERE possessore = :username")
-    suspend fun deleteAllUserSchede(username: String)
+    fun deleteAllUserSchede(username: String)
 
     @Query("DELETE FROM schede_table WHERE 1 = 1")
-    suspend fun deleteAllSchede()
+    fun deleteAllSchede()
 
 
     @Query("SELECT * FROM schede_table WHERE possessore = :username")

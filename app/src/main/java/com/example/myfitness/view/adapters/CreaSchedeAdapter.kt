@@ -1,9 +1,12 @@
 package com.example.myfitness.view.adapters
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myfitness.R
 import com.example.myfitness.model.dataClasses.Esercizio
@@ -11,6 +14,8 @@ import com.example.myfitness.model.dataClasses.MockSchede
 import com.example.myfitness.model.dataClasses.Scheda
 import kotlinx.android.synthetic.main.cardview_crea_esercizio.view.*
 import kotlin.collections.ArrayList
+
+
 
 class CreaSchedeAdapter(): RecyclerView.Adapter<CreazioneEsercizioViewHolder>(){
     val TAG = "CreazioneSchedeAdapter"
@@ -43,28 +48,15 @@ class CreaSchedeAdapter(): RecyclerView.Adapter<CreazioneEsercizioViewHolder>(){
         holder.recupero.setText(listaEsercizi[position].recupero?.toString() ?: "")
         holder.commento.setText(listaEsercizi[position].commento)
 
-        holder.nome.setOnFocusChangeListener { _, onFocus -> saveTmpData(holder, position, onFocus) }
-        holder.serie.setOnFocusChangeListener { _, onFocus -> saveTmpData(holder, position, onFocus) }
-        holder.ripetizioni.setOnFocusChangeListener { _, onFocus -> saveTmpData(holder, position, onFocus) }
-        holder.recupero.setOnFocusChangeListener { _, onFocus -> saveTmpData(holder, position, onFocus) }
-        holder.commento.setOnFocusChangeListener { _, onFocus -> saveTmpData(holder, position, onFocus) }
+        holder.nome.addTextChangedListener(GenericTextWatcher(holder.nome, position, listaEsercizi))
+        holder.serie.addTextChangedListener(GenericTextWatcher(holder.serie, position, listaEsercizi))
+        holder.ripetizioni.addTextChangedListener(GenericTextWatcher(holder.ripetizioni, position, listaEsercizi))
+        holder.recupero.addTextChangedListener(GenericTextWatcher(holder.recupero, position, listaEsercizi))
+        holder.commento.addTextChangedListener(GenericTextWatcher(holder.commento, position, listaEsercizi))
 
         holder.eliminaBtn.setOnClickListener {
             listaEsercizi.removeAt(position)
             notifyDataSetChanged()
-        }
-    }
-
-    private fun saveTmpData(holder: CreazioneEsercizioViewHolder, position: Int, onFocus: Boolean){
-        if(onFocus) {
-            listaEsercizi[position].nome = holder.nome.text.toString()
-            if (holder.serie.text.isNotEmpty())
-                listaEsercizi[position].serie = holder.serie.text.toString().toInt()
-            if (holder.ripetizioni.text.isNotEmpty())
-                listaEsercizi[position].ripetizioni = holder.ripetizioni.text.toString().toInt()
-            listaEsercizi[position].commento = holder.commento.text.toString()
-            if (holder.recupero.text.isNotEmpty())
-                listaEsercizi[position].recupero = holder.recupero.text.toString().toDouble()
         }
     }
 
@@ -92,4 +84,24 @@ class CreazioneEsercizioViewHolder(itemView: View): RecyclerView.ViewHolder(item
 
 
 
+}
+
+
+private class GenericTextWatcher (private val view: View, private val position: Int
+                                             , private val listaEsercizi: ArrayList<Esercizio>) : TextWatcher {
+
+    override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+    override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+
+    override fun afterTextChanged(editable: Editable) {
+        val text = editable.toString()
+        if(text.isNotEmpty())
+            when (view.id) {
+                R.id.nomeEsercizio_editText -> listaEsercizi[position].nome = text
+                R.id.serieEsercizio_editText -> listaEsercizi[position].serie = text.toInt()
+                R.id.ripetizioniEsercizio_editText -> listaEsercizi[position].ripetizioni = text.toInt()
+                R.id.recuperoEsercizio_editText -> listaEsercizi[position].recupero = text.toDouble()
+                R.id.commentoEsercizio_editText -> listaEsercizi[position].commento = text
+            }
+    }
 }

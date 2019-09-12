@@ -13,12 +13,13 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
 
-        <activity android:name=".view.activities.MainActivity"
-            android:windowSoftInputMode="adjustResize">
+        <activity android:name=".view.activities.MainActivity">
+            <!--android:windowSoftInputMode="adjustResize">-->
         </activity>
         <activity
                 android:name=".view.activities.StartActivity"
-                android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
+                android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+                android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

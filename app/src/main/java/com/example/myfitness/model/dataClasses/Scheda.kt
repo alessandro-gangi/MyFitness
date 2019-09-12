@@ -1,8 +1,7 @@
 package com.example.myfitness.model.dataClasses
 
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 //TODO:FRA ho cambiato la chiave in autogenerate=true almeno l'id si autoincrementa da solo.
 // per farlo funzionare basta settarlo a 0 quando crei la scheda e, in automatico, quando
@@ -16,9 +15,10 @@ data class Scheda(@PrimaryKey(autoGenerate = true) var id: Int,
                   var commento: String = "",
                   var autore: String = "",
                   var possessore: String = "",
+                  //@Embedded var autoreNew: Utente? = null,
                   var esercizi: ArrayList<ArrayList<Esercizio>> = ArrayList(),
-                  var is_current: Boolean = false
-)   {
+                  var is_current: Boolean = false)
+{
 
 
     override fun toString(): String {
@@ -26,4 +26,5 @@ data class Scheda(@PrimaryKey(autoGenerate = true) var id: Int,
                 "commento='$commento', autore='$autore', possessore='$possessore', " +
                 "esercizi=$esercizi, is_current=$is_current)"
     }
+
 }
