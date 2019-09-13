@@ -11,7 +11,7 @@
     <string name="mail">mail</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Home</string>
-    <string name="title_palestra">Palestra</string>
+    <string name="title_richieste">Richieste</string>
     <string name="title_profile">Profilo</string>
     <string name="title_schede">Schede</string>
     <string name="title_notifications">Notifications</string>
@@ -44,6 +44,7 @@
     <string name="massa">Massa</string>
     <string name="definizione">Definizione</string>
     <string name="aggiungi_modifica_commento">Aggiungi/modifica commento</string>
+    <string name="invia_scheda">Invia scheda</string>
 
 
 

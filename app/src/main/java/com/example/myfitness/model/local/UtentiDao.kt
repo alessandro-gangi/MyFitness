@@ -12,8 +12,8 @@ interface UtentiDao {
     @Query("SELECT * from utenti_table ORDER BY usernameId ASC")
     fun getObservableUtenti(): LiveData<List<Utente>>
 
-    @Query("SELECT * from utenti_table WHERE flagAllenatore = 1 ORDER BY usernameId ASC")
-    fun getObservableAllenatori(): LiveData<List<Utente>>
+    @Query("SELECT * from utenti_table WHERE flagAllenatore = 1 AND usernameId != :username ORDER BY usernameId ASC")
+    fun getObservableAllenatori(username: String): LiveData<List<Utente>>
 
     @Query("SELECT * from utenti_table WHERE usernameId = :username LIMIT 1")
     fun getUtente(username: String): Utente?

@@ -13,8 +13,8 @@ import retrofit2.Response
 class UtentiRepository (private val utentiDao: UtentiDao, private val webService: UserRestService){
     val TAG = "UtentiRepository"
 
-    val allAllenatori = utentiDao.getObservableAllenatori()
 
+    fun observeAllenatori(username: String) = utentiDao.getObservableAllenatori((username))
 
     //Serve a fornire i dati sempre aggiornati dell'utente dell'app
     fun observeUtente(username: String): LiveData<Utente?> = utentiDao.getObservableUtente(username)

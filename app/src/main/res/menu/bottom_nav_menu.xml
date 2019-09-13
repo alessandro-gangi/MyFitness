@@ -11,5 +11,10 @@
             android:icon="@drawable/icon_fitness"
             android:title="@string/title_schede"/>
 
+    <item
+            android:id="@+id/navigation_richieste"
+            android:icon="@drawable/ic_richieste"
+            android:title="@string/title_richieste"/>
+
 
 </menu>

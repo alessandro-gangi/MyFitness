@@ -74,8 +74,8 @@ object MockSchede {
         "23/08/2019",
         "Forza",
         "comm1",
-        "aut1",
-        "ghingo",
+        MockUtenti.mockUtenteLuca,
+        MockUtenti.mockUtenteAle,
         arrayListOf(
             schedaGiornaliera1a,
             schedaGiornaliera1b,
@@ -88,8 +88,8 @@ object MockSchede {
         "24/08/2019",
         "Massa",
         "comm2",
-        "aut2",
-        "ghingo",
+        MockUtenti.mockUtenteAndre,
+        MockUtenti.mockUtenteAle,
         arrayListOf(
             schedaGiornaliera2a,
             schedaGiornaliera2b,
@@ -103,8 +103,8 @@ object MockSchede {
         "25/08/2019",
         "Definizione",
         "comm3",
-        "aut3",
-        "fralicca",
+        MockUtenti.mockUtenteLuca,
+        MockUtenti.mockUtenteFra,
         arrayListOf(
             schedaGiornaliera3a,
             schedaGiornaliera3b

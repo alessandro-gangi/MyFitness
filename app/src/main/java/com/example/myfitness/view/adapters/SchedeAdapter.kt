@@ -47,12 +47,12 @@ class SchedeAdapter(val clickListener: (schedaId: Int, command: Char) -> Unit): 
         }
         viewHolder.numEsercizi.text = tmpNumEsercizi.toString()
         viewHolder.data.text = listaSchede[position].data
-        viewHolder.autore.text = "(${listaSchede[position].autore})"
+        viewHolder.autore.text = "(${listaSchede[position].autore.nome} ${listaSchede[position].autore.cognome})"
         viewHolder.tipologia.text = listaSchede[position].tipo
 
         impostaImmagine(viewHolder.imgScheda, listaSchede[position].tipo)
 
-        viewHolder.view.setOnClickListener { clickListener(listaSchede[position].id, 'V') }
+        viewHolder.view.setOnClickListener { clickListener(listaSchede[position].schedaId, 'V') }
         viewHolder.threeDotsMenu.setOnClickListener {
             showPopupMenu(viewHolder.threeDotsMenu, position)
         }
@@ -69,7 +69,7 @@ class SchedeAdapter(val clickListener: (schedaId: Int, command: Char) -> Unit): 
                 R.id.popup_menu_item_visualizza_scheda -> {
                     Toast.makeText(view.context, it.title, Toast.LENGTH_SHORT).show()
 
-                    clickListener(listaSchede[position].id, 'V')
+                    clickListener(listaSchede[position].schedaId, 'V')
                     // VISUALIZZA SCHEDA
                     // TODO: fare il passaggio di activity tramite interfaccia
                 }
@@ -78,7 +78,7 @@ class SchedeAdapter(val clickListener: (schedaId: Int, command: Char) -> Unit): 
                     Toast.makeText(view.context, it.title, Toast.LENGTH_SHORT).show()
                     // TODO: creare metodo in "dataManager" per settare la scheda come "corrente"
                     // IMPOSTA COME SCHEDA CORRENTE
-                    clickListener(listaSchede[position].id, 'S')
+                    clickListener(listaSchede[position].schedaId, 'S')
                 }
 
                 R.id.popup_menu_item_elimina_scheda -> {
@@ -87,7 +87,7 @@ class SchedeAdapter(val clickListener: (schedaId: Int, command: Char) -> Unit): 
                     //TODO: creare metodo in "dataManager" per eliminare la scheda
 
                     // ELIMINA SCHEDA
-                    clickListener(listaSchede[position].id, 'D')
+                    clickListener(listaSchede[position].schedaId, 'D')
 
 
                 }

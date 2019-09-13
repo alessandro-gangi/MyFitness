@@ -12,8 +12,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.myfitness.view.activities.MainActivity
 import com.example.myfitness.R
+import com.example.myfitness.model.dataClasses.MockRichieste
 import com.example.myfitness.model.dataClasses.MockSchede
 import com.example.myfitness.model.dataClasses.MockUtenti
+import com.example.myfitness.viewmodel.RichiesteViewModel
 import com.example.myfitness.viewmodel.SchedeViewModel
 import com.example.myfitness.viewmodel.UtentiViewModel
 import kotlinx.android.synthetic.main.fragment_register.view.*
@@ -57,7 +59,7 @@ class RegisterFragment : Fragment() {
 
         skip.setOnClickListener {
 
-            //TODO: test inserimento utenti e schede(DA RIMUOVERE)
+            //TODO: test inserimento utenti/schede/richieste e schede(DA RIMUOVERE)
             val utentiViewModel = activity?.run {
                 ViewModelProvider(this).get(UtentiViewModel::class.java)
             } ?: throw Exception("Invalid Activity")
@@ -66,12 +68,20 @@ class RegisterFragment : Fragment() {
                 ViewModelProvider(this).get(SchedeViewModel::class.java)
             } ?: throw Exception("Invalid Activity")
 
+            val richiesteViewModel = activity?.run {
+                ViewModelProvider(this).get(RichiesteViewModel::class.java)
+            } ?: throw Exception("Invalid Activity")
+
 
             // TODO: Test inserimento/cancellazione (da cancellare)
             utentiViewModel.addUtente(MockUtenti.mockUtenteAle)
             utentiViewModel.addUtente(MockUtenti.mockUtenteFra)
             utentiViewModel.addUtente(MockUtenti.mockUtenteLuca)
             utentiViewModel.addUtente(MockUtenti.mockUtenteAndre)
+
+            richiesteViewModel.addRichiesta(MockRichieste.mockRichiestaAleToAndrea)
+            richiesteViewModel.addRichiesta(MockRichieste.mockRichiestaAleToLuca)
+
             /*schedeViewModel.addScheda(MockSchede.mockScheda1)
             schedeViewModel.addScheda(MockSchede.mockScheda2)
             schedeViewModel.addScheda(MockSchede.mockScheda3)*/

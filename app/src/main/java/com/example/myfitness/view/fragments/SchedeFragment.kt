@@ -1,6 +1,8 @@
 package com.example.myfitness.view.fragments
 
 import android.app.AlertDialog
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -14,7 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myfitness.R
 import com.example.myfitness.view.adapters.SchedeAdapter
 import com.example.myfitness.model.dataClasses.MockSchede
+import com.example.myfitness.model.dataClasses.Richiesta
 import com.example.myfitness.model.dataClasses.Scheda
+import com.example.myfitness.model.dataClasses.Utente
+import com.example.myfitness.viewmodel.RichiesteViewModel
 import com.example.myfitness.viewmodel.SchedeViewModel
 import com.example.myfitness.viewmodel.UtentiViewModel
 import kotlinx.android.synthetic.main.dialog_crea_scheda.view.*
@@ -28,19 +33,30 @@ import java.util.*
 class SchedeFragment : Fragment(){
     val TAG = "SchedeFragment"
 
-    //viewModel
+    // SharedPref
+    private lateinit var sharedPref: SharedPreferences
+    private val USER_DATA_PREFERENCE: String = "USER_DATA_PREFERENCE"
+    val USERNAME_KEY = "USERNAME"
+    private lateinit var username: String
+
+    // ViewModel
     private lateinit var schedeViewModel: SchedeViewModel
     private lateinit var utentiViewModel: UtentiViewModel
+    private lateinit var richiesteViewModel: RichiesteViewModel
 
+    // Adapter
     private lateinit var adapter: SchedeAdapter
 
-    private val username = "ghingo" //TODO: da tenere solo per i test
+    // Utente
+    private lateinit var utente: Utente
+    private var allenatore: Utente? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //schedeViewModel = ViewModelProvider(this).get(SchedeViewModel::class.java)
+        sharedPref = activity!!.getSharedPreferences(USER_DATA_PREFERENCE, Context.MODE_PRIVATE)
+        username = sharedPref.getString(USERNAME_KEY, "") ?: ""
 
         adapter = SchedeAdapter { schedaId, command -> onSchedaClicked(schedaId, command) }
 
@@ -50,6 +66,10 @@ class SchedeFragment : Fragment(){
 
         utentiViewModel = activity?.run {
             ViewModelProvider(this).get(UtentiViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+
+        richiesteViewModel = activity?.run {
+            ViewModelProvider(this).get(RichiesteViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
     }
@@ -62,7 +82,9 @@ class SchedeFragment : Fragment(){
 
         rootView.schede_recycler_view.adapter = adapter
 
-        //TODO: nuove funzionalita' (prima era nell'oncreate)
+        utente = utentiViewModel.utente.value!!
+        allenatore = utentiViewModel.allenatore.value
+
         schedeViewModel.schedeUtente.observe(this, Observer {
             if(it != null)
                 adapter.setListaSchede(it)
@@ -137,19 +159,10 @@ class SchedeFragment : Fragment(){
         builder.setPositiveButton(R.string.richiedi) { _, _ ->
 
             //TODO: al posto della roba sotto bisogna inviare la richiesta all'allenatore
-            /*
-            fragmentManager!!.beginTransaction()
-                .replace(R.id.container_main,
-                    CreaSchedaFragment.newInstance(
-                        username = username,
-                        data = currentDate,
-                        tipologia = tipologia,
-                        numGiorni = numGiorni,
-                        commento = commento.text.toString())
-                )
-                .addToBackStack(null)
-                .commit()
-                */
+            val richiesta = Richiesta(0,utente, allenatore!!,
+                currentDate, numGiorni, tipologia, commento.text.toString())
+
+            richiesteViewModel.addRichiesta(richiesta)
         }
 
         builder.setNegativeButton(R.string.annulla) { dialog, _ ->
@@ -204,7 +217,8 @@ class SchedeFragment : Fragment(){
                         data = currentDate,
                         tipologia = tipologia,
                         numGiorni = numGiorni,
-                        commento = commento.text.toString())
+                        commento = commento.text.toString(),
+                        richiesta = null)
                 )
                 .addToBackStack(null)
                 .commit()
@@ -215,6 +229,7 @@ class SchedeFragment : Fragment(){
         }
         builder.show()
     }
+
 
     fun onSchedaClicked(schedaId: Int, command: Char) {
         when (command){

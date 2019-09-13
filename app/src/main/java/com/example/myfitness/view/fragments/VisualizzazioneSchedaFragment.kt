@@ -58,7 +58,7 @@ class VisualizzazioneSchedaFragment : Fragment() {
     private fun setupUI(view: View){
         activity!!.title = "Visualizzazione scheda"
         view.data_textView.text = scheda.data
-        view.autore_textView.text = scheda.autore
+        view.autore_textView.text = "${scheda.autore.nome} ${scheda.autore.cognome}"
         view.tipologia_textView.text = scheda.tipo
         view.giorni_textView.text = scheda.esercizi.size.toString()
         if(scheda.commento.isNotEmpty()) {
@@ -75,7 +75,7 @@ class VisualizzazioneSchedaFragment : Fragment() {
         for (index in 0 until scheda.num_giorni)
             myAdapter.addFragment(
                 VisualizzazioneEserciziFragment.newInstance(
-                    scheda.id,
+                    scheda.schedaId,
                     index
                 ), title = (index+1).toString())
 

@@ -9,6 +9,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myfitness.*
 import com.example.myfitness.view.fragments.ProfileFragment
+import com.example.myfitness.view.fragments.RichiesteFragment
 import com.example.myfitness.view.fragments.SchedeFragment
 
 class MainActivity : AppCompatActivity() {
@@ -72,6 +73,14 @@ class MainActivity : AppCompatActivity() {
                     supportFragmentManager.beginTransaction().replace(
                         R.id.container_main,
                         SchedeFragment()
+                    ).commit()
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_richieste -> {
+                if(navView.selectedItemId != item.itemId)
+                    supportFragmentManager.beginTransaction().replace(
+                        R.id.container_main,
+                        RichiesteFragment()
                     ).commit()
                 return@OnNavigationItemSelectedListener true
             }

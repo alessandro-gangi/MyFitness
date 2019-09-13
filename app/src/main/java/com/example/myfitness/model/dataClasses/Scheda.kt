@@ -8,23 +8,22 @@ import androidx.room.*
 // la inserisci nel db prende il valore corretto
 
 @Entity(tableName = "schede_table")
-data class Scheda(@PrimaryKey(autoGenerate = true) var id: Int,
+data class Scheda(@PrimaryKey(autoGenerate = true) var schedaId: Int,
                   var num_giorni: Int = -1,
                   var data: String = "",
                   var tipo: String = "",
                   var commento: String = "",
-                  var autore: String = "",
-                  var possessore: String = "",
-                  //@Embedded var autoreNew: Utente? = null,
+                  @Embedded(prefix = "autore_")var autore: Utente,
+                  @Embedded(prefix = "possessore_")var possessore: Utente,
                   var esercizi: ArrayList<ArrayList<Esercizio>> = ArrayList(),
                   var is_current: Boolean = false)
 {
 
 
     override fun toString(): String {
-        return "Scheda(id=$id, num_giorni=$num_giorni, data='$data', tipo='$tipo', " +
-                "commento='$commento', autore='$autore', possessore='$possessore', " +
+        return "Scheda(schedaId=$schedaId, num_giorni=$num_giorni, " +
+                "data='$data', tipo='$tipo', commento='$commento', " +
+                "autore=$autore, possessore=$possessore, " +
                 "esercizi=$esercizi, is_current=$is_current)"
     }
-
 }

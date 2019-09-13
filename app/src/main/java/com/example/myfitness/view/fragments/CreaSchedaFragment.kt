@@ -22,10 +22,14 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_crea_scheda.view.*
 import java.lang.Exception
 import com.example.myfitness.model.dataClasses.Esercizio
+import com.example.myfitness.model.dataClasses.Richiesta
+import com.example.myfitness.viewmodel.RichiesteViewModel
 import kotlinx.android.synthetic.main.fragment_crea_scheda.*
 
-
-class CreaSchedaFragment : Fragment() {
+//TODO: questo fragment dovrà ricevere come parametro un oggetto utente
+// che rappresenta il tipo a cui stiamo creando la scheda: se quel parametro è
+// NULL allora vuol dire che stiamo creando la scheda per noi stessi
+class CreaSchedaFragment(val richiesta: Richiesta?): Fragment() {
     val TAG = "CreaSchedaFragment"
 
 
@@ -36,6 +40,9 @@ class CreaSchedaFragment : Fragment() {
     private lateinit var utente: Utente
 
     private lateinit var adapter: CreaSchedaPagerAdapter
+
+    // ViewModel
+    private lateinit var richiesteViewModel: RichiesteViewModel
 
     //Dati scheda da creare
     private lateinit var username: String
@@ -73,6 +80,8 @@ class CreaSchedaFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_crea_scheda, container, false)
         setupUI(rootView)
         //imposto i tab con il pager
+
+        utente = utentiViewModel.utente.value!!
         setupViewPager(rootView.crea_scheda_view_pager, rootView.crea_scheda_tab_layout)
 
 
@@ -80,7 +89,8 @@ class CreaSchedaFragment : Fragment() {
     }
 
     private fun setupUI(view: View){
-        activity!!.title = "Crea una scheda per $username"
+        if(richiesta !=null) activity!!.title = "Crea una scheda per ${richiesta.utente.nome}"
+        else activity!!.title = "Crea una scheda"
 
         view.finisci_scheda_button.setOnClickListener {
             finisciScheda()
@@ -111,16 +121,31 @@ class CreaSchedaFragment : Fragment() {
     }
 
     private fun finisciScheda(){
+        //compongo la scheda finale
         val eserciziScheda: ArrayList<ArrayList<Esercizio>> = ArrayList()
         for (index in 0 until adapter.count){
             val frag: CreaSchedaTabFragment = adapter.getItem(index) as CreaSchedaTabFragment
             val schedaGiornaliera: ArrayList<Esercizio> = frag.getSchedaCreata()
             eserciziScheda.add(schedaGiornaliera)
         }
-        val schedaCompleta = Scheda(0, numGiorni, data, tipologia, commento, username, username, eserciziScheda, false)
+        //controllo se la scheda era fatta per se oppure per un altro utente
+        val schedaCompleta: Scheda
+        if(richiesta != null){
+            val utenteRichiedente = richiesta.utente
+            schedaCompleta = Scheda(0, numGiorni, data, tipologia, commento, utente, utenteRichiedente, eserciziScheda, false)
+        }
+        else schedaCompleta = Scheda(0, numGiorni, data, tipologia, commento, utente, utente, eserciziScheda, false)
 
+        //concludo
         if(controllaScheda(schedaCompleta)) {
             schedeViewModel.addScheda(schedaCompleta)
+
+            if(richiesta != null){
+                richiesteViewModel = activity?.run {
+                    ViewModelProvider(this).get(RichiesteViewModel::class.java)
+                } ?: throw Exception("Invalid Activity")
+                richiesteViewModel.deleteRichiesta(richiesta)
+            }
 
             activity?.supportFragmentManager?.popBackStack()
         }
@@ -156,7 +181,8 @@ class CreaSchedaFragment : Fragment() {
         val COMMENTO = "COMMENTO"
 
         @JvmStatic
-        fun newInstance(username: String, data: String, tipologia: String, numGiorni: Int, commento: String) = CreaSchedaFragment().apply {
+        fun newInstance(username: String, data: String, tipologia: String,
+                        numGiorni: Int, commento: String, richiesta: Richiesta?) = CreaSchedaFragment(richiesta).apply {
             arguments = Bundle().apply {
                 putString(USERNAME, username)
                 putString(DATA, data)
@@ -166,7 +192,6 @@ class CreaSchedaFragment : Fragment() {
             }
         }
     }
-
 
 
 }

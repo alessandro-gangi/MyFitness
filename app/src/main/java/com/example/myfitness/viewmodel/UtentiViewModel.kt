@@ -16,9 +16,7 @@ class UtentiViewModel (application: Application): AndroidViewModel(application){
 
     val utente = Transformations.switchMap(username){ repository.observeUtente(it)}
     val allenatore = Transformations.switchMap(utente){ repository.observeAllenatore(it!!)}
-
-
-    var allAllenatori: LiveData<List<Utente>>
+    var allAllenatori = Transformations.switchMap(username){ repository.observeAllenatori(it!!)}
 
 
 
@@ -30,8 +28,6 @@ class UtentiViewModel (application: Application): AndroidViewModel(application){
         val utentiDao = MyDatabase.getDatabase(application).UtentiDao()
         val webService = ClientRetrofit.setService(UserRestService::class.java)
         repository = UtentiRepository(utentiDao, webService)
-
-        allAllenatori = repository.allAllenatori
     }
 
 
@@ -50,7 +46,7 @@ class UtentiViewModel (application: Application): AndroidViewModel(application){
 
     fun deleteUtente(username: String) = viewModelScope.launch {repository.deleteUtente(username)}
 
-    fun getUtenti() = repository.getUtenti()
+    fun getUtente(username: String) = repository.getUtente(username)
 
     fun login(usr: String, pwd: String): Boolean = repository.login(usr, pwd)
 

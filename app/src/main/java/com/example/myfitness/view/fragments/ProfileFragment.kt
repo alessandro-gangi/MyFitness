@@ -419,7 +419,7 @@ class ProfileFragment : Fragment() {
             view.numEsercizi_profile_textView.text = tmpNumEsercizi.toString()
 
             view.data_textView.text = currentScheda!!.data
-            view.autore_textView.text = "(${currentScheda!!.autore})"
+            view.autore_textView.text = "(${currentScheda!!.autore.nome} ${currentScheda!!.autore.cognome})"
             view.tipologia_textView.text = currentScheda!!.tipo
 
             when (currentScheda!!.tipo.toLowerCase()){
@@ -468,7 +468,7 @@ class ProfileFragment : Fragment() {
         currentScheda?.let {
             fragmentManager!!.beginTransaction()
                 .replace(R.id.container_main,
-                    VisualizzazioneSchedaFragment.newInstance(it.id)
+                    VisualizzazioneSchedaFragment.newInstance(it.schedaId)
                 )
                 .addToBackStack(null)
                 .commit()

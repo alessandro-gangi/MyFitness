@@ -119,8 +119,7 @@ class RegisterStep2Fragment : Fragment() {
                 val nuovoUtente = Utente(
                     username!!, mail!!, password!!, false, nome.text.toString(),
                     cognome.text.toString(), eta.text.toString().toInt(), null, null, null, null,
-                    genere, null, null
-                )
+                    genere, null)
 
                 utentiViewModel.addUtente(nuovoUtente)
                 passaAlLogin()
