@@ -90,6 +90,8 @@ class SchedeFragment : Fragment(){
                 adapter.setListaSchede(it)
         })
 
+        activity!!.title = "Le tue schede"
+
 
         rootView.button_add_scheda.setOnClickListener {
             showAddPopupMenu(this.button_add_scheda)
@@ -127,6 +129,14 @@ class SchedeFragment : Fragment(){
     }
 
     private fun prepareRequestToCoach(){
+
+        // Controllo che non abbia già mandato un'altra richiesta
+        if(richiesteViewModel.getRichiestaFromAtoB(utente, allenatore!!) != null){
+            val errorMsg = "Hai già mandato una richiesta a questo allenatore. Attendi che risponda."
+            Toast.makeText(activity, errorMsg, Toast.LENGTH_LONG).show()
+            return
+        }
+
         val builder = AlertDialog.Builder(activity)
         builder.setTitle("Richiedi una scheda")
 
@@ -163,6 +173,8 @@ class SchedeFragment : Fragment(){
                 currentDate, numGiorni, tipologia, commento.text.toString())
 
             richiesteViewModel.addRichiesta(richiesta)
+            val richiestaMsg = "Richiesta inviata"
+            Toast.makeText(activity, richiestaMsg, Toast.LENGTH_LONG).show()
         }
 
         builder.setNegativeButton(R.string.annulla) { dialog, _ ->
@@ -237,7 +249,7 @@ class SchedeFragment : Fragment(){
 
                 fragmentManager!!.beginTransaction()
                 .replace(R.id.container_main,
-                    VisualizzazioneSchedaFragment.newInstance(schedaId)
+                    VisualizzazioneSchedaFragment.newInstance(username, schedaId)
                 )
                 .addToBackStack(null)
                 .commit()
@@ -253,6 +265,9 @@ class SchedeFragment : Fragment(){
             'S' -> {
 
                 schedeViewModel.setAsCurrentScheda(schedaId)
+                fragmentManager!!.beginTransaction()
+                    .replace(R.id.container_main,
+                        ProfileFragment()).commit()
             }
         }
     }

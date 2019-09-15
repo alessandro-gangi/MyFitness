@@ -67,6 +67,8 @@ class SchedeRepository (private val schedeDao: SchedeDao){
 
     fun observeCurrentScheda(username: String): LiveData<Scheda?> = schedeDao.getCurrentScheda(username)
 
+    fun observeRichiesteCompletate(username: String): LiveData<List<Scheda>?> = schedeDao.getRichiesteCompletate(username)
+
     fun fetchSchede(username: String){
         //TODO:FRA In questo metodo devi pescare le schede dell'utente dalla base di dati esterna e metterlo in quella interna
         //una roba del genere..

@@ -6,27 +6,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myfitness.R
-import com.example.myfitness.model.dataClasses.Esercizio
-import com.example.myfitness.viewmodel.SchedeViewModel
-import java.lang.Exception
-import android.util.Log
-import com.example.myfitness.view.adapters.CreaSchedeAdapter
+import com.example.myfitness.model.dataClasses.Scheda
 import com.example.myfitness.view.adapters.RichiesteCompletateAdapter
-import kotlinx.android.synthetic.main.tab_crea_scheda.view.*
 import kotlinx.android.synthetic.main.tab_richieste_completate.view.*
 
 
-class RichiesteCompletateTabFragment: Fragment() {
+class RichiesteCompletateTabFragment(clickListener: (scheda: Scheda, command: Char) -> Unit): Fragment() {
     val TAG = "RichiesteCompletateTabFragment"
 
 
 
     private lateinit var username: String
 
-    private lateinit var adapter: RichiesteCompletateAdapter
+    private val adapter: RichiesteCompletateAdapter = RichiesteCompletateAdapter(clickListener)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,16 +28,6 @@ class RichiesteCompletateTabFragment: Fragment() {
 
         // Fetch dati
         username = arguments?.getString(USERNAME) ?: ""
-
-        // Adapter
-        adapter = RichiesteCompletateAdapter()
-
-        username = "ghingo" //TODO: TEST
-
-        // viewModel
-        //TODO: inserire richiesteViewModel
-
-
 
     }
 
@@ -61,6 +45,9 @@ class RichiesteCompletateTabFragment: Fragment() {
 
     }
 
+    fun setRichiesteCompletate(listaRichieste: ArrayList<Scheda>){
+        adapter.setListaRichieste(listaRichieste)
+    }
 
 
 
@@ -68,7 +55,7 @@ class RichiesteCompletateTabFragment: Fragment() {
         val USERNAME = "USERNAME"
 
         @JvmStatic
-        fun newInstance(username: String) = RichiesteCompletateTabFragment().apply {
+        fun newInstance(username: String, clickListener: (scheda: Scheda, command: Char) -> Unit) = RichiesteCompletateTabFragment(clickListener).apply {
             arguments = Bundle().apply {
                 putString(USERNAME, username)
             }

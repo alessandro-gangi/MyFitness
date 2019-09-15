@@ -8,15 +8,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.example.myfitness.R
 import com.example.myfitness.model.dataClasses.Richiesta
+import com.example.myfitness.model.dataClasses.Scheda
 import com.google.android.material.tabs.TabLayout
 import java.lang.Exception
 import com.example.myfitness.view.adapters.RichiestePagerAdapter
 import com.example.myfitness.viewmodel.RichiesteViewModel
+import com.example.myfitness.viewmodel.SchedeViewModel
 import kotlinx.android.synthetic.main.fragment_richieste.view.*
 
 
@@ -31,6 +34,7 @@ class RichiesteFragment : Fragment() {
 
     // ViewModel
     private lateinit var richiesteViewModel: RichiesteViewModel
+    private lateinit var schedeViewModel: SchedeViewModel
 
     // PagerAdapter
     private lateinit var adapter: RichiestePagerAdapter
@@ -52,7 +56,11 @@ class RichiesteFragment : Fragment() {
             ViewModelProvider(this).get(RichiesteViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
         richiesteViewModel.setUsername(username)
-            }
+
+        schedeViewModel = activity?.run {
+            ViewModelProvider(this).get(SchedeViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+    }
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -66,7 +74,12 @@ class RichiesteFragment : Fragment() {
 
         richiesteViewModel.richieste.observe(this, Observer {
             if(it != null)
-                setListaRichieste(ArrayList(it))
+                setListaRichiesteInAttesa(ArrayList(it))
+        })
+
+        schedeViewModel.richiesteCompletate.observe(this, Observer {
+            if(it!= null)
+                setListaRichiesteCompletate(ArrayList(it))
         })
 
         return rootView
@@ -78,20 +91,26 @@ class RichiesteFragment : Fragment() {
         adapter = RichiestePagerAdapter(childFragmentManager)
 
         adapter.addFragment(RichiesteInAttesaTabFragment
-            .newInstance(username) { richiesta, command -> onRichiestaClicked(richiesta, command) }, title = "In attesa")
-        adapter.addFragment(RichiesteCompletateTabFragment.newInstance(username), title = "Completate")
+            .newInstance(username) { richiesta, command -> onRichiestaInAttesaClicked(richiesta, command) }, title = "In attesa")
+
+        adapter.addFragment(RichiesteCompletateTabFragment.newInstance(username) { scheda, command -> onRichiestaCompletataClicked(scheda, command) }, title = "Completate")
 
         viewPager.adapter= adapter
         tabLayout.setupWithViewPager(viewPager)
 
     }
 
-    private fun setListaRichieste(listaRichieste: ArrayList<Richiesta>){
+    private fun setListaRichiesteInAttesa(listaRichieste: ArrayList<Richiesta>){
         val rFragment: RichiesteInAttesaTabFragment = adapter.getItem(RICHIESTE_IN_ATTESA_INDEX) as RichiesteInAttesaTabFragment
         rFragment.setRichiesteInAttesa(listaRichieste)
     }
 
-    fun onRichiestaClicked(richiesta: Richiesta, command: Char) {
+    private fun setListaRichiesteCompletate(listaRichieste: ArrayList<Scheda>){
+        val rFragment: RichiesteCompletateTabFragment = adapter.getItem(RICHIESTE_COMPLETATE_INDEX) as RichiesteCompletateTabFragment
+        rFragment.setRichiesteCompletate(listaRichieste)
+    }
+
+    fun onRichiestaInAttesaClicked(richiesta: Richiesta, command: Char) {
         when (command){
             'I' -> { //Invia scheda al richiedente
                 inviaScheda(richiesta)
@@ -99,6 +118,21 @@ class RichiesteFragment : Fragment() {
 
             'D' -> { //Delete scheda
                 richiesteViewModel.deleteRichiesta(richiesta)
+            }
+
+        }
+    }
+
+    fun onRichiestaCompletataClicked(scheda: Scheda, command: Char) {
+        when (command){
+            'V' -> { //Visualizza
+                fragmentManager!!.beginTransaction()
+                    .replace(R.id.container_main,
+                        VisualizzazioneSchedaFragment.newInstance(username, scheda.schedaId)
+                    )
+                    .addToBackStack(null)
+                    .commit()
+
             }
 
         }

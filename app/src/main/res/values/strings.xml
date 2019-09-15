@@ -4,6 +4,7 @@
     <string name="register">Registrati</string>
     <string name="completa_registrazione">Completa registrazione</string>
     <string name="login">Accedi</string>
+    <string name="ok">Ok</string>
     <string name="username">username</string>
     <string name="password">password</string>
     <string name="already_have_account">Hai già un account? Accedi</string>
@@ -45,7 +46,6 @@
     <string name="definizione">Definizione</string>
     <string name="aggiungi_modifica_commento">Aggiungi/modifica commento</string>
     <string name="invia_scheda">Invia scheda</string>
-
 
 
     <!-- ImageView TAG ID (per mettere l'uri con tag nella imageView -->

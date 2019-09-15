@@ -31,7 +31,7 @@ class SchedeAdapter(val clickListener: (schedaId: Int, command: Char) -> Unit): 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SchedaViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val cell = layoutInflater.inflate(com.example.myfitness.R.layout.cardview_scheda, parent, false)
+        val cell = layoutInflater.inflate(R.layout.cardview_scheda, parent, false)
 
         return SchedaViewHolder(cell)
     }

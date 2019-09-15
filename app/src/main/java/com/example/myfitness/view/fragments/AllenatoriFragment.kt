@@ -71,6 +71,8 @@ class AllenatoriFragment : Fragment() {
             utente = it
         })
 
+        activity!!.title = "Scegli un allenatore"
+
         setHasOptionsMenu(true)
 
         return rootView

@@ -122,6 +122,7 @@ class RegisterStep2Fragment : Fragment() {
                     genere, null)
 
                 utentiViewModel.addUtente(nuovoUtente)
+                Toast.makeText(activity, "Registrazione avvenuta correttamente",Toast.LENGTH_LONG).show()
                 passaAlLogin()
             }
 

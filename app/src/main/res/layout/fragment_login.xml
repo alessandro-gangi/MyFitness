@@ -21,6 +21,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:text="MyFitness"
                 android:textSize="80sp"
+                android:textStyle="bold"
                 android:layout_margin="@dimen/spacing_large"
                 android:layout_marginTop="44dp"
                 android:textColor="@color/colorPrimary"

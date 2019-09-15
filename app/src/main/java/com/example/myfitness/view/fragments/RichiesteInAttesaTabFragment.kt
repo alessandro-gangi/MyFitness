@@ -21,7 +21,7 @@ class RichiesteInAttesaTabFragment(clickListener: (richiesta: Richiesta, command
 
     private lateinit var username: String
 
-    private var adapter: RichiesteInAttesaAdapter = RichiesteInAttesaAdapter(clickListener)
+    private val adapter: RichiesteInAttesaAdapter = RichiesteInAttesaAdapter(clickListener)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import com.example.myfitness.model.local.MyDatabase
 import com.example.myfitness.model.dataClasses.Richiesta
 import com.example.myfitness.model.RichiesteRepository
+import com.example.myfitness.model.dataClasses.Utente
 import kotlinx.coroutines.launch
 
 class RichiesteViewModel (application: Application): AndroidViewModel(application){
@@ -42,6 +43,8 @@ class RichiesteViewModel (application: Application): AndroidViewModel(applicatio
     //fun updateUtente(utente: Utente) = viewModelScope.launch {repository.updateUtente(utente)}
 
     fun addRichiesta(richiesta: Richiesta) = viewModelScope.launch{repository.addRichiesta(richiesta)}
+
+    fun getRichiestaFromAtoB(a: Utente, b: Utente) :Richiesta? = repository.getRichiestaFromAtoB(a, b)
 
     fun deleteRichiesta(richiesta: Richiesta) = viewModelScope.launch {repository.deleteRichiesta(richiesta)}
 

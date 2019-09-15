@@ -18,7 +18,7 @@ class RichiesteRepository (private val richiesteDao: RichiesteDao){
     val TAG = "RichiesteRepository"
 
 
-    fun observeRichieste(username: String): LiveData<List<Richiesta>> = richiesteDao.getObservableRichieste(username)
+    fun observeRichieste(username: String): LiveData<List<Richiesta>?> = richiesteDao.getObservableRichieste(username)
 
     fun addRichiesta(richiesta: Richiesta) {
         richiesteDao.addRichiesta(richiesta)
@@ -38,6 +38,8 @@ class RichiesteRepository (private val richiesteDao: RichiesteDao){
             })
         }*/
     }
+
+    fun getRichiestaFromAtoB(a: Utente, b: Utente): Richiesta? = richiesteDao.getRichiestaFromAtoB(a.usernameId, b.usernameId)
 
     fun deleteRichiesta(richiesta: Richiesta) {
         richiesteDao.deleteRichiesta(richiesta)

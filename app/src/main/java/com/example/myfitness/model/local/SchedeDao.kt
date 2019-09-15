@@ -45,4 +45,7 @@ interface SchedeDao {
 
     @Query("SELECT * FROM schede_table WHERE is_current = 1 AND possessore_usernameId = :username LIMIT 1")
     fun getCurrentScheda(username: String): LiveData<Scheda?>
+
+    @Query("SELECT * FROM schede_table WHERE autore_usernameId = :username AND possessore_usernameId != :username")
+    fun getRichiesteCompletate(username: String): LiveData<List<Scheda>?>
 }

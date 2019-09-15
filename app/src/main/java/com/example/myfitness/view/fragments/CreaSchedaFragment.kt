@@ -32,17 +32,15 @@ import kotlinx.android.synthetic.main.fragment_crea_scheda.*
 class CreaSchedaFragment(val richiesta: Richiesta?): Fragment() {
     val TAG = "CreaSchedaFragment"
 
-
+    // ViewModel
+    private lateinit var richiesteViewModel: RichiesteViewModel
     private lateinit var schedeViewModel: SchedeViewModel
     private lateinit var utentiViewModel: UtentiViewModel
 
-    private lateinit var scheda: Scheda
     private lateinit var utente: Utente
 
     private lateinit var adapter: CreaSchedaPagerAdapter
 
-    // ViewModel
-    private lateinit var richiesteViewModel: RichiesteViewModel
 
     //Dati scheda da creare
     private lateinit var username: String
@@ -74,20 +72,16 @@ class CreaSchedaFragment(val richiesta: Richiesta?): Fragment() {
 
     }
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_crea_scheda, container, false)
         setupUI(rootView)
-        //imposto i tab con il pager
-
         utente = utentiViewModel.utente.value!!
         setupViewPager(rootView.crea_scheda_view_pager, rootView.crea_scheda_tab_layout)
 
 
         return rootView
     }
-
     private fun setupUI(view: View){
         if(richiesta !=null) activity!!.title = "Crea una scheda per ${richiesta.utente.nome}"
         else activity!!.title = "Crea una scheda"
@@ -111,15 +105,6 @@ class CreaSchedaFragment(val richiesta: Richiesta?): Fragment() {
 
     }
 
-
-    private fun imposta_immagine(imageView: ImageView, tipologia: String){
-        when (tipologia.toLowerCase()){
-            "forza" -> imageView.setImageResource(R.drawable.ic_tipologia_forza)
-            "massa" -> imageView.setImageResource(R.drawable.ic_tipologia_massa)
-            "definizione" -> imageView.setImageResource(R.drawable.ic_tipologia_definizione)
-        }
-    }
-
     private fun finisciScheda(){
         //compongo la scheda finale
         val eserciziScheda: ArrayList<ArrayList<Esercizio>> = ArrayList()
@@ -128,6 +113,7 @@ class CreaSchedaFragment(val richiesta: Richiesta?): Fragment() {
             val schedaGiornaliera: ArrayList<Esercizio> = frag.getSchedaCreata()
             eserciziScheda.add(schedaGiornaliera)
         }
+
         //controllo se la scheda era fatta per se oppure per un altro utente
         val schedaCompleta: Scheda
         if(richiesta != null){
@@ -147,6 +133,7 @@ class CreaSchedaFragment(val richiesta: Richiesta?): Fragment() {
                 richiesteViewModel.deleteRichiesta(richiesta)
             }
 
+            Toast.makeText(activity, "Scheda inviata.", Toast.LENGTH_SHORT).show()
             activity?.supportFragmentManager?.popBackStack()
         }
 

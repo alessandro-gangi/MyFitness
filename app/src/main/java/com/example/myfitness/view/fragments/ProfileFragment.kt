@@ -35,6 +35,7 @@ import com.example.myfitness.viewmodel.SchedeViewModel
 import com.example.myfitness.viewmodel.UtentiViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.cardview_allenatore.*
+import kotlinx.android.synthetic.main.dialog_diventa_allenatore_o_utente.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.allenatore_imageView
 import kotlinx.android.synthetic.main.fragment_profile.view.*
@@ -103,27 +104,24 @@ class ProfileFragment : Fragment() {
 
         val view: View = inflater.inflate(R.layout.fragment_profile, container, false)
 
-        setupUI(view)
-
         schedeViewModel.currentSchedaUtente.observe(this, Observer {
             currentScheda = it
             impostaSchedaCorrente(view)
-            Log.d(TAG, "Scheda correntr: $currentScheda")
         })
 
         utentiViewModel.utente.observe(this, Observer {
             utente = it
-            //utentiViewModel.setUsername(utente?.usernameId ?: "")
+            impostaBottoneDiventaAllenatore(view)
             impostaDatiUtente(view)
-            Log.d(TAG, "Utente: $utente")
         })
 
 
         utentiViewModel.allenatore.observe(this, Observer {
             allenatore = it
             impostaAllenatoreCorrente(view)
-            Log.d(TAG, "Allenatore: $allenatore")
         })
+
+        setupUI(view)
 
 
         return view
@@ -132,6 +130,8 @@ class ProfileFragment : Fragment() {
 
 
     private fun setupUI(view: View){
+
+        activity!!.title = "MyFitness"
 
         // per modificare i dati del profilo
         view.threeDots_button.setOnClickListener {
@@ -147,6 +147,9 @@ class ProfileFragment : Fragment() {
         view.profile_imageView.setOnClickListener {
             if(isUserModifyingData) selezionaImmagine()
         }
+
+        //Imposta correttamente il testo del bottone
+        impostaBottoneDiventaAllenatore(view)
 
         //per cambiare/eliminare l'allenatore
         view.threeDots_allenatore_button.setOnClickListener {
@@ -169,10 +172,14 @@ class ProfileFragment : Fragment() {
         }
 
         // quando hai una scheda corrente e ci clicchi sopra
-        view.profilo_scheda_attuale_cardview.setOnClickListener {
+        view.start_scheda_button.setOnClickListener {
             apriScheda()
         }
 
+        //per diventare allenatore/tornare utente semplice
+        view.diventa_allenatore_button.setOnClickListener {
+            diventaAllenatoreOUtenteSemplice(it)
+        }
     }
 
     private fun impostaDatiUtente(view: View){
@@ -190,6 +197,58 @@ class ProfileFragment : Fragment() {
             view.cognome_textView.text = cognome
             view.descrizione_textView.text= descrizione
 
+        }
+    }
+
+    private fun diventaAllenatoreOUtenteSemplice(view: View){
+        val builder = AlertDialog.Builder(activity)
+        val title: String
+        val msg: String
+
+        if(!utente!!.flagAllenatore){
+            title = "Vuoi diventare allenatore?"
+            msg = "Diventanto allenatore potrai utilizzare tutte le funzionalità" +
+                    " di un utente semplice; in più, potrai ricevere richieste di schede da altri utenti. " +
+                    "Sei sicuro di voler diventare allenatore?"
+        }
+        else{
+            title = "Vuoi tornare un utente semplice?"
+            msg = "Tornando utente semplice non riceverai più richieste di schede da altri utenti. " +
+                    "Sei sicuro di voler tornare utente semplice?"
+        }
+
+        builder.setTitle(title)
+
+        val view = layoutInflater.inflate(R.layout.dialog_diventa_allenatore_o_utente, null)
+
+        val descrizioneTextView = view.descrizione_diventa_allenatore_o_utente_textView
+        descrizioneTextView.text = msg
+
+        builder.setView(view)
+
+        builder.setPositiveButton(R.string.ok) { _, _ ->
+            utente!!.flagAllenatore = !utente!!.flagAllenatore
+            utentiViewModel.updateUtente(utente!!)
+            activity!!.recreate()
+        }
+
+        builder.setNegativeButton(R.string.annulla) { dialog, p1 ->
+            dialog.cancel()
+        }
+        builder.show()
+    }
+
+
+    private fun impostaBottoneDiventaAllenatore(view: View){
+        val textDiventaAllenatore = "Diventa allenatore"
+        val textTornaUtente = "Torna utente semplice"
+        if(utente == null) Log.d(TAG, "utente nullo quando imposto il bottone")
+        utente?.let {
+            Log.d(TAG, "CI SIAMOOO")
+            if (it.flagAllenatore)
+                view.diventa_allenatore_button.text = textTornaUtente
+            else
+                view.diventa_allenatore_button.text = textDiventaAllenatore
         }
     }
 
@@ -260,7 +319,8 @@ class ProfileFragment : Fragment() {
     }
 
     private fun logout(){
-        //TODO: logout
+        sharedPref.edit().remove(USERNAME_KEY).apply()
+        activity!!.finish()
     }
 
     private fun modify_profile_data(view: View){
@@ -277,19 +337,19 @@ class ProfileFragment : Fragment() {
         view.nome_editText.setText(utente!!.nome)
         view.cognome_editText.setText(utente!!.cognome)
         view.descrizione_editText.setText(utente!!.descrizione)
+        view.profile_imageView.borderWidth = 4
 
         isUserModifyingData = true
     }
 
     private fun confirmChanges(view: View){
 
-        //salvo i dati del nuovo utente
+        // Salvo i dati del nuovo utente
         val nuovoNome = view.nome_editText.text.toString()
         val nuovoCognome = view.cognome_editText.text.toString()
         val nuovaDescrizione = view.descrizione_editText.text.toString()
 
-
-        //TODO: controllare i dati delle varie editText
+        // Controllo che l'utente abbia messo almeno nome e cognome
         if(nuovoNome.isNotEmpty() && nuovoCognome.isNotEmpty()) {
 
             utente!!.nome = nuovoNome
@@ -314,6 +374,8 @@ class ProfileFragment : Fragment() {
             view.nome_editText.visibility = View.GONE
             view.cognome_editText.visibility = View.GONE
             view.descrizione_editText.visibility = View.GONE
+
+            view.profile_imageView.borderWidth = 0
 
             isUserModifyingData = false
         }
@@ -468,7 +530,7 @@ class ProfileFragment : Fragment() {
         currentScheda?.let {
             fragmentManager!!.beginTransaction()
                 .replace(R.id.container_main,
-                    VisualizzazioneSchedaFragment.newInstance(it.schedaId)
+                    VisualizzazioneSchedaFragment.newInstance(username, it.schedaId)
                 )
                 .addToBackStack(null)
                 .commit()

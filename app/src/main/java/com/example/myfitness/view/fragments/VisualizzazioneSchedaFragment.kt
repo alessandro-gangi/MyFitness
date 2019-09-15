@@ -27,12 +27,16 @@ class VisualizzazioneSchedaFragment : Fragment() {
     private lateinit var schedeViewModel: SchedeViewModel
     private lateinit var scheda: Scheda
 
+    private var username: String? = null
+    private var schedaID: Int? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Fetch dati scheda
-        val schedaID: Int? = arguments?.getInt(SCHEDA_ID)
+        schedaID = arguments?.getInt(SCHEDA_ID)
+        username = arguments?.getString(USERNAME)
 
         schedeViewModel = activity?.run {
             ViewModelProvider(this).get(SchedeViewModel::class.java)
@@ -75,6 +79,7 @@ class VisualizzazioneSchedaFragment : Fragment() {
         for (index in 0 until scheda.num_giorni)
             myAdapter.addFragment(
                 VisualizzazioneEserciziFragment.newInstance(
+                    username!!,
                     scheda.schedaId,
                     index
                 ), title = (index+1).toString())
@@ -94,11 +99,13 @@ class VisualizzazioneSchedaFragment : Fragment() {
 
     companion object {
         val SCHEDA_ID = "SCHEDA_ID"
+        val USERNAME = "USERNAME"
 
         @JvmStatic
-        fun newInstance(schedaId: Int) = VisualizzazioneSchedaFragment().apply {
+        fun newInstance(username: String, schedaId: Int) = VisualizzazioneSchedaFragment().apply {
             arguments = Bundle().apply {
                 putInt(SCHEDA_ID, schedaId)
+                putString(USERNAME, username)
             }
         }
     }

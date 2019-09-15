@@ -4,10 +4,8 @@ package com.example.myfitness.view.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.ImageView
-import com.example.myfitness.view.fragments.LogoFragment
 import com.example.myfitness.R
+import com.example.myfitness.view.fragments.RegisterFragment
 
 class StartActivity : AppCompatActivity() {
     val TAG = "StartActivity"
@@ -19,7 +17,7 @@ class StartActivity : AppCompatActivity() {
         setContentView(R.layout.activity_start)
         supportFragmentManager.beginTransaction().replace(
             R.id.container_start,
-            LogoFragment()
+            RegisterFragment() //TODO: far partire dal registerFragment
         ).commit()
 
     }

@@ -78,7 +78,17 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
         }
     }
 
-    fun getUtente(username: String) = utentiDao.getUtente(username)
+    fun getUtente(username: String) :Utente?{
+        var utente = utentiDao.getUtente(username)
+        /*
+        if(utente == null){//TODO: se non trova niente deve fare la fetch dalla base di dati esterna e riprovare
+            fetchUtente(username)
+            utente = utentiDao.getUtente(username)
+        }
+        */
+        return utente
+    }
+
 
     fun getUtenti() = utentiDao.getObservableUtenti()
 

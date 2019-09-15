@@ -42,11 +42,11 @@
 
             <TextView
                     android:text="Breve descrizione"
-                    android:layout_width="wrap_content"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/descrizioneAllenatore_textView"
                     app:layout_constraintStart_toEndOf="@+id/allenatore_imageView"
-                    app:layout_constraintTop_toTopOf="@id/nomeAllenatore_textView"
+                    app:layout_constraintTop_toBottomOf="@id/nomeAllenatore_textView"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_margin="@dimen/spacing_large"
                     android:textStyle="italic"/>

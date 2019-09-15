@@ -10,11 +10,14 @@ interface RichiesteDao {
 
     //NOME TABELLA: richieste_table
 
-    @Query("SELECT * from richieste_table WHERE allenatore_usernameId = :username")
-    fun getObservableRichieste(username: String): LiveData<List<Richiesta>>
+    @Query("SELECT * FROM richieste_table WHERE allenatore_usernameId = :username")
+    fun getObservableRichieste(username: String): LiveData<List<Richiesta>?>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun addRichiesta(richiesta: Richiesta)
+
+    @Query("SELECT * FROM richieste_table WHERE utente_usernameId = :utenteUsername AND allenatore_usernameId = :allenatoreUsername LIMIT 1")
+    fun getRichiestaFromAtoB(utenteUsername: String, allenatoreUsername: String): Richiesta?
 
     @Delete
     fun deleteRichiesta(richiesta: Richiesta)

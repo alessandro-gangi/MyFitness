@@ -78,6 +78,8 @@ class LoginFragment : Fragment() {
             sharedPref.edit().putString(USERNAME_KEY, username).apply()
             startActivity(Intent(this.context, MainActivity::class.java))
         }
+
+        //TODO: else -> mostra messaggio di errore
     }
 
 

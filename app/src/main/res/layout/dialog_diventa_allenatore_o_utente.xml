@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_large"
+        android:orientation="vertical"
+>
+
+    <TextView
+            android:id="@+id/descrizione_diventa_allenatore_o_utente_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="150"
+            android:textSize="@dimen/text_medium"
+            android:layout_gravity="start"
+            android:layout_margin="@dimen/spacing_medium"/>
+
+
+</LinearLayout>

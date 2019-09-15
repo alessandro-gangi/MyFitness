@@ -17,6 +17,9 @@ class SchedeViewModel (application: Application): AndroidViewModel(application){
     val schedeUtente = Transformations.switchMap(username){ repository.observeSchede(it)}
     val currentSchedaUtente = Transformations.switchMap(username){ repository.observeCurrentScheda(it)}
 
+    // Rappresentano le schede che un utente (allenatore) ha fatto ad altre persone
+    val richiesteCompletate = Transformations.switchMap(username){ repository.observeRichiesteCompletate(it)}
+
     // Repo
     private val repository: SchedeRepository
 

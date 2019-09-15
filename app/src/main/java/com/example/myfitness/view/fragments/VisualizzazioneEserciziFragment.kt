@@ -29,10 +29,12 @@ class VisualizzazioneEserciziFragment: Fragment() {
     val TAG = "VisualEserciziFragment"
 
     private lateinit var schedeViewModel: SchedeViewModel
+    private lateinit var scheda: Scheda
     private lateinit var listaEsercizi: ArrayList<Esercizio>
 
     private var schedaId: Int? = null
     private var numGiorno: Int? = null
+    private var username: String? = null
 
     private lateinit var adapter: EserciziAdapter
 
@@ -43,6 +45,7 @@ class VisualizzazioneEserciziFragment: Fragment() {
         // Fetch dati scheda giornaliera
         schedaId = arguments?.getInt(SCHEDA_ID)
         numGiorno = arguments?.getInt(SCHEDA_NUM_GIORNO)
+        username = arguments?.getString(USERNAME)
 
         // Adapter
         adapter = EserciziAdapter { numEsercizio, itemClicked -> onMenuEsercizioItemClicked(numEsercizio, itemClicked) }
@@ -55,7 +58,9 @@ class VisualizzazioneEserciziFragment: Fragment() {
 
         schedeViewModel.schedeUtente.observe(this, Observer {
             if(it != null) {
-                listaEsercizi = schedeViewModel.getSchedaGiornaliera(schedaId!!, numGiorno!!)
+                //listaEsercizi = schedeViewModel.getSchedaGiornaliera(schedaId!!, numGiorno!!)
+                scheda = schedeViewModel.getScheda(schedaId!!)
+                listaEsercizi = scheda.esercizi[numGiorno!!]
                 adapter.setListaEsercizi(listaEsercizi)
             }
         })
@@ -78,24 +83,28 @@ class VisualizzazioneEserciziFragment: Fragment() {
 
 
     fun onMenuEsercizioItemClicked( numEsercizio: Int, itemClicked: Int) {
-        Toast.makeText(activity, "Esercizio selected: ${listaEsercizi[numEsercizio].nome}", Toast.LENGTH_SHORT).show()
 
-        when (itemClicked) {
-            R.id.popup_menu_item_commento -> {
-                aggiungiCommento(numEsercizio)
-            }
+        if(username == scheda.possessore.usernameId)
+            when (itemClicked) {
+                R.id.popup_menu_item_commento -> {
+                    aggiungiCommento(numEsercizio)
+                }
 
-            R.id.popup_menu_item_guarda_video -> {
-                guardaVideo(numEsercizio)
-            }
+                R.id.popup_menu_item_guarda_video -> {
+                    guardaVideo(numEsercizio)
+                }
 
-            R.id.popup_menu_item_modifica_esercizio -> {
-                modificaEsercizio(numEsercizio)
-            }
+                R.id.popup_menu_item_modifica_esercizio -> {
+                    modificaEsercizio(numEsercizio)
+                }
 
-            R.id.popup_menu_item_elimina_esercizio -> {
-                eliminaEsercizio(numEsercizio)
+                R.id.popup_menu_item_elimina_esercizio -> {
+                    eliminaEsercizio(numEsercizio)
+                }
             }
+        else {
+            val errorMsg = "Non puoi modificare una scheda di cui non sei il proprietario"
+            Toast.makeText(activity, errorMsg, Toast.LENGTH_LONG).show()
         }
 
     }
@@ -183,12 +192,14 @@ class VisualizzazioneEserciziFragment: Fragment() {
 
 
     companion object {
+        val USERNAME = "USERNAME"
         val SCHEDA_ID = "SCHEDA_ID"
         val SCHEDA_NUM_GIORNO = "SCHEDA_NUM_GIORNO"
 
         @JvmStatic
-        fun newInstance(scheda_id: Int, numGiorno: Int) = VisualizzazioneEserciziFragment().apply {
+        fun newInstance(username: String, scheda_id: Int, numGiorno: Int) = VisualizzazioneEserciziFragment().apply {
             arguments = Bundle().apply {
+                putString(USERNAME, username)
                 putInt(SCHEDA_ID, scheda_id)
                 putInt(SCHEDA_NUM_GIORNO, numGiorno)
             }
