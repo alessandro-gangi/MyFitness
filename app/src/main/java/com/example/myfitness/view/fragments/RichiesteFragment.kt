@@ -121,6 +121,7 @@ class RichiesteFragment : Fragment() {
             }
 
         }
+        //activity!!.recreate()
     }
 
     fun onRichiestaCompletataClicked(scheda: Scheda, command: Char) {

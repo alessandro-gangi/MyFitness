@@ -25,6 +25,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.myfitness.model.dataClasses.Utente
 import com.example.myfitness.viewmodel.UtentiViewModel
+import java.io.File
 import java.io.FileNotFoundException
 
 
@@ -41,6 +42,7 @@ class RegisterStep2Fragment : Fragment() {
     private var username: String? = null
     private var mail: String? = null
     private var password: String? = null
+    private lateinit var file: File
 
 
 
@@ -116,6 +118,13 @@ class RegisterStep2Fragment : Fragment() {
             val genere: Char = sessoCheckedRadioButton.text[0]
 
             if(controllaCorrettezzaDati(nome.text.toString(), cognome.text.toString(), eta.text.toString().toInt())) {
+
+                //TODO:FRA qua devi utilizzare il file dell'immagine (la variabile si chiama "file") per fare appunto
+                // l'upload e salvare l'url
+                // --> val url = upoload(file)
+                // a questo punto la variabile url viene passata al costruttore dell'Utente (guarda sotto)
+                // nel campo "imageURI"
+
                 val nuovoUtente = Utente(
                     username!!, mail!!, password!!, false, nome.text.toString(),
                     cognome.text.toString(), eta.text.toString().toInt(), null, null, null, null,
@@ -158,6 +167,12 @@ class RegisterStep2Fragment : Fragment() {
             val yourDrawable: Drawable
             try {
                 val inputStream = activity!!.contentResolver.openInputStream(contentURI!!)
+
+                //TODO:FRA test crezione file dato l'URI
+                // Quando viene premuto il bottone per registrasi bisognerà fare l'upload
+                // dell'immagine, ricevere l'url e salvarlo nel nuovo oggetto Utente
+                file = File(contentURI.path!!)
+
                 yourDrawable = Drawable.createFromStream(inputStream, contentURI.toString())
                 register_imageView!!.setImageDrawable(yourDrawable)
 
