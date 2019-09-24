@@ -1,17 +1,28 @@
 package com.example.myfitness.model
 
+import android.app.Application
+import android.os.StrictMode
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.myfitness.model.dataClasses.Utente
 import com.example.myfitness.model.local.UtentiDao
 import com.example.myfitness.model.webService.restService.UserRestService
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.net.URI
 
 
 class UtentiRepository (private val utentiDao: UtentiDao, private val webService: UserRestService){
     val TAG = "UtentiRepository"
+
+    var utenteTmp: Utente? = null
 
 
     fun observeAllenatori(username: String) = utentiDao.getObservableAllenatori((username))
@@ -23,17 +34,15 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
 
 
 
-    fun addUtente(utente: Utente) {
+    fun addUtente(utente: Utente, imageURI: String) {
+        utente.imageURI = imageURI
+
         utentiDao.addUtente(utente)
-
-        return //TODO: blocco la parte server finchè non viene sistemato il campo uri a String
-
         webService.addUser(utente).also {
             it.enqueue(object : Callback<String> {
                 override fun onResponse(call: Call<String>, response: Response<String>) {
-                    Log.d(TAG, response.body()!!.toString())
+                    Log.d(TAG, response.body().toString())
                 }
-
                 override fun onFailure(call: Call<String>, t: Throwable) {
                     Log.d(TAG, t.message!!)
                 }
@@ -43,8 +52,6 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
 
     fun deleteUtente(username: String) {
         utentiDao.deleteUtente(username)
-
-        return //TODO: blocco la parte server finchè non viene sistemato il campo uri a String
 
         webService.deleteUser(username)
             .enqueue(object : Callback<String> {
@@ -60,8 +67,6 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
 
     fun updateUtente(utente: Utente) {
         utentiDao.updateUtente(utente)
-
-        return //TODO: blocco la parte server finchè non viene sistemato il campo uri a String
 
         webService.updateUserById(utente.usernameId, utente).also {
             it.enqueue(object : Callback<Utente> {
@@ -80,63 +85,103 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
 
     fun getUtente(username: String) :Utente?{
         var utente = utentiDao.getUtente(username)
-        /*
-        if(utente == null){//TODO: se non trova niente deve fare la fetch dalla base di dati esterna e riprovare
-            fetchUtente(username)
-            utente = utentiDao.getUtente(username)
+
+        if(utente == null){
+            var utenteServer = fetchUtente(username)
+
+            if(utenteServer != null)
+                utentiDao.addUtente(utenteServer)
+                utente = utentiDao.getUtente(username)
         }
-        */
+
         return utente
     }
 
-
     fun getUtenti() = utentiDao.getObservableUtenti()
 
+    fun getUtentiServer(): List<Utente>? {
 
-    fun getUtentiServer() {
-        //per il momento mostra gli utenti solamente tramite Log
-        webService.listUsers().enqueue(object : Callback<List<Utente>> {
+        try {
+            val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
 
-            override fun onResponse(call: Call<List<Utente>>, response: Response<List<Utente>>) {
-                val userList = response.body()!!.toMutableList()
+            StrictMode.setThreadPolicy(policy)
+            return webService.listUsers().execute().body()
 
-                for (i in userList.indices)
-                    Log.d(TAG, userList[i].toString())
-            }
-
-            override fun onFailure(call: Call<List<Utente>>, t: Throwable) {
-                Log.d(TAG, t.message!!)
-            }
-        })
+        } catch (e: IOException) {
+            Log.d(TAG, e.message)
+        }
+        return null
     }
 
-    fun fetchUtente(usernameId: String) {
-        webService.getUserById(usernameId).also {
-            it.enqueue(object : Callback<Utente> {
-                override fun onResponse(call: Call<Utente>, response: Response<Utente>) {
-                    val user = response.body()
+    fun fetchUtente(usernameId: String): Utente? {
+        var utente: Utente? = null
 
-                    utentiDao.addUtente(user!!)
+        try {
+            val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
 
-                    Log.d(TAG, user.toString())
-                }
+            StrictMode.setThreadPolicy(policy)
+            return webService.getUserById(usernameId).execute().body()
 
-                override fun onFailure(call: Call<Utente>, t: Throwable) {
-                    Log.d(TAG, t.message!!)
-                }
-            })
+        }catch (e : IOException) {
+            Log.d(TAG, e.message )
 
         }
+
+        return utente
     }
 
     fun login(usr: String, pwd: String): Boolean{
-        var response = true
-        //TODO:FRA QUESTO METODO DEVE AGIRE SOLO SULLA BASE DI DATI ESTERNA
-        //  e deve restituire true se i dati del login sono corretti e false altrimenti
-        // (per adesso facciamo il controllo così senza token, poi vedremo)
+        var response = false
+
+        try {
+            val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+
+            StrictMode.setThreadPolicy(policy)
+            var utente = webService.getUserById(usr).execute().body()
+
+            if(utente != null && pwd == utente.password)
+                response = true
+
+            if(!response)
+                Log.d(TAG, "accesso negato")
+
+        }catch (e : IOException) {
+            Log.d(TAG, e.message )
+        }
 
         return response
     }
 
+    fun retrieveUriImage(app: Application, utente: Utente): String? {
+
+        var file = File(app.filesDir, "palDaAndroid.png")
+        var outStream = FileOutputStream(file, true)
+        var uri: String? = null
+
+        app.assets.open("myImage/palDaAndroid.png").use { input ->
+            outStream.use { output -> input.copyTo(output) }
+        }
+
+        val imagePart = MultipartBody.Part.createFormData(
+            "file",
+            file.name,
+            RequestBody.create(MediaType.parse("/*"), file)
+        )
+
+        try {
+            val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+
+            StrictMode.setThreadPolicy(policy)
+            uri = webService.retrieveUri(imagePart).execute().body().toString()
+
+            Log.d("URI", uri)
+
+        }catch (e : IOException) {
+            Log.d(TAG, e.message )
+        }
+
+        return uri
+
+    }
 
 }

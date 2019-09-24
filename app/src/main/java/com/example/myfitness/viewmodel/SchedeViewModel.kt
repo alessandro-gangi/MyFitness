@@ -6,10 +6,12 @@ import com.example.myfitness.model.SchedeRepository
 import com.example.myfitness.model.dataClasses.Esercizio
 import com.example.myfitness.model.dataClasses.Scheda
 import com.example.myfitness.model.local.MyDatabase
+import com.example.myfitness.model.webService.ClientRetrofit
+import com.example.myfitness.model.webService.restService.CardRestService
 import kotlinx.coroutines.launch
 
 
-class SchedeViewModel (application: Application): AndroidViewModel(application){
+open class SchedeViewModel (application: Application): AndroidViewModel(application){
     private val TAG = "SchedeViewModel"
 
     private val username: MutableLiveData<String> = MutableLiveData()
@@ -26,7 +28,8 @@ class SchedeViewModel (application: Application): AndroidViewModel(application){
 
     init {
         val schedeDao = MyDatabase.getDatabase(application).SchedeDao()
-        repository = SchedeRepository(schedeDao) //TODO:FRA -> questo diventerà SchedeRepository(schedeDao, webService)
+        val webService = ClientRetrofit.setService(CardRestService::class.java) as CardRestService
+        repository = SchedeRepository(schedeDao, webService)
     }
 
 

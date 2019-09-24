@@ -3,7 +3,9 @@ package com.example.myfitness.view.activities
 import android.content.Context
 import android.content.DialogInterface
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
+import android.os.StrictMode
 import android.util.Log
 import android.view.Menu
 import android.widget.Toast
@@ -15,6 +17,7 @@ import com.example.myfitness.view.fragments.ProfileFragment
 import com.example.myfitness.view.fragments.RichiesteFragment
 import com.example.myfitness.view.fragments.SchedeFragment
 import android.view.MenuInflater
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import com.example.myfitness.model.dataClasses.Utente
 import com.example.myfitness.viewmodel.UtentiViewModel
@@ -40,14 +43,20 @@ class MainActivity : AppCompatActivity() {
     private var menuToChoose = R.menu.bottom_nav_menu_utente_semplice
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+
+        StrictMode.setThreadPolicy(policy)
+
         setContentView(R.layout.activity_main)
 
         sharedPref = getSharedPreferences(USER_DATA_PREFERENCE, Context.MODE_PRIVATE)
         username = sharedPref.getString(USERNAME_KEY, "") ?: ""
 
         utentiViewModel = ViewModelProvider(this).get(UtentiViewModel::class.java)
+
         utente = utentiViewModel.getUtente(username)!!
 
         navView = findViewById(R.id.nav_view_main)

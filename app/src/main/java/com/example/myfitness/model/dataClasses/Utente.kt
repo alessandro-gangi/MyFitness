@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class Utente(@PrimaryKey val usernameId: String,
              var mail: String,
              var password: String,
-             var flagAllenatore: Boolean,
+             var flagAllenatore: Boolean = false,
              var nome: String,
              var cognome: String,
              var eta: Int?,
