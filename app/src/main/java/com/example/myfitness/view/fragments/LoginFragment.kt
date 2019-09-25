@@ -3,6 +3,7 @@ package com.example.myfitness.view.fragments
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import com.example.myfitness.R
 import com.example.myfitness.model.dataClasses.MockUtenti
@@ -69,6 +71,7 @@ class LoginFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun login(username: String, password: String){
 
         val response: Boolean = utentiViewModel.login(username, password)
@@ -77,6 +80,7 @@ class LoginFragment : Fragment() {
             val USERNAME_KEY = "USERNAME"
             sharedPref.edit().putString(USERNAME_KEY, username).apply()
             startActivity(Intent(this.context, MainActivity::class.java))
+            activity!!.finish()
         }
 
         //TODO: else -> mostra messaggio di errore

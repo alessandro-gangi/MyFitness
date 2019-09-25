@@ -60,6 +60,7 @@ class RichiesteFragment : Fragment() {
         schedeViewModel = activity?.run {
             ViewModelProvider(this).get(SchedeViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
+
     }
 
 
@@ -121,7 +122,6 @@ class RichiesteFragment : Fragment() {
             }
 
         }
-        //activity!!.recreate()
     }
 
     fun onRichiestaCompletataClicked(scheda: Scheda, command: Char) {
@@ -140,8 +140,8 @@ class RichiesteFragment : Fragment() {
     }
 
 
-
     private fun inviaScheda(richiesta: Richiesta){
+
         fragmentManager!!.beginTransaction()
             .replace(R.id.container_main,
                 CreaSchedaFragment.newInstance(
@@ -154,6 +154,7 @@ class RichiesteFragment : Fragment() {
             )
             .addToBackStack(null)
             .commit()
+
     }
 
 

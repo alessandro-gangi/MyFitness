@@ -1,8 +1,10 @@
 package com.example.myfitness.model
 
 import android.app.Application
+import android.os.Build
 import android.os.StrictMode
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import com.example.myfitness.model.dataClasses.Utente
 import com.example.myfitness.model.local.UtentiDao
@@ -34,8 +36,7 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
 
 
 
-    fun addUtente(utente: Utente, imageURI: String) {
-        utente.imageURI = imageURI
+    fun addUtente(utente: Utente) {
 
         utentiDao.addUtente(utente)
         webService.addUser(utente).also {
@@ -83,6 +84,7 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
     fun getUtente(username: String) :Utente?{
         var utente = utentiDao.getUtente(username)
 
@@ -99,6 +101,7 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
 
     fun getUtenti() = utentiDao.getObservableUtenti()
 
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
     fun getUtentiServer(): List<Utente>? {
 
         try {
@@ -113,6 +116,7 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
         return null
     }
 
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
     fun fetchUtente(usernameId: String): Utente? {
         var utente: Utente? = null
 
@@ -130,6 +134,7 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
         return utente
     }
 
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
     fun login(usr: String, pwd: String): Boolean{
         var response = false
 
@@ -152,6 +157,45 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
         return response
     }
 
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
+    fun uploadImage(username: String, image: File): String? {
+
+        var uri: String? = null
+
+        /* recupera immagine */
+
+        //var file = File(app.filesDir, "palDaAndroid.png")
+
+
+
+        //app.assets.open("myImage/palDaAndroid.png").use { input ->
+        //    outStream.use { output -> input.copyTo(output) }
+        //}
+
+        val imagePart = MultipartBody.Part.createFormData(
+            "file",
+             image.name,
+            RequestBody.create(MediaType.parse("/*"), image)
+        )
+
+        try {
+            val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+
+            StrictMode.setThreadPolicy(policy)
+            uri = webService.retrieveUri(imagePart).execute().body().toString()
+
+            Log.d("URI", uri)
+
+        }catch (e : IOException) {
+            Log.d(TAG, e.message )
+        }
+
+        return uri
+
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
     fun retrieveUriImage(app: Application, utente: Utente): String? {
 
         /* recupera immagine */
@@ -159,6 +203,7 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
         var file = File(app.filesDir, "palDaAndroid.png")
         var outStream = FileOutputStream(file, true)
         var uri: String? = null
+
 
         app.assets.open("myImage/palDaAndroid.png").use { input ->
             outStream.use { output -> input.copyTo(output) }

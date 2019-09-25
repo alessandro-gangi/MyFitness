@@ -21,12 +21,16 @@ import com.example.myfitness.R
 import kotlinx.android.synthetic.main.fragment_register_step2.*
 import kotlinx.android.synthetic.main.fragment_register_step2.view.*
 import android.graphics.drawable.Drawable
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.myfitness.model.dataClasses.Utente
 import com.example.myfitness.viewmodel.UtentiViewModel
 import java.io.File
 import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.InputStream
 
 
 class RegisterStep2Fragment : Fragment() {
@@ -57,6 +61,7 @@ class RegisterStep2Fragment : Fragment() {
         password = arguments?.getString(PASSWORD)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val view: View = inflater.inflate(R.layout.fragment_register_step2, container, false)
@@ -65,6 +70,7 @@ class RegisterStep2Fragment : Fragment() {
         return view
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setupUI(view: View) {
         val nome: EditText = view.nome_register_editText
         val cognome: EditText = view.cognome_register_editText
@@ -109,6 +115,7 @@ class RegisterStep2Fragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setupCompletaRegistrazioneButton(completaRegistrazione: Button, nome: EditText, cognome: EditText,
                                                  eta: EditText, genereRadioGroup: RadioGroup){
 
@@ -129,6 +136,7 @@ class RegisterStep2Fragment : Fragment() {
                     username!!, mail!!, password!!, false, nome.text.toString(),
                     cognome.text.toString(), eta.text.toString().toInt(), null, null, null, null,
                     genere, null)
+                utentiViewModel.uploadImage(username!!, file)
 
                 utentiViewModel.addUtente(nuovoUtente)
                 Toast.makeText(activity, "Registrazione avvenuta correttamente",Toast.LENGTH_LONG).show()
@@ -173,11 +181,24 @@ class RegisterStep2Fragment : Fragment() {
                 // dell'immagine, ricevere l'url e salvarlo nel nuovo oggetto Utente
                 file = File(contentURI.path!!)
 
+                var outStream = FileOutputStream(file, true)
+
+
+
+                inputStream.use { input ->
+                    outStream.use { output -> input!!.copyTo(output) }
+                }
+
+                if(file.exists())
+                    Log.d(TAG, "sONO UN FILE ESISTENTE")
+                else
+                    Log.d(TAG, "FILE NON ESISTENTE")
+
                 yourDrawable = Drawable.createFromStream(inputStream, contentURI.toString())
                 register_imageView!!.setImageDrawable(yourDrawable)
 
             } catch (e: FileNotFoundException) {
-                Log.d(TAG, "errore nella selezione dell'immagine")
+                Log.d(TAG, "errore nella selezione dell'immagine " + e.message)
             }
         }
 

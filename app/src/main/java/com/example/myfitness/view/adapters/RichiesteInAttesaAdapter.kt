@@ -22,8 +22,14 @@ class RichiesteInAttesaAdapter(val clickListener: (richiesta: Richiesta, command
 
 
     fun setListaRichieste(nuovaListaRichieste: List<Richiesta>){
-        listaRichieste = ArrayList(nuovaListaRichieste)
+
+        Log.d(TAG, "ADAPTER-> vecchia lista: $listaRichieste")
+        Log.d(TAG, "ADAPTER-> update in arrivo: $nuovaListaRichieste")
+
+        listaRichieste.clear()
+        listaRichieste.addAll(nuovaListaRichieste)
         notifyDataSetChanged()
+
         //TODO: non so perchè il dato non si aggiorna in automatico
         Log.d(TAG, "ADAPTER-> nuova lista richieste in attesa: $listaRichieste")
     }

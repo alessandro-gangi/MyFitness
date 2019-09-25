@@ -12,6 +12,7 @@ import com.example.myfitness.model.dataClasses.Utente
 import com.example.myfitness.model.webService.ClientRetrofit
 import com.example.myfitness.model.webService.restService.UserRestService
 import kotlinx.coroutines.launch
+import java.io.File
 
 @RequiresApi(Build.VERSION_CODES.O)
 class UtentiViewModel (application: Application): AndroidViewModel(application){
@@ -49,13 +50,18 @@ class UtentiViewModel (application: Application): AndroidViewModel(application){
     fun updateUtente(utente: Utente) = viewModelScope.launch {repository.updateUtente(utente)}
 
     fun addUtente(utente: Utente) = viewModelScope.launch{
-        var uri = repository.retrieveUriImage(app, utente)
+        /*var uri = repository.retrieveUriImage(app, utente)
 
         if(uri != null)
             repository.addUtente(utente, uri)
         else
             Log.d(TAG, "Errore nel recupero URI nel server")
-        //repository.retrieveUrl(app, utente)
+        //repository.retrieveUrl(app, utente)*/
+        repository.addUtente(utente)
+    }
+
+    fun uploadImage(username: String, image: File){
+        repository.uploadImage(username, image)
     }
 
     fun deleteUtente(username: String) = viewModelScope.launch {repository.deleteUtente(username)}
