@@ -154,6 +154,8 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
 
     fun retrieveUriImage(app: Application, utente: Utente): String? {
 
+        /* recupera immagine */
+
         var file = File(app.filesDir, "palDaAndroid.png")
         var outStream = FileOutputStream(file, true)
         var uri: String? = null
