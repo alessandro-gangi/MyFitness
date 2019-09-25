@@ -60,9 +60,8 @@ class UtentiViewModel (application: Application): AndroidViewModel(application){
         repository.addUtente(utente)
     }
 
-    fun uploadImage(username: String, image: File){
-        repository.uploadImage(username, image)
-    }
+    fun uploadImage(username: String, image: File) = repository.uploadImage(username, image)
+
 
     fun deleteUtente(username: String) = viewModelScope.launch {repository.deleteUtente(username)}
 

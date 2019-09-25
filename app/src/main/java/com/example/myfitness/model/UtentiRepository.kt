@@ -157,24 +157,15 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
         return response
     }
 
+
     @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
     fun uploadImage(username: String, image: File): String? {
 
         var uri: String? = null
 
-        /* recupera immagine */
-
-        //var file = File(app.filesDir, "palDaAndroid.png")
-
-
-
-        //app.assets.open("myImage/palDaAndroid.png").use { input ->
-        //    outStream.use { output -> input.copyTo(output) }
-        //}
-
         val imagePart = MultipartBody.Part.createFormData(
             "file",
-             image.name,
+             "$username.jpg",
             RequestBody.create(MediaType.parse("/*"), image)
         )
 
@@ -195,40 +186,5 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
-    fun retrieveUriImage(app: Application, utente: Utente): String? {
-
-        /* recupera immagine */
-
-        var file = File(app.filesDir, "palDaAndroid.png")
-        var outStream = FileOutputStream(file, true)
-        var uri: String? = null
-
-
-        app.assets.open("myImage/palDaAndroid.png").use { input ->
-            outStream.use { output -> input.copyTo(output) }
-        }
-
-        val imagePart = MultipartBody.Part.createFormData(
-            "file",
-            file.name,
-            RequestBody.create(MediaType.parse("/*"), file)
-        )
-
-        try {
-            val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
-
-            StrictMode.setThreadPolicy(policy)
-            uri = webService.retrieveUri(imagePart).execute().body().toString()
-
-            Log.d("URI", uri)
-
-        }catch (e : IOException) {
-            Log.d(TAG, e.message )
-        }
-
-        return uri
-
-    }
 
 }

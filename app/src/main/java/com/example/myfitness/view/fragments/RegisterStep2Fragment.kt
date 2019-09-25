@@ -6,6 +6,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -23,6 +24,7 @@ import kotlinx.android.synthetic.main.fragment_register_step2.view.*
 import android.graphics.drawable.Drawable
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.core.net.toUri
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.myfitness.model.dataClasses.Utente
@@ -47,6 +49,7 @@ class RegisterStep2Fragment : Fragment() {
     private var mail: String? = null
     private var password: String? = null
     private lateinit var file: File
+    private var serverImageUri: String? = null
 
 
 
@@ -125,16 +128,9 @@ class RegisterStep2Fragment : Fragment() {
             val genere: Char = sessoCheckedRadioButton.text[0]
 
             if(controllaCorrettezzaDati(nome.text.toString(), cognome.text.toString(), eta.text.toString().toInt())) {
-
-                //TODO:FRA qua devi utilizzare il file dell'immagine (la variabile si chiama "file") per fare appunto
-                // l'upload e salvare l'url
-                // --> val url = upoload(file)
-                // a questo punto la variabile url viene passata al costruttore dell'Utente (guarda sotto)
-                // nel campo "imageURI"
-
                 val nuovoUtente = Utente(
                     username!!, mail!!, password!!, false, nome.text.toString(),
-                    cognome.text.toString(), eta.text.toString().toInt(), null, null, null, null,
+                    cognome.text.toString(), eta.text.toString().toInt(), null, serverImageUri, null, null,
                     genere, null)
                 utentiViewModel.uploadImage(username!!, file)
 
@@ -167,32 +163,18 @@ class RegisterStep2Fragment : Fragment() {
     }
 
     //handle result of picked image
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        Log.d(TAG, "on activity result")
 
         if (data != null) {
             val contentURI = data.data
             val yourDrawable: Drawable
             try {
                 val inputStream = activity!!.contentResolver.openInputStream(contentURI!!)
+                val realPath: String = getRealPathFromURI(contentURI)
+                file = File(realPath)
 
-                //TODO:FRA test crezione file dato l'URI
-                // Quando viene premuto il bottone per registrasi bisognerà fare l'upload
-                // dell'immagine, ricevere l'url e salvarlo nel nuovo oggetto Utente
-                file = File(contentURI.path!!)
-
-                var outStream = FileOutputStream(file, true)
-
-
-
-                inputStream.use { input ->
-                    outStream.use { output -> input!!.copyTo(output) }
-                }
-
-                if(file.exists())
-                    Log.d(TAG, "sONO UN FILE ESISTENTE")
-                else
-                    Log.d(TAG, "FILE NON ESISTENTE")
+                serverImageUri = utentiViewModel.uploadImage(username!!, file)
 
                 yourDrawable = Drawable.createFromStream(inputStream, contentURI.toString())
                 register_imageView!!.setImageDrawable(yourDrawable)
@@ -275,6 +257,20 @@ class RegisterStep2Fragment : Fragment() {
             R.id.container_start,
             LoginFragment()
         ).commit()
+    }
+
+    private fun getRealPathFromURI(contentURI: Uri): String {
+        var result: String
+        var cursor: Cursor = activity!!.contentResolver.query(contentURI, null, null, null, null)!!
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.path!!
+        } else {
+            cursor.moveToFirst()
+            var idx: Int = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+            result = cursor.getString(idx)
+            cursor.close()
+        }
+        return result
     }
 
 

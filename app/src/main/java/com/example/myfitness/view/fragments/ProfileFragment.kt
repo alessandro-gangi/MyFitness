@@ -191,8 +191,9 @@ class ProfileFragment : Fragment() {
             val nome: String = utente!!.nome
             val cognome: String = utente!!.cognome
             val descrizione: String? = utente!!.descrizione
+            val imageUri: String? = utente!!.imageURI
 
-            if(utente?.imageURI != null){
+            if(imageUri != null){
                 //TODO: prendi immagine dal file system e caricale nella imageview
             }
 
