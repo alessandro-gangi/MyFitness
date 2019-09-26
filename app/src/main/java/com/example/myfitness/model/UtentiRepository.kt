@@ -23,21 +23,22 @@ import kotlin.random.Random
 
 
 class UtentiRepository (private val utentiDao: UtentiDao, private val webService: UserRestService){
-    val TAG = "UtentiRepository"
 
+    val TAG = "UtentiRepository"
     var utenteTmp: Utente? = null
 
 
-    fun observeAllenatori(username: String) = utentiDao.getObservableAllenatori((username))
+    fun observeAllenatori(utente: Utente) = utentiDao.getObservableAllenatori((utente.usernameId))
 
     //Serve a fornire i dati sempre aggiornati dell'utente dell'app
     fun observeUtente(username: String): LiveData<Utente?> = utentiDao.getObservableUtente(username)
 
     fun observeAllenatore(utente: Utente): LiveData<Utente?> = utentiDao.getObservableUtente(utente.allenatore ?: "")
 
-
-
     fun addUtente(utente: Utente) {
+
+        //TODO: In teoria basta aggiungere l'utente solo sul server
+        // perchè poi viene fatta dopo la fetch sulla base di dati locale
 
         utentiDao.addUtente(utente)
         webService.addUser(utente).also {
@@ -53,6 +54,9 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
     }
 
     fun deleteUtente(username: String) {
+
+        //TODO: In teoria basta eliminare l'utente solo dal server
+
         utentiDao.deleteUtente(username)
 
         webService.deleteUser(username)
@@ -90,11 +94,10 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
         var utente = utentiDao.getUtente(username)
 
         if(utente == null){
-            var utenteServer = fetchUtente(username)
-
+            val utenteServer = fetchUtente(username)
             if(utenteServer != null)
                 utentiDao.addUtente(utenteServer)
-                utente = utentiDao.getUtente(username)
+            utente = utenteServer
         }
 
         return utente
@@ -166,7 +169,7 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
 
         val imagePart = MultipartBody.Part.createFormData(
             "file",
-             "$username.jpg", //${(0..10).random()}
+            "$username.jpg",
             RequestBody.create(MediaType.parse("/*"), image)
         )
 

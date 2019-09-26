@@ -260,6 +260,7 @@ class SchedeFragment : Fragment(){
             'D' -> {
 
                 schedeViewModel.deleteScheda(schedaId)
+                Log.d(TAG, "ID scheda cancellata: $schedaId")
             }
 
             'S' -> {

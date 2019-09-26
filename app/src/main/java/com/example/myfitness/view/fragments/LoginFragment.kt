@@ -3,6 +3,9 @@ package com.example.myfitness.view.fragments
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.Resources
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -13,10 +16,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import com.example.myfitness.R
 import com.example.myfitness.model.dataClasses.MockUtenti
+import com.example.myfitness.utilis.ConnectionChecker
 import com.example.myfitness.view.activities.MainActivity
 import com.example.myfitness.viewmodel.UtentiViewModel
 import kotlinx.android.synthetic.main.fragment_login.view.*
@@ -29,6 +34,7 @@ class LoginFragment : Fragment() {
 
     private lateinit var sharedPref: SharedPreferences
     private val USER_DATA_PREFERENCE: String = "USER_DATA_PREFERENCE"
+
 
 
 
@@ -62,7 +68,7 @@ class LoginFragment : Fragment() {
         val password: EditText = view.password_login_editText
 
         loginButton.setOnClickListener {
-            login(username.text.toString(), password.text.toString())
+            login(username.text.toString(), password.text.toString(), view)
         }
 
 
@@ -74,7 +80,10 @@ class LoginFragment : Fragment() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun login(username: String, password: String){
+    private fun login(username: String, password: String, view: View){
+
+        view.username_login_editText.setBackgroundColor(Color.TRANSPARENT)
+        view.password_login_editText.setBackgroundColor(Color.TRANSPARENT)
 
         val response: Boolean = utentiViewModel.login(username, password)
         if(response){
@@ -84,8 +93,13 @@ class LoginFragment : Fragment() {
             startActivity(Intent(this.context, MainActivity::class.java))
             activity!!.finish()
         }
+        else{
+            val errorMsg = "Si è verificato un errore. Controlla i tuoi dati."
+            Toast.makeText(activity, errorMsg, Toast.LENGTH_LONG).show()
+            view.username_login_editText.setBackgroundColor(activity!!.resources.getColor(R.color.red_100))
+            view.password_login_editText.setBackgroundColor(activity!!.resources.getColor(R.color.red_100))
+        }
 
-        //TODO: else -> mostra messaggio di errore
     }
 
 

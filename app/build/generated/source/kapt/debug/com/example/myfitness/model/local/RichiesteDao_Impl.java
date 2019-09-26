@@ -34,7 +34,7 @@ public final class RichiesteDao_Impl implements RichiesteDao {
     this.__insertionAdapterOfRichiesta = new EntityInsertionAdapter<Richiesta>(__db) {
       @Override
       public String createQuery() {
-        return "INSERT OR IGNORE INTO `richieste_table` (`richiestaId`,`data`,`numGiorni`,`tipologia`,`commento`,`utente_usernameId`,`utente_mail`,`utente_password`,`utente_flagAllenatore`,`utente_nome`,`utente_cognome`,`utente_eta`,`utente_descrizione`,`utente_imageURI`,`utente_peso`,`utente_altezza`,`utente_genere`,`utente_allenatore`,`allenatore_usernameId`,`allenatore_mail`,`allenatore_password`,`allenatore_flagAllenatore`,`allenatore_nome`,`allenatore_cognome`,`allenatore_eta`,`allenatore_descrizione`,`allenatore_imageURI`,`allenatore_peso`,`allenatore_altezza`,`allenatore_genere`,`allenatore_allenatore`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        return "INSERT OR IGNORE INTO `richieste_table` (`richiestaId`,`data`,`numGiorni`,`tipologia`,`commento`,`utente_usernameId`,`utente_mail`,`utente_password`,`utente_flagAllenatore`,`utente_nome`,`utente_cognome`,`utente_eta`,`utente_descrizione`,`utente_imageURI`,`utente_peso`,`utente_altezza`,`utente_genere`,`utente_allenatore`,`allenatore_usernameId`,`allenatore_mail`,`allenatore_password`,`allenatore_flagAllenatore`,`allenatore_nome`,`allenatore_cognome`,`allenatore_eta`,`allenatore_descrizione`,`allenatore_imageURI`,`allenatore_peso`,`allenatore_altezza`,`allenatore_genere`,`allenatore_allenatore`) VALUES (nullif(?, 0),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
       }
 
       @Override

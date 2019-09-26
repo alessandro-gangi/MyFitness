@@ -19,14 +19,35 @@ interface CardRestService {
     @POST("card/insert")
     fun addCard(@Body card: Scheda): Call<String>
 
-    @DELETE("card/delete/user/{username}/")
+    @DELETE("card/delete/{cardId}/")
     fun deleteCard(@Path("cardId") cardId: Int): Call<String>
 
     @GET("card/exists/{cardId}/")
-    fun getCardById(@Path("cardId") cardId: String): Call<Scheda>
+    fun getCardById(@Path("cardId") cardId: Int): Call<Scheda>
 
     @PUT("card/update/{cardId}/")
-    fun updateCardById(@Path("cardId") cardId: Int, @Body newCard: Scheda): Call<Scheda>
+    fun updateCardById(@Path("cardId") cardId: Int, @Body newCard: Scheda): Call<Scheda?>
+
+    @DELETE("card/delete/all")
+    fun deleteAllCards(): Call<String>
+
+    @DELETE("card/deleteAllUserCards/{usernameId}/")
+    fun deleteAllUserCards(@Path("usernameId") username: String): Call<String>
+
+    @PUT("/setAsCurrentCard/{usernameId}/{cardId}/")
+    fun setAsCurrentCard(@Path("usernameId") usernameId: String, @Path("cardId") cardId: Int): Call<String>
+
+    @DELETE("card/removeCurrentCard/{usernameId}/")
+    fun removeCurrentCard(@Path("usernameId") usernameId: String): Call<String>
+
+    @GET("card/getUserCards/{usernameId}/")
+    fun getUserCards(@Path("usernameId") usernameId: String): Call<List<Scheda>?>
+
+    @GET("card/getCurrentCard/{usernameId}/")
+    fun getCurrentCard(@Path("usernameId") usernameId: String): Call<Scheda?>
+
+    @GET("card/getCompletedRequest/{usernameId}/")
+    fun getCompletedRequest(@Path("usernameId") usernameId: String): Call<List<String>?>
 
 }
 

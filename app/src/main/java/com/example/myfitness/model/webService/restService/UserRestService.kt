@@ -17,14 +17,14 @@ interface UserRestService {
     @POST("user/insert")
     fun addUser(@Body user: Utente): Call<String>
 
-    @DELETE("user/delete/{username}/")
-    fun deleteUser(@Path("username") username: String): Call<String>
+    @DELETE("user/delete/{usernameId}/")
+    fun deleteUser(@Path("usernameId") usernameId: String): Call<String>
 
-    @GET("user/exists/{username}/")
-    fun getUserById(@Path("username") username: String): Call<Utente>
+    @GET("user/exists/{usernameId}/")
+    fun getUserById(@Path("usernameId") usernameId: String): Call<Utente>
 
-    @PUT("user/update/{username}/")
-    fun updateUserById(@Path("username") username: String, @Body newUser: Utente): Call<Utente>
+    @PUT("user/update/{usernameId}/")
+    fun updateUserById(@Path("usernameId") usernameId: String, @Body newUser: Utente): Call<Utente>
 
     @Multipart
     @POST("user/save/image")

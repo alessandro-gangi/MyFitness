@@ -22,7 +22,7 @@ interface SchedeDao {
     fun removeCurrentScheda(username: String)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun addScheda(scheda: Scheda)
+    fun addScheda(scheda: Scheda): Long
 
     @Update
     fun updateScheda(scheda: Scheda)

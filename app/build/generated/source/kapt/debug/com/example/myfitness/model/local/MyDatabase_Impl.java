@@ -31,14 +31,14 @@ public final class MyDatabase_Impl extends MyDatabase {
 
   @Override
   protected SupportSQLiteOpenHelper createOpenHelper(DatabaseConfiguration configuration) {
-    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(configuration, new RoomOpenHelper.Delegate(16) {
+    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(configuration, new RoomOpenHelper.Delegate(17) {
       @Override
       public void createAllTables(SupportSQLiteDatabase _db) {
         _db.execSQL("CREATE TABLE IF NOT EXISTS `utenti_table` (`usernameId` TEXT NOT NULL, `mail` TEXT NOT NULL, `password` TEXT NOT NULL, `flagAllenatore` INTEGER NOT NULL, `nome` TEXT NOT NULL, `cognome` TEXT NOT NULL, `eta` INTEGER, `descrizione` TEXT, `imageURI` TEXT, `peso` REAL, `altezza` INTEGER, `genere` INTEGER NOT NULL, `allenatore` TEXT, PRIMARY KEY(`usernameId`))");
         _db.execSQL("CREATE TABLE IF NOT EXISTS `schede_table` (`schedaId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `num_giorni` INTEGER NOT NULL, `data` TEXT NOT NULL, `tipo` TEXT NOT NULL, `commento` TEXT NOT NULL, `esercizi` TEXT NOT NULL, `is_current` INTEGER NOT NULL, `autore_usernameId` TEXT NOT NULL, `autore_mail` TEXT NOT NULL, `autore_password` TEXT NOT NULL, `autore_flagAllenatore` INTEGER NOT NULL, `autore_nome` TEXT NOT NULL, `autore_cognome` TEXT NOT NULL, `autore_eta` INTEGER, `autore_descrizione` TEXT, `autore_imageURI` TEXT, `autore_peso` REAL, `autore_altezza` INTEGER, `autore_genere` INTEGER NOT NULL, `autore_allenatore` TEXT, `possessore_usernameId` TEXT NOT NULL, `possessore_mail` TEXT NOT NULL, `possessore_password` TEXT NOT NULL, `possessore_flagAllenatore` INTEGER NOT NULL, `possessore_nome` TEXT NOT NULL, `possessore_cognome` TEXT NOT NULL, `possessore_eta` INTEGER, `possessore_descrizione` TEXT, `possessore_imageURI` TEXT, `possessore_peso` REAL, `possessore_altezza` INTEGER, `possessore_genere` INTEGER NOT NULL, `possessore_allenatore` TEXT)");
-        _db.execSQL("CREATE TABLE IF NOT EXISTS `richieste_table` (`richiestaId` INTEGER NOT NULL, `data` TEXT NOT NULL, `numGiorni` INTEGER NOT NULL, `tipologia` TEXT NOT NULL, `commento` TEXT NOT NULL, `utente_usernameId` TEXT NOT NULL, `utente_mail` TEXT NOT NULL, `utente_password` TEXT NOT NULL, `utente_flagAllenatore` INTEGER NOT NULL, `utente_nome` TEXT NOT NULL, `utente_cognome` TEXT NOT NULL, `utente_eta` INTEGER, `utente_descrizione` TEXT, `utente_imageURI` TEXT, `utente_peso` REAL, `utente_altezza` INTEGER, `utente_genere` INTEGER NOT NULL, `utente_allenatore` TEXT, `allenatore_usernameId` TEXT NOT NULL, `allenatore_mail` TEXT NOT NULL, `allenatore_password` TEXT NOT NULL, `allenatore_flagAllenatore` INTEGER NOT NULL, `allenatore_nome` TEXT NOT NULL, `allenatore_cognome` TEXT NOT NULL, `allenatore_eta` INTEGER, `allenatore_descrizione` TEXT, `allenatore_imageURI` TEXT, `allenatore_peso` REAL, `allenatore_altezza` INTEGER, `allenatore_genere` INTEGER NOT NULL, `allenatore_allenatore` TEXT, PRIMARY KEY(`richiestaId`))");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `richieste_table` (`richiestaId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `data` TEXT NOT NULL, `numGiorni` INTEGER NOT NULL, `tipologia` TEXT NOT NULL, `commento` TEXT NOT NULL, `utente_usernameId` TEXT NOT NULL, `utente_mail` TEXT NOT NULL, `utente_password` TEXT NOT NULL, `utente_flagAllenatore` INTEGER NOT NULL, `utente_nome` TEXT NOT NULL, `utente_cognome` TEXT NOT NULL, `utente_eta` INTEGER, `utente_descrizione` TEXT, `utente_imageURI` TEXT, `utente_peso` REAL, `utente_altezza` INTEGER, `utente_genere` INTEGER NOT NULL, `utente_allenatore` TEXT, `allenatore_usernameId` TEXT NOT NULL, `allenatore_mail` TEXT NOT NULL, `allenatore_password` TEXT NOT NULL, `allenatore_flagAllenatore` INTEGER NOT NULL, `allenatore_nome` TEXT NOT NULL, `allenatore_cognome` TEXT NOT NULL, `allenatore_eta` INTEGER, `allenatore_descrizione` TEXT, `allenatore_imageURI` TEXT, `allenatore_peso` REAL, `allenatore_altezza` INTEGER, `allenatore_genere` INTEGER NOT NULL, `allenatore_allenatore` TEXT)");
         _db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1236d652f5fc316ab3074ede1241af8a')");
+        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '194ca180c4ceb0080ae4a9d3e2faa7e7')");
       }
 
       @Override
@@ -193,7 +193,7 @@ public final class MyDatabase_Impl extends MyDatabase {
         }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "1236d652f5fc316ab3074ede1241af8a", "1bf53b9962265ac70609a3cc59058414");
+    }, "194ca180c4ceb0080ae4a9d3e2faa7e7", "220effabb60905cbd25f01683fbd391a");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(configuration.context)
         .name(configuration.name)
         .callback(_openCallback)

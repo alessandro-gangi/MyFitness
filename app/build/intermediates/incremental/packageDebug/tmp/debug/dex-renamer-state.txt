@@ -1,4 +1,4 @@
-#Thu Sep 26 11:24:10 CEST 2019
+#Thu Sep 26 19:26:13 CEST 2019
 base.0=C\:\\Users\\asus\\AndroidStudioProjects\\MyFitness\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\out\\classes.dex
 path.1=classes.dex
 renamed.1=classes2.dex

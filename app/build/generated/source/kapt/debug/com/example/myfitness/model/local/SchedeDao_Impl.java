@@ -462,12 +462,13 @@ public final class SchedeDao_Impl implements SchedeDao {
   }
 
   @Override
-  public void addScheda(final Scheda scheda) {
+  public long addScheda(final Scheda scheda) {
     __db.assertNotSuspendingTransaction();
     __db.beginTransaction();
     try {
-      __insertionAdapterOfScheda.insert(scheda);
+      long _result = __insertionAdapterOfScheda.insertAndReturnId(scheda);
       __db.setTransactionSuccessful();
+      return _result;
     } finally {
       __db.endTransaction();
     }

@@ -82,8 +82,12 @@ uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
 ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:7:5-81
 	android:name
 		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:7:22-78
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:8:5-79
+	android:name
+		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:8:22-76
 application
-ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:9:5-40:19
+ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:10:5-40:19
 MERGED from [com.github.bumptech.glide:glide:4.9.0] C:\Users\asus\.gradle\caches\transforms-2\files-2.1\ffd236ee124b99c344c707caa9fc5010\jetified-glide-4.9.0\AndroidManifest.xml:10:5-20
 MERGED from [com.github.bumptech.glide:glide:4.9.0] C:\Users\asus\.gradle\caches\transforms-2\files-2.1\ffd236ee124b99c344c707caa9fc5010\jetified-glide-4.9.0\AndroidManifest.xml:10:5-20
 MERGED from [androidx.room:room-runtime:2.2.0-beta01] C:\Users\asus\.gradle\caches\transforms-2\files-2.1\94244a5251681cad11fa01457bca93df\room-runtime-2.2.0-beta01\AndroidManifest.xml:24:5-28:19
@@ -103,45 +107,47 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0-rc01] C:\Use
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.1.0-rc01] C:\Users\asus\.gradle\caches\transforms-2\files-2.1\e508139368a08a6849e1470d3da2f44f\core-1.1.0-rc01\AndroidManifest.xml:24:18-86
 	android:supportsRtl
-		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:14:13-39
+		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:15:13-39
 	android:label
-		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:12:13-45
+		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:13:13-45
 	android:roundIcon
-		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:13:13-58
+		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:14:13-58
 	android:icon
-		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:11:13-47
+		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:12:13-47
 	android:allowBackup
-		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:10:13-39
+		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:11:13-39
 	android:theme
-		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:15:13-44
+		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:16:13-44
 activity#com.example.myfitness.view.activities.SplashScreenActivity
-ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:16:9-25:20
+ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:17:9-26:20
 	android:screenOrientation
-		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:18:17-53
+		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:19:17-53
 	android:configChanges
-		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:17:17-67
+		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:18:17-67
 	android:theme
-		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:19:17-84
+		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:20:17-84
 	android:name
-		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:16:19-71
+		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:17:19-71
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:20:13-24:29
+ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:21:13-25:29
 action#android.intent.action.MAIN
-ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:21:17-69
+ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:22:17-69
 	android:name
-		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:21:25-66
+		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:22:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:23:17-77
+ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:24:17-77
 	android:name
-		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:23:27-74
+		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:24:27-74
 activity#com.example.myfitness.view.activities.MainActivity
-ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:26:9-32:20
+ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:27:9-32:20
 	android:screenOrientation
-		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:29:17-53
+		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:30:17-53
+	android:windowSoftInputMode
+		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:31:17-59
 	android:configChanges
-		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:28:17-67
+		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:29:17-67
 	android:name
-		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:27:17-61
+		ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:28:17-61
 activity#com.example.myfitness.view.activities.StartActivity
 ADDED from C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:33:9-39:20
 	android:screenOrientation

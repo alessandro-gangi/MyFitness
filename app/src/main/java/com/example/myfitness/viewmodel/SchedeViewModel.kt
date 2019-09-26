@@ -37,11 +37,13 @@ open class SchedeViewModel (application: Application): AndroidViewModel(applicat
         this.username.value = username
 
         // scarica i dati dal server e li salva nel db (per adesso la commento)
-        /*
-        viewModelScope.launch {
-            repository.fetchSchedeUtente(username)
-        }
-        */
+        if(schedeUtente == null || currentSchedaUtente == null)
+            viewModelScope.launch { repository.fetchSchedeUtente(username)}
+
+        if(richiesteCompletate == null)
+            viewModelScope.launch { repository.fetchRichiesteCompletate(username)}
+
+
     }
 
 

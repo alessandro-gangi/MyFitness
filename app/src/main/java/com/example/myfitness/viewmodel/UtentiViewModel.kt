@@ -22,7 +22,8 @@ class UtentiViewModel (application: Application): AndroidViewModel(application){
 
     val utente = Transformations.switchMap(username){ repository.observeUtente(it)}
     val allenatore = Transformations.switchMap(utente){ repository.observeAllenatore(it!!)}
-    var allAllenatori = Transformations.switchMap(username){ repository.observeAllenatori(it!!)}
+    //var allAllenatori = Transformations.switchMap(username){ repository.observeAllenatori(it!!)}
+    var allAllenatori = Transformations.switchMap(utente){ repository.observeAllenatori(it!!)}
     var app = application
 
 

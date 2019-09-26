@@ -3,7 +3,7 @@ package com.example.myfitness.model.local;
 import java.lang.System;
 
 @androidx.room.TypeConverters(value = {com.example.myfitness.model.local.DataConverter.class})
-@androidx.room.Database(entities = {com.example.myfitness.model.dataClasses.Utente.class, com.example.myfitness.model.dataClasses.Scheda.class, com.example.myfitness.model.dataClasses.Richiesta.class}, version = 16)
+@androidx.room.Database(entities = {com.example.myfitness.model.dataClasses.Utente.class, com.example.myfitness.model.dataClasses.Scheda.class, com.example.myfitness.model.dataClasses.Richiesta.class}, version = 17)
 @kotlin.Metadata(mv = {1, 1, 15}, bv = {1, 0, 3}, k = 1, d1 = {"\u0000 \n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\b\'\u0018\u0000 \t2\u00020\u0001:\u0001\tB\u0005\u00a2\u0006\u0002\u0010\u0002J\b\u0010\u0003\u001a\u00020\u0004H&J\b\u0010\u0005\u001a\u00020\u0006H&J\b\u0010\u0007\u001a\u00020\bH&\u00a8\u0006\n"}, d2 = {"Lcom/example/myfitness/model/local/MyDatabase;", "Landroidx/room/RoomDatabase;", "()V", "RichiesteDao", "Lcom/example/myfitness/model/local/RichiesteDao;", "SchedeDao", "Lcom/example/myfitness/model/local/SchedeDao;", "UtentiDao", "Lcom/example/myfitness/model/local/UtentiDao;", "Companion", "app_debug"})
 public abstract class MyDatabase extends androidx.room.RoomDatabase {
     private static volatile com.example.myfitness.model.local.MyDatabase INSTANCE;
