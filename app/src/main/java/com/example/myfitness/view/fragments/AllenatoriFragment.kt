@@ -54,7 +54,7 @@ class AllenatoriFragment : Fragment() {
             listaAllenatori = ArrayList(it)
         })
 
-        adapter = AllenatoriAdapter{numEsercizio, itemClicked -> onMenuAllenatoreItemClicked(numEsercizio, itemClicked)}
+        adapter = AllenatoriAdapter(activity!!){numEsercizio, itemClicked -> onMenuAllenatoreItemClicked(numEsercizio, itemClicked)}
 
         utentiViewModel.setUsername(username)
     }

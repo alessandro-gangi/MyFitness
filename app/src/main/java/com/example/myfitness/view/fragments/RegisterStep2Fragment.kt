@@ -27,7 +27,10 @@ import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.myfitness.model.dataClasses.Utente
+import com.example.myfitness.utilis.ImageCompressor
 import com.example.myfitness.viewmodel.UtentiViewModel
 import java.io.File
 import java.io.FileNotFoundException
@@ -48,7 +51,7 @@ class RegisterStep2Fragment : Fragment() {
     private var username: String? = null
     private var mail: String? = null
     private var password: String? = null
-    private lateinit var file: File
+    private var file: File? = null
     private var serverImageUri: String? = null
 
 
@@ -132,7 +135,8 @@ class RegisterStep2Fragment : Fragment() {
                     username!!, mail!!, password!!, false, nome.text.toString(),
                     cognome.text.toString(), eta.text.toString().toInt(), null, serverImageUri, null, null,
                     genere, null)
-                utentiViewModel.uploadImage(username!!, file)
+                if(file != null)
+                    utentiViewModel.uploadImage(username!!, file!!)
 
                 utentiViewModel.addUtente(nuovoUtente)
                 Toast.makeText(activity, "Registrazione avvenuta correttamente",Toast.LENGTH_LONG).show()
@@ -165,22 +169,27 @@ class RegisterStep2Fragment : Fragment() {
     //handle result of picked image
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val errorMsg = "errore nella selezione dell'immagine"
 
         if (data != null) {
             val contentURI = data.data
-            val yourDrawable: Drawable
+            //val yourDrawable: Drawable
             try {
-                val inputStream = activity!!.contentResolver.openInputStream(contentURI!!)
-                val realPath: String = getRealPathFromURI(contentURI)
+                //val inputStream = activity!!.contentResolver.openInputStream(contentURI!!)
+                val realPath: String = getRealPathFromURI(contentURI!!)
                 file = File(realPath)
+                file?.let {
+                    file = ImageCompressor.compressFile(file!!, activity!!)
+                    serverImageUri = utentiViewModel.uploadImage(username!!, file!!)
 
-                serverImageUri = utentiViewModel.uploadImage(username!!, file)
+                    loadImageIntoImageView(serverImageUri!!, register_imageView)
+                }
 
-                yourDrawable = Drawable.createFromStream(inputStream, contentURI.toString())
-                register_imageView!!.setImageDrawable(yourDrawable)
+                //yourDrawable = Drawable.createFromStream(inputStream, contentURI.toString())
+                //register_imageView!!.setImageDrawable(yourDrawable)
 
             } catch (e: FileNotFoundException) {
-                Log.d(TAG, "errore nella selezione dell'immagine " + e.message)
+                Log.d(TAG, errorMsg + e.message)
             }
         }
 
@@ -260,19 +269,26 @@ class RegisterStep2Fragment : Fragment() {
     }
 
     private fun getRealPathFromURI(contentURI: Uri): String {
-        var result: String
-        var cursor: Cursor = activity!!.contentResolver.query(contentURI, null, null, null, null)!!
+        val result: String
+        val cursor: Cursor? = activity!!.contentResolver.query(contentURI, null, null, null, null)
         if (cursor == null) { // Source is Dropbox or other similar local file path
             result = contentURI.path!!
         } else {
             cursor.moveToFirst()
-            var idx: Int = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-            result = cursor.getString(idx)
+            val index: Int = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+            result = cursor.getString(index)
             cursor.close()
         }
         return result
     }
 
+    private fun loadImageIntoImageView(imageURI: String, imageView: ImageView){
+        Glide.with(activity!!)
+            .load(imageURI)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
+            .into(imageView)
+    }
 
 
 

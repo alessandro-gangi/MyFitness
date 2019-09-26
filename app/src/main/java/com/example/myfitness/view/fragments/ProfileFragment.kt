@@ -7,6 +7,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
@@ -30,9 +31,11 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.myfitness.R
 import com.example.myfitness.model.dataClasses.Scheda
 import com.example.myfitness.model.dataClasses.Utente
+import com.example.myfitness.utilis.ImageCompressor
 import com.example.myfitness.viewmodel.SchedeViewModel
 import com.example.myfitness.viewmodel.UtentiViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -46,6 +49,7 @@ import kotlinx.android.synthetic.main.fragment_profile.view.days_textView
 import kotlinx.android.synthetic.main.fragment_profile.view.scheda_imageView
 import kotlinx.android.synthetic.main.fragment_profile.view.threeDots_button
 import kotlinx.android.synthetic.main.fragment_profile.view.tipologia_textView
+import kotlinx.android.synthetic.main.fragment_register_step2.*
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileNotFoundException
@@ -77,6 +81,9 @@ class ProfileFragment : Fragment() {
     private var utente: Utente? = null
     private var allenatore: Utente? = null
     private var currentScheda: Scheda? = null
+
+    private var file: File? = null
+    private var serverImageUri: String? = null
 
 
 
@@ -192,9 +199,12 @@ class ProfileFragment : Fragment() {
             val cognome: String = utente!!.cognome
             val descrizione: String? = utente!!.descrizione
             val imageUri: String? = utente!!.imageURI
+            Log.d(TAG, "Profile image: $imageUri")
 
             if(imageUri != null){
                 //TODO: prendi immagine dal file system e caricale nella imageview
+                Log.d(TAG, "Profile image: $imageUri")
+                loadImageIntoImageView(imageUri, view.profile_imageView)
             }
 
             view.nome_textView.text = nome
@@ -246,9 +256,7 @@ class ProfileFragment : Fragment() {
     private fun impostaBottoneDiventaAllenatore(view: View){
         val textDiventaAllenatore = "Diventa allenatore"
         val textTornaUtente = "Torna utente semplice"
-        if(utente == null) Log.d(TAG, "utente nullo quando imposto il bottone")
         utente?.let {
-            Log.d(TAG, "CI SIAMOOO")
             if (it.flagAllenatore)
                 view.diventa_allenatore_button.text = textTornaUtente
             else
@@ -346,6 +354,7 @@ class ProfileFragment : Fragment() {
         isUserModifyingData = true
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun confirmChanges(view: View){
 
         // Salvo i dati del nuovo utente
@@ -359,12 +368,7 @@ class ProfileFragment : Fragment() {
             utente!!.nome = nuovoNome
             utente!!.cognome = nuovoCognome
             utente!!.descrizione = nuovaDescrizione
-
-            //TODO:
-            // 1) prendere l'immagine da view.profile_imageView
-            // 2) caricala sul file system online --> che ti restituisce l'url
-            // 3) salva l'url nel campo imageUri dell'utente
-            // ----> update utente
+            utente!!.imageURI = serverImageUri
 
             utentiViewModel.updateUtente(utente!!)
 
@@ -396,18 +400,30 @@ class ProfileFragment : Fragment() {
         startActivityForResult(intent, IMAGE_PICK_CODE)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val errorMsg = "errore nella selezione dell'immagine"
 
         if (data != null) {
             val contentURI = data.data
-            val yourDrawable: Drawable
             try {
-                Glide.with(this).load(contentURI).into(profile_imageView)
+                val realPath: String = getRealPathFromURI(contentURI!!)
+                file = File(realPath)
+                file?.let {
+                    file = ImageCompressor.compressFile(file!!, activity!!)
+                    serverImageUri = utentiViewModel.uploadImage(username, file!!)
+                    loadImageIntoImageView(serverImageUri!!, profile_imageView)
+                    utente!!.imageURI = serverImageUri
+                    utentiViewModel.updateUtente(utente!!)
+                }
+
+
+
             } catch (e: FileNotFoundException) {
-                Log.d(TAG, errorMsg)
+                Log.d(TAG, errorMsg + e.message)
             }
         }
+
 
     }
 
@@ -509,9 +525,8 @@ class ProfileFragment : Fragment() {
             view.cognomeAllenatore_textView.text = allenatore!!.cognome
             view.descrizioneAllenatore_textView.text = allenatore!!.descrizione
 
-            if(utente?.imageURI != null) {
-                //TODO: recupera immagine dal file system esterno e
-                // caricala con Glyde nella imageView
+            if(allenatore?.imageURI != null) {
+                loadImageIntoImageView(allenatore?.imageURI!! , view.allenatore_imageView)
             }
 
         }
@@ -555,5 +570,27 @@ class ProfileFragment : Fragment() {
             imageView.setImageBitmap(Bitmap.createScaledBitmap(bitmapImage, bitmapImage.width,
                 bitmapImage.height, false))
         }
+    }
+
+    private fun getRealPathFromURI(contentURI: Uri): String {
+        val result: String
+        val cursor: Cursor? = activity!!.contentResolver.query(contentURI, null, null, null, null)
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.path!!
+        } else {
+            cursor.moveToFirst()
+            val index: Int = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+            result = cursor.getString(index)
+            cursor.close()
+        }
+        return result
+    }
+
+    private fun loadImageIntoImageView(imageURI: String, imageView: ImageView){
+        Glide.with(activity!!)
+            .load(imageURI)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
+            .into(imageView)
     }
 }

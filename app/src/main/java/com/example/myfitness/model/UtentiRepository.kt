@@ -19,6 +19,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.net.URI
+import kotlin.random.Random
 
 
 class UtentiRepository (private val utentiDao: UtentiDao, private val webService: UserRestService){
@@ -165,7 +166,7 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
 
         val imagePart = MultipartBody.Part.createFormData(
             "file",
-             "$username.jpg",
+             "$username.jpg", //${(0..10).random()}
             RequestBody.create(MediaType.parse("/*"), image)
         )
 

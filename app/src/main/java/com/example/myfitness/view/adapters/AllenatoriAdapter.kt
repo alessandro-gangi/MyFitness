@@ -1,36 +1,41 @@
 package com.example.myfitness.view.adapters
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.myfitness.R
 import com.example.myfitness.model.dataClasses.Utente
 import kotlinx.android.synthetic.main.cardview_allenatore.view.*
 
 
 
-class AllenatoriAdapter(val menuClickListener: (numEsercizio: Int, itemClicked: Int) -> Unit): RecyclerView.Adapter<AllenatoreViewHolder>(){
+class AllenatoriAdapter(val activity: Context, val menuClickListener: (numAllenatore: Int, itemClicked: Int) -> Unit): RecyclerView.Adapter<AllenatoreViewHolder>(){
     val TAG = "AllenatoriAdapter"
 
-    private var listaAllenatori: ArrayList<Utente> = ArrayList()
+    private lateinit var listaAllenatori: ArrayList<Utente>
 
-    private var listaAllenatoriCopy: ArrayList<Utente> = ArrayList()
+    private lateinit var listaAllenatoriCopy: ArrayList<Utente>
 
     init {
-        listaAllenatoriCopy.addAll(listaAllenatori)
+        listaAllenatori = ArrayList()
+        listaAllenatoriCopy = ArrayList()
         Log.d(TAG, "INIT lista: $listaAllenatori")
         Log.d(TAG, "INIT lista_copy: $listaAllenatoriCopy")
     }
 
     fun setListaAllenatori(nuovaListaAllenatori: List<Utente>){
+        Log.d(TAG, "--- SET LISTA --- nuovaLista: $nuovaListaAllenatori")
         listaAllenatori = ArrayList(nuovaListaAllenatori)
         listaAllenatoriCopy = listaAllenatori
 
-        Log.d(TAG, "lista: $listaAllenatori")
-        Log.d(TAG, "lista_copy: $listaAllenatoriCopy")
+        Log.d(TAG, "--- SET LISTA --- lista: $listaAllenatori")
+        Log.d(TAG, "--- SET LISTA --- lista_copy: $listaAllenatoriCopy")
         notifyDataSetChanged()
     }
 
@@ -50,6 +55,8 @@ class AllenatoriAdapter(val menuClickListener: (numEsercizio: Int, itemClicked: 
     override fun onBindViewHolder(viewHolder: AllenatoreViewHolder, position: Int){
         viewHolder.nome.text = listaAllenatori[position].nome
         viewHolder.descrizione.text = listaAllenatori[position].descrizione
+        if(listaAllenatori[position].imageURI != null)
+            loadImageIntoImageView(listaAllenatori[position].imageURI!!, viewHolder.imgProfilo)
         viewHolder.threeDotsMenu.setOnClickListener {
             showPopupMenu(viewHolder.threeDotsMenu, position)
         }
@@ -85,17 +92,24 @@ class AllenatoriAdapter(val menuClickListener: (numEsercizio: Int, itemClicked: 
             val result: ArrayList<Utente> = ArrayList()
             for (allenatore in listaAllenatoriCopy) {
                 if (allenatore.nome.toLowerCase().contains(text.toLowerCase())) {
-                    result.add(allenatore)
+                    listaAllenatori.add(allenatore)
                 }
             }
             Log.d(TAG, "3 FILTER lista: $listaAllenatori")
             Log.d(TAG, "3 FILTER lista_copy: $listaAllenatoriCopy")
-            listaAllenatori.addAll(result)
             Log.d(TAG, "4 FILTER lista: $listaAllenatori")
             Log.d(TAG, "4 FILTER lista_copy: $listaAllenatoriCopy")
 
         }
         notifyDataSetChanged()
+    }
+
+    private fun loadImageIntoImageView(imageURI: String, imageView: ImageView){
+        Glide.with(activity)
+            .load(imageURI)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
+            .into(imageView)
     }
 
 
