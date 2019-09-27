@@ -18,30 +18,22 @@ import kotlinx.android.synthetic.main.cardview_allenatore.view.*
 class AllenatoriAdapter(val activity: Context, val menuClickListener: (numAllenatore: Int, itemClicked: Int) -> Unit): RecyclerView.Adapter<AllenatoreViewHolder>(){
     val TAG = "AllenatoriAdapter"
 
-    private lateinit var listaAllenatori: ArrayList<Utente>
+    private var listaAllenatori: ArrayList<Utente>
 
-    private lateinit var listaAllenatoriCopy: ArrayList<Utente>
+    private var listaAllenatoriCopy: ArrayList<Utente>
 
     init {
         listaAllenatori = ArrayList()
         listaAllenatoriCopy = ArrayList()
-        Log.d(TAG, "INIT lista: $listaAllenatori")
-        Log.d(TAG, "INIT lista_copy: $listaAllenatoriCopy")
     }
 
     fun setListaAllenatori(nuovaListaAllenatori: List<Utente>){
-        Log.d(TAG, "--- SET LISTA --- nuovaLista: $nuovaListaAllenatori")
         listaAllenatori = ArrayList(nuovaListaAllenatori)
-        listaAllenatoriCopy = listaAllenatori
-
-        Log.d(TAG, "--- SET LISTA --- lista: $listaAllenatori")
-        Log.d(TAG, "--- SET LISTA --- lista_copy: $listaAllenatoriCopy")
+        listaAllenatoriCopy = ArrayList(listaAllenatori)
         notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
-        //Qua in pratica si farà il return della "size" della lista degli allenatori di una certa palestra
-        Log.d(TAG, "Size allenatori: ${listaAllenatori.size}")
         return listaAllenatori.size
     }
 
@@ -54,6 +46,7 @@ class AllenatoriAdapter(val activity: Context, val menuClickListener: (numAllena
 
     override fun onBindViewHolder(viewHolder: AllenatoreViewHolder, position: Int){
         viewHolder.nome.text = listaAllenatori[position].nome
+        viewHolder.cognome.text = listaAllenatori[position].cognome
         viewHolder.descrizione.text = listaAllenatori[position].descrizione
         if(listaAllenatori[position].imageURI != null)
             loadImageIntoImageView(listaAllenatori[position].imageURI!!, viewHolder.imgProfilo)
@@ -78,31 +71,22 @@ class AllenatoriAdapter(val activity: Context, val menuClickListener: (numAllena
 
 
     fun filter(text: String) {
-        Log.d(TAG, "1 FILTER lista: $listaAllenatori")
-        Log.d(TAG, "1 FILTER lista_copy: $listaAllenatoriCopy")
         listaAllenatori.clear()
 
-        if (text.isEmpty()) {
+        if (text.isEmpty())
             listaAllenatori.addAll(listaAllenatoriCopy)
-            Log.d(TAG, "2 FILTER lista: $listaAllenatori")
-            Log.d(TAG, "2 FILTER lista_copy: $listaAllenatoriCopy")
-        }
 
-        else {
-            val result: ArrayList<Utente> = ArrayList()
+        else
             for (allenatore in listaAllenatoriCopy) {
-                if (allenatore.nome.toLowerCase().contains(text.toLowerCase())) {
+                if (allenatore.nome.toLowerCase().contains(text.toLowerCase())
+                    || allenatore.cognome.toLowerCase().contains(text.toLowerCase()))
                     listaAllenatori.add(allenatore)
-                }
-            }
-            Log.d(TAG, "3 FILTER lista: $listaAllenatori")
-            Log.d(TAG, "3 FILTER lista_copy: $listaAllenatoriCopy")
-            Log.d(TAG, "4 FILTER lista: $listaAllenatori")
-            Log.d(TAG, "4 FILTER lista_copy: $listaAllenatoriCopy")
 
-        }
+            }
         notifyDataSetChanged()
     }
+
+
 
     private fun loadImageIntoImageView(imageURI: String, imageView: ImageView){
         Glide.with(activity)
@@ -118,12 +102,14 @@ class AllenatoriAdapter(val activity: Context, val menuClickListener: (numAllena
 class AllenatoreViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
     var imgProfilo: ImageView
     var nome: TextView
+    var cognome: TextView
     var descrizione: TextView
     var threeDotsMenu: Button
 
     init {
         imgProfilo = itemView.allenatore_imageView
         nome = itemView.nomeAllenatore_textView
+        cognome = itemView.cognomeAllenatore_textView
         descrizione = itemView.descrizioneAllenatore_textView
         threeDotsMenu = itemView.threeDots_button
     }

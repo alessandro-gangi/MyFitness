@@ -23,11 +23,11 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_width="100dp"
+                    android:layout_width="70dp"
                     android:layout_height="0dp"
                     app:layout_constraintDimensionRatio="1:1"
                     android:src="@color/grey_20"
-                    android:layout_margin="@dimen/spacing_small"
+                    android:layout_margin="@dimen/spacing_large"
                     tools:ignore="ContentDescription"/>
 
             <TextView
@@ -35,8 +35,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/nomeAllenatore_textView"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@+id/allenatore_imageView"
-                    android:layout_margin="@dimen/spacing_large"
+                    android:layout_marginTop="@dimen/spacing_large"
+                    android:layout_marginBottom="@dimen/spacing_large"
+                    android:layout_marginStart="@dimen/spacing_large"
+                    android:layout_marginEnd="@dimen/spacing_small"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                    android:text="@string/cognome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cognomeAllenatore_textView"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/nomeAllenatore_textView"
+                    android:layout_marginTop="@dimen/spacing_large"
+                    android:layout_marginBottom="@dimen/spacing_large"
+                    android:layout_marginStart="@dimen/spacing_small"
                     app:layout_constraintTop_toTopOf="parent"/>
 
 

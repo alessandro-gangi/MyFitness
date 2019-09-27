@@ -185,9 +185,6 @@ class RegisterStep2Fragment : Fragment() {
                     loadImageIntoImageView(serverImageUri!!, register_imageView)
                 }
 
-                //yourDrawable = Drawable.createFromStream(inputStream, contentURI.toString())
-                //register_imageView!!.setImageDrawable(yourDrawable)
-
             } catch (e: FileNotFoundException) {
                 Log.d(TAG, errorMsg + e.message)
             }
@@ -199,7 +196,7 @@ class RegisterStep2Fragment : Fragment() {
         val myPermission: String = Manifest.permission.READ_EXTERNAL_STORAGE
         if (!isPermissionGranted(myPermission)) {
             if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                explainPermissionRequest("Attenzione", "Ci serve il permesso cristo di Dio")
+                explainPermissionRequest("Attenzione", "Ci serve il permesso di accedere alle tue foto")
             } else
                 requestPermissions(arrayOf(myPermission), READ_EXTERNAL_STORAGE_CODE)
         }

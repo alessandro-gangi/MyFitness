@@ -18,8 +18,7 @@ class SplashScreenActivity : AppCompatActivity() {
     internal val mRunnable: Runnable = Runnable {
         if (!isFinishing) {
 
-            val intent = Intent(applicationContext, StartActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(applicationContext, StartActivity::class.java))
             finish()
         }
     }

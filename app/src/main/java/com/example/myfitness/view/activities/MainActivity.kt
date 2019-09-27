@@ -98,12 +98,14 @@ class MainActivity : AppCompatActivity() {
 
     //Per cambiare tab a seconda del click
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+
         when (item.itemId) {
             R.id.navigation_home -> {
                 if(navView.selectedItemId != item.itemId)
                     supportFragmentManager.beginTransaction().replace(
                         R.id.container_main,
-                        ProfileFragment()
+                        ProfileFragment(),
+                        "PROFILE_FRAGMENT"
                     ).commit()
                 return@OnNavigationItemSelectedListener true
             }

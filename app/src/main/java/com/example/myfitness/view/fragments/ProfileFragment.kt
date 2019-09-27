@@ -36,6 +36,7 @@ import com.example.myfitness.R
 import com.example.myfitness.model.dataClasses.Scheda
 import com.example.myfitness.model.dataClasses.Utente
 import com.example.myfitness.utilis.ImageCompressor
+import com.example.myfitness.view.activities.StartActivity
 import com.example.myfitness.viewmodel.SchedeViewModel
 import com.example.myfitness.viewmodel.UtentiViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -104,6 +105,9 @@ class ProfileFragment : Fragment() {
 
         utentiViewModel.setUsername(username)
         schedeViewModel.setUsername(username)
+
+        utentiViewModel.setImageUtente()
+        utentiViewModel.setImageAllenatore()
 
     }
 
@@ -332,6 +336,7 @@ class ProfileFragment : Fragment() {
 
     private fun logout(){
         sharedPref.edit().remove(USERNAME_KEY).apply()
+        startActivity(Intent(activity!!.applicationContext, StartActivity::class.java))
         activity!!.finish()
     }
 
@@ -368,7 +373,8 @@ class ProfileFragment : Fragment() {
             utente!!.nome = nuovoNome
             utente!!.cognome = nuovoCognome
             utente!!.descrizione = nuovaDescrizione
-            utente!!.imageURI = serverImageUri
+            if(serverImageUri != null)
+                utente!!.imageURI = serverImageUri
 
             utentiViewModel.updateUtente(utente!!)
 
@@ -412,12 +418,13 @@ class ProfileFragment : Fragment() {
                 file?.let {
                     file = ImageCompressor.compressFile(file!!, activity!!)
                     serverImageUri = utentiViewModel.uploadImage(username, file!!)
+                    if(serverImageUri != null){
                     loadImageIntoImageView(serverImageUri!!, profile_imageView)
                     utente!!.imageURI = serverImageUri
                     utentiViewModel.updateUtente(utente!!)
+                    } else
+                        Toast.makeText(activity!!, "Errore nel caricamento dell'immagine", Toast.LENGTH_SHORT).show()
                 }
-
-
 
             } catch (e: FileNotFoundException) {
                 Log.d(TAG, errorMsg + e.message)
@@ -556,21 +563,6 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun convertImageForDb(imageView: ImageView): ByteArray{
-        val bitmap: Bitmap = imageView.drawable.toBitmap()
-        val baos: ByteArrayOutputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        val imageInByte: ByteArray = baos.toByteArray()
-        return imageInByte
-    }
-
-    private fun setByteArrayImgToImageView(byteArrayImage: ByteArray?, imageView: ImageView){
-        byteArrayImage?.let {
-            val bitmapImage: Bitmap = BitmapFactory.decodeByteArray(byteArrayImage, 0, byteArrayImage.size)
-            imageView.setImageBitmap(Bitmap.createScaledBitmap(bitmapImage, bitmapImage.width,
-                bitmapImage.height, false))
-        }
-    }
 
     private fun getRealPathFromURI(contentURI: Uri): String {
         val result: String

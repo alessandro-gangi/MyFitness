@@ -58,11 +58,16 @@ class UtentiViewModel (application: Application): AndroidViewModel(application){
         if(utente == null)
             viewModelScope.launch { repository.fetchUtente(username) }
 
+    }
+
+    fun setImageUtente(){
         if (utente.value?.imageURI != null){
             val url = URL(utente.value!!.imageURI)
             utenteImage = BitmapFactory.decodeStream(url.openConnection().getInputStream())
         } else Log.d(TAG, "Utente.value = null")
+    }
 
+    fun setImageAllenatore(){
         if(allenatore.value?.imageURI != null) {
             val url = URL(allenatore.value!!.imageURI)
             allenatoreImage = BitmapFactory.decodeStream(url.openConnection().getInputStream())
