@@ -587,10 +587,20 @@ class ProfileFragment : Fragment() {
     }
 
     private fun loadImageIntoImageView(imageURI: String, imageView: ImageView){
-        Glide.with(activity!!)
-            .load(imageURI)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .skipMemoryCache(true)
-            .into(imageView)
+        if(imageView == profile_imageView && utentiViewModel.utenteImage != null
+            && utentiViewModel.utente.value?.imageURI == imageURI)
+                imageView.setImageBitmap(utentiViewModel.utenteImage)
+
+        else if(imageView == allenatore_imageView && utentiViewModel.allenatoreImage != null)
+            imageView.setImageBitmap(utentiViewModel.allenatoreImage)
+
+        else {
+            Log.d(TAG, "Niente foto profilo dell'allenatore -> uso Glide")
+            Glide.with(activity!!)
+                .load(imageURI)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .into(imageView)
+        }
     }
 }

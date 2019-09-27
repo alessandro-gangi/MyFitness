@@ -29,11 +29,9 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
 
 
     fun observeAllenatori(utente: Utente) = utentiDao.getObservableAllenatori((utente.usernameId))
-
-    //Serve a fornire i dati sempre aggiornati dell'utente dell'app
     fun observeUtente(username: String): LiveData<Utente?> = utentiDao.getObservableUtente(username)
-
     fun observeAllenatore(utente: Utente): LiveData<Utente?> = utentiDao.getObservableUtente(utente.allenatore ?: "")
+
 
     fun addUtente(utente: Utente) {
 
@@ -146,7 +144,7 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
             val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
 
             StrictMode.setThreadPolicy(policy)
-            var utente = webService.getUserById(usr).execute().body()
+            val utente = webService.getUserById(usr).execute().body()
 
             if(utente != null && pwd == utente.password)
                 response = true

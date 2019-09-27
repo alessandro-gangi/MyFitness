@@ -1334,6 +1334,7 @@ drawable design_ic_visibility
 drawable design_ic_visibility_off
 drawable design_password_eye
 drawable design_snackbar_background
+drawable gradient
 drawable ic_add_white24dp
 drawable ic_arrow_back_24px
 drawable ic_barbell
@@ -1736,7 +1737,6 @@ id tag_screen_reader_focusable
 id tag_transition_group
 id tag_unhandled_key_event_manager
 id tag_unhandled_key_listeners
-id test_skip_register_button
 id text
 id text2
 id textSpacerNoButtons

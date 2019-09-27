@@ -10,13 +10,9 @@ import kotlinx.coroutines.launch
 
 class RichiesteViewModel (application: Application): AndroidViewModel(application){
 
-    //TODO: test nuove funzionalità
     private val username: MutableLiveData<String> = MutableLiveData()
 
-
     var richieste = Transformations.switchMap(username){ repository.observeRichieste(it)}
-
-
 
     // Repo
     private val repository: RichiesteRepository
@@ -39,8 +35,6 @@ class RichiesteViewModel (application: Application): AndroidViewModel(applicatio
                 repository.fetchRichieste(username)
             }
     }
-
-    //fun updateUtente(utente: Utente) = viewModelScope.launch {repository.updateUtente(utente)}
 
     fun addRichiesta(richiesta: Richiesta) = viewModelScope.launch{repository.addRichiesta(richiesta)}
 

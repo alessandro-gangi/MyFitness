@@ -107,17 +107,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/continua_registration_button"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_margin="@dimen/spacing_medium"/>
-        <Button
-                android:text="@string/test_skip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/test_skip_register_button" app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="8dp"
-                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-                app:layout_constraintHorizontal_bias="0.501" android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:background="@color/colorAccent"
-                android:textColor="@android:color/white"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

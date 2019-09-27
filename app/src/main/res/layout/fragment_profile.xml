@@ -9,12 +9,15 @@
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@color/white">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/spacing_large"
+                android:background="@color/white"
                 android:id="@+id/profile_header_layout">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -58,6 +61,7 @@
                     app:layout_constraintStart_toEndOf="@id/profile_imageView"
                     app:layout_constraintTop_toTopOf="@+id/profile_imageView"
                     android:text="Nome"
+                    android:textStyle="bold"
                     android:layout_margin="@dimen/spacing_large"
                     android:maxWidth="150dp"
                     android:maxLines="2"
@@ -83,6 +87,7 @@
                     app:layout_constraintStart_toEndOf="@id/nome_textView"
                     app:layout_constraintTop_toTopOf="@+id/profile_imageView"
                     android:text="Cognome"
+                    android:textStyle="bold"
                     android:layout_margin="@dimen/spacing_large"
                     android:maxWidth="150dp"
                     android:maxLines="2"
@@ -136,6 +141,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_large"
+                app:cardCornerRadius="@dimen/text_small"
+                app:cardUseCompatPadding="true"
+                app:cardElevation="4dp"
                 android:visibility="visible">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -247,6 +255,9 @@
                 android:id="@+id/profilo_scheda_attuale_cardview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/text_small"
+                app:cardUseCompatPadding="true"
+                app:cardElevation="4dp"
                 android:layout_margin="@dimen/spacing_large">
 
             <androidx.constraintlayout.widget.ConstraintLayout

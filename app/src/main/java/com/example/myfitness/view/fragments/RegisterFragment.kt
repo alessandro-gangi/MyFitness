@@ -27,15 +27,8 @@ class RegisterFragment : Fragment() {
     val TAG = "RegisterFragment"
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_register, container, false)
-
-        //val sharedPref: SharedPreferences = activity!!.getSharedPreferences(USER_DATA_PREFERENCE, Context.MODE_PRIVATE)
 
         setupUI(view)
 
@@ -49,50 +42,12 @@ class RegisterFragment : Fragment() {
         val password: EditText = view.password_register_editText
         val registrati: Button = view.continua_registration_button
         val haiGiaUnAccount: TextView = view.switch_to_login_textView
-        val skip: Button = view.test_skip_register_button
 
-        setupSkipButton(skip)
         setupRegistratiButton(registrati, mail, username, password)
         setupHaiGiaUnAccount(haiGiaUnAccount)
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun setupSkipButton(skip: Button) {
-
-        skip.setOnClickListener {
-
-            //TODO: test inserimento utenti/schede/richieste e schede(DA RIMUOVERE)
-            val utentiViewModel = activity?.run {
-                ViewModelProvider(this).get(UtentiViewModel::class.java)
-            } ?: throw Exception("Invalid Activity")
-
-            val schedeViewModel = activity?.run {
-                ViewModelProvider(this).get(SchedeViewModel::class.java)
-            } ?: throw Exception("Invalid Activity")
-
-            val richiesteViewModel = activity?.run {
-                ViewModelProvider(this).get(RichiesteViewModel::class.java)
-            } ?: throw Exception("Invalid Activity")
-
-
-            // TODO: Test inserimento/cancellazione (da cancellare)
-            utentiViewModel.addUtente(MockUtenti.mockUtenteAle)
-            utentiViewModel.addUtente(MockUtenti.mockUtenteFra)
-            utentiViewModel.addUtente(MockUtenti.mockUtenteLuca)
-            utentiViewModel.addUtente(MockUtenti.mockUtenteAndre)
-
-            richiesteViewModel.addRichiesta(MockRichieste.mockRichiestaAleToAndrea)
-            richiesteViewModel.addRichiesta(MockRichieste.mockRichiestaAleToLuca)
-
-            /*schedeViewModel.addScheda(MockSchede.mockScheda1)
-            schedeViewModel.addScheda(MockSchede.mockScheda2)
-            schedeViewModel.addScheda(MockSchede.mockScheda3)*/
-
-            startActivity(Intent(this.context, MainActivity::class.java))
-
-        }
-    }
 
     private fun setupRegistratiButton(registrati: Button, mail: EditText, username: EditText, password: EditText) {
 
@@ -111,7 +66,7 @@ class RegisterFragment : Fragment() {
             fragmentManager!!.beginTransaction().replace(
                 R.id.container_start,
                 LoginFragment()
-            ).addToBackStack(null).commit()
+            ).commit()
         }
 
     }
@@ -143,8 +98,6 @@ class RegisterFragment : Fragment() {
 
 
     private fun continua_registrazione(usr: String, mail: String, pwd: String){
-
-        //CONTINUA LA REGISTRAZIONE
 
         //passo al fragment per continuare la registrazione
         fragmentManager!!.beginTransaction().replace(
