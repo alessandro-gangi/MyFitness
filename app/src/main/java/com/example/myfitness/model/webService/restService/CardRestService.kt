@@ -47,7 +47,7 @@ interface CardRestService {
     fun getCurrentCard(@Path("usernameId") usernameId: String): Call<Scheda?>
 
     @GET("card/getCompletedRequest/{usernameId}/")
-    fun getCompletedRequest(@Path("usernameId") usernameId: String): Call<List<String>?>
+    fun getCompletedRequest(@Path("usernameId") usernameId: String): Call<List<Scheda>?>
 
 }
 

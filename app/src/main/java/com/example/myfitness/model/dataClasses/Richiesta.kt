@@ -6,7 +6,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "richieste_table")
-data class Richiesta(@PrimaryKey(autoGenerate = true) @ColumnInfo(name = "richiestaId")val richiestaId: Int,
+data class Richiesta(@PrimaryKey(autoGenerate = true) @ColumnInfo(name = "richiestaId")var richiestaId: Int,
                      @Embedded(prefix = "utente_") var utente: Utente,
                      @Embedded(prefix = "allenatore_") var allenatore: Utente,
                      @ColumnInfo(name = "data") var data: String,

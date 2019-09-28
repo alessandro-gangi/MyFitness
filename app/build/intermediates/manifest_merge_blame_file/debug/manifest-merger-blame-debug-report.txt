@@ -6,93 +6,93 @@
 6
 7    <uses-sdk
 8        android:minSdkVersion="21"
-8-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml
+8-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml
 9        android:targetSdkVersion="29" />
-9-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml
+9-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml
 10
 11    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-11-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:5:5-80
-11-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:5:22-77
+11-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:5:5-80
+11-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:5:22-77
 12    <uses-permission android:name="android.permission.INTERNET" />
-12-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:6:5-67
-12-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:6:22-64
+12-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:6:5-67
+12-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:6:22-64
 13    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-13-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:7:5-81
-13-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:7:22-78
+13-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:7:5-81
+13-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:7:22-78
 14    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-14-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:8:5-79
-14-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:8:22-76
+14-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:8:5-79
+14-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:8:22-76
 15
 16    <application
-16-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:10:5-40:19
+16-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:10:5-40:19
 17        android:allowBackup="true"
-17-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:11:13-39
+17-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:11:13-39
 18        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-18-->[androidx.core:core:1.1.0-rc01] C:\Users\asus\.gradle\caches\transforms-2\files-2.1\e508139368a08a6849e1470d3da2f44f\core-1.1.0-rc01\AndroidManifest.xml:24:18-86
+18-->[androidx.core:core:1.1.0-rc01] /home/francesco/.gradle/caches/transforms-2/files-2.1/e508139368a08a6849e1470d3da2f44f/core-1.1.0-rc01/AndroidManifest.xml:24:18-86
 19        android:debuggable="true"
 20        android:icon="@mipmap/ic_launcher"
-20-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:12:13-47
+20-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:12:13-47
 21        android:label="@string/app_name"
-21-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:13:13-45
+21-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:13:13-45
 22        android:roundIcon="@mipmap/ic_launcher_round"
-22-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:14:13-58
+22-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:14:13-58
 23        android:supportsRtl="true"
-23-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:15:13-39
+23-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:15:13-39
 24        android:testOnly="true"
 25        android:theme="@style/AppTheme" >
-25-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:16:13-44
+25-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:16:13-44
 26        <activity
-26-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:17:9-26:20
+26-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:17:9-26:20
 27            android:name="com.example.myfitness.view.activities.SplashScreenActivity"
-27-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:17:19-71
+27-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:17:19-71
 28            android:configChanges="orientation|keyboardHidden"
-28-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:18:17-67
+28-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:18:17-67
 29            android:screenOrientation="portrait"
-29-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:19:17-53
+29-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:19:17-53
 30            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" >
-30-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:20:17-84
+30-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:20:17-84
 31            <intent-filter>
-31-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:21:13-25:29
+31-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:21:13-25:29
 32                <action android:name="android.intent.action.MAIN" />
-32-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:22:17-69
-32-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:22:25-66
+32-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:22:17-69
+32-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:22:25-66
 33
 34                <category android:name="android.intent.category.LAUNCHER" />
-34-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:24:17-77
-34-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:24:27-74
+34-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:24:17-77
+34-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:24:27-74
 35            </intent-filter>
 36        </activity>
 37        <activity
-37-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:27:9-32:20
+37-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:27:9-32:20
 38            android:name="com.example.myfitness.view.activities.MainActivity"
-38-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:28:17-61
+38-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:28:17-61
 39            android:configChanges="orientation|keyboardHidden"
-39-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:29:17-67
+39-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:29:17-67
 40            android:screenOrientation="portrait"
-40-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:30:17-53
+40-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:30:17-53
 41            android:windowSoftInputMode="adjustResize" >
-41-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:31:17-59
+41-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:31:17-59
 42        </activity>
 43        <activity
-43-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:33:9-39:20
+43-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:33:9-39:20
 44            android:name="com.example.myfitness.view.activities.StartActivity"
-44-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:34:17-62
+44-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:34:17-62
 45            android:configChanges="orientation|keyboardHidden"
-45-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:35:17-67
+45-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:35:17-67
 46            android:screenOrientation="portrait"
-46-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:36:17-53
+46-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:36:17-53
 47            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
-47-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:37:17-84
+47-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:37:17-84
 48            android:windowSoftInputMode="adjustResize" >
-48-->C:\Users\asus\AndroidStudioProjects\MyFitness\app\src\main\AndroidManifest.xml:38:17-59
+48-->/home/francesco/Documents/Projects/ProgMob/Progetto/MyFitnessMobile/MyFitness/app/src/main/AndroidManifest.xml:38:17-59
 49        </activity>
 50
 51        <service
-51-->[androidx.room:room-runtime:2.2.0-beta01] C:\Users\asus\.gradle\caches\transforms-2\files-2.1\94244a5251681cad11fa01457bca93df\room-runtime-2.2.0-beta01\AndroidManifest.xml:25:9-27:40
+51-->[androidx.room:room-runtime:2.2.0-beta01] /home/francesco/.gradle/caches/transforms-2/files-2.1/94244a5251681cad11fa01457bca93df/room-runtime-2.2.0-beta01/AndroidManifest.xml:25:9-27:40
 52            android:name="androidx.room.MultiInstanceInvalidationService"
-52-->[androidx.room:room-runtime:2.2.0-beta01] C:\Users\asus\.gradle\caches\transforms-2\files-2.1\94244a5251681cad11fa01457bca93df\room-runtime-2.2.0-beta01\AndroidManifest.xml:26:13-74
+52-->[androidx.room:room-runtime:2.2.0-beta01] /home/francesco/.gradle/caches/transforms-2/files-2.1/94244a5251681cad11fa01457bca93df/room-runtime-2.2.0-beta01/AndroidManifest.xml:26:13-74
 53            android:exported="false" />
-53-->[androidx.room:room-runtime:2.2.0-beta01] C:\Users\asus\.gradle\caches\transforms-2\files-2.1\94244a5251681cad11fa01457bca93df\room-runtime-2.2.0-beta01\AndroidManifest.xml:27:13-37
+53-->[androidx.room:room-runtime:2.2.0-beta01] /home/francesco/.gradle/caches/transforms-2/files-2.1/94244a5251681cad11fa01457bca93df/room-runtime-2.2.0-beta01/AndroidManifest.xml:27:13-37
 54    </application>
 55
 56</manifest>

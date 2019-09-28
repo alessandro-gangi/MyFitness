@@ -155,9 +155,7 @@ class SchedeRepository(private val schedeDao: SchedeDao, private val webService:
         }
     }
 
-    //TODO:FRA -> FORSE QUESTO METODO FACEVA GIA' QUELLO RICHIESTO NEL METODO fetchSchedeUtente (vedi tu)
-    fun fetchSchede(usernameId: String) {
-
+    fun fetchSchedeUtente(usernameId: String){
         try {
             val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
             StrictMode.setThreadPolicy(policy)
@@ -170,12 +168,19 @@ class SchedeRepository(private val schedeDao: SchedeDao, private val webService:
         }
     }
 
-    fun fetchSchedeUtente(usernameId: String){
-        //TODO:FRA -> fare il fetch delle schede dove "username" è il possessore delle schede
-    }
-
+    //Recupera le schede completate dove username è autore ma non possessore e le inserisce nel db locale
     fun fetchRichiesteCompletate(usernameId: String){
-        //TODO:FRA -> fare il fetch delle schede dove "username" è l'autore delle schede
-        // ma NON il possessore delle schede
+        try {
+            val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+            StrictMode.setThreadPolicy(policy)
+
+            webService.getCompletedRequest(usernameId).execute().body()?.map {
+                    card -> schedeDao.addScheda(card)
+            }
+        }catch (e : IOException) {
+            Log.d(TAG, e.message )
+        }
+
+        
     }
 }

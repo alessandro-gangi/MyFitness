@@ -224,12 +224,13 @@ public final class RichiesteDao_Impl implements RichiesteDao {
   }
 
   @Override
-  public void addRichiesta(final Richiesta richiesta) {
+  public long addRichiesta(final Richiesta richiesta) {
     __db.assertNotSuspendingTransaction();
     __db.beginTransaction();
     try {
-      __insertionAdapterOfRichiesta.insert(richiesta);
+      long _result = __insertionAdapterOfRichiesta.insertAndReturnId(richiesta);
       __db.setTransactionSuccessful();
+      return _result;
     } finally {
       __db.endTransaction();
     }

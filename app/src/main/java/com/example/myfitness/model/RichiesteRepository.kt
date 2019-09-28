@@ -6,27 +6,24 @@ import com.example.myfitness.model.dataClasses.Richiesta
 import com.example.myfitness.model.dataClasses.Utente
 import com.example.myfitness.model.local.RichiesteDao
 import com.example.myfitness.model.local.UtentiDao
+import com.example.myfitness.model.webService.restService.RequestRestService
 import com.example.myfitness.model.webService.restService.UserRestService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-//TODO: finche non c'è il web serv. uso quello classe senza repo
-//class RichiesteRepository (private val richiesteDao: RichiesteDao, private val webService: UserRestService){
+class RichiesteRepository (private val richiesteDao: RichiesteDao, private val webService: RequestRestService){
 
-class RichiesteRepository (private val richiesteDao: RichiesteDao){
     val TAG = "RichiesteRepository"
 
 
     fun observeRichieste(username: String): LiveData<List<Richiesta>?> = richiesteDao.getObservableRichieste(username)
 
-    fun addRichiesta(richiesta: Richiesta) {
-        richiesteDao.addRichiesta(richiesta)
+    fun addRichiesta(request: Richiesta) {
+        var requestId = richiesteDao.addRichiesta(request)
+        request.richiestaId = requestId.toInt()
 
-        return //TODO: blocco la parte sotto finche non è pronto il web serv.
-
-        /*
-        webService.addUser(utente).also {
+        webService.addRequest(request).also {
             it.enqueue(object : Callback<String> {
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     Log.d(TAG, response.body()!!.toString())
@@ -36,55 +33,42 @@ class RichiesteRepository (private val richiesteDao: RichiesteDao){
                     Log.d(TAG, t.message!!)
                 }
             })
-        }*/
+        }
     }
 
+    //Bisogna farla anche per il server???
     fun getRichiestaFromAtoB(a: Utente, b: Utente): Richiesta? = richiesteDao.getRichiestaFromAtoB(a.usernameId, b.usernameId)
 
-    fun deleteRichiesta(richiesta: Richiesta) {
-        richiesteDao.deleteRichiesta(richiesta)
+    fun deleteRichiesta(request: Richiesta) {
+        richiesteDao.deleteRichiesta(request)
 
-        return //TODO: blocco la parte sotto finche non è pronto il web serv.
+        webService.deleteRequestById(request.richiestaId).enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                Log.d(TAG, response.body().toString())
+            }
 
-        /*
-
-        webService.deleteUser(username)
-            .enqueue(object : Callback<String> {
-                override fun onResponse(call: Call<String>, response: Response<String>) {
-                    Log.d(TAG, response.body().toString())
-                }
-
-                override fun onFailure(call: Call<String>, t: Throwable) {
-                    Log.d(TAG, t.message!!)
-                }
-            })
-
-         */
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.d(TAG, t.message!!)
+            }
+        })
     }
 
-
+    //Recupero tutte le richieste per l'allenatore e per ogni richiesta faccio addRichiesta per il database in locale
     fun fetchRichieste(usernameId: String) {
-        //TODO:FRA fetch richieste dal server per metterle in locale (le richieste dell'allenatore "usernameID"
-        // se ti serve poi ri faccio passare l'intero oggetto utente
-        /*
-        webService.getUserById(usernameId).also {
-            it.enqueue(object : Callback<Utente> {
-                override fun onResponse(call: Call<Utente>, response: Response<Utente>) {
-                    val user = response.body()
 
-                    utentiDao.addUtente(user!!)
-
-                    Log.d(TAG, user.toString())
+        webService.getTrainerRequests(usernameId).also {
+            it.enqueue(object : Callback<List<Richiesta?>> {
+                override fun onResponse(call: Call<List<Richiesta?>>, response: Response<List<Richiesta?>>) {
+                    val trainerRequests = response.body()?.map {
+                        request -> richiesteDao.addRichiesta(request!!)
+                    }
                 }
-
-                override fun onFailure(call: Call<Utente>, t: Throwable) {
+                override fun onFailure(call: Call<List<Richiesta?>>, t: Throwable) {
                     Log.d(TAG, t.message!!)
                 }
             })
 
         }
-
-         */
     }
 
 

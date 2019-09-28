@@ -6,6 +6,8 @@ import com.example.myfitness.model.local.MyDatabase
 import com.example.myfitness.model.dataClasses.Richiesta
 import com.example.myfitness.model.RichiesteRepository
 import com.example.myfitness.model.dataClasses.Utente
+import com.example.myfitness.model.webService.ClientRetrofit
+import com.example.myfitness.model.webService.restService.RequestRestService
 import kotlinx.coroutines.launch
 
 class RichiesteViewModel (application: Application): AndroidViewModel(application){
@@ -20,10 +22,8 @@ class RichiesteViewModel (application: Application): AndroidViewModel(applicatio
 
     init {
         val richiesteDao = MyDatabase.getDatabase(application).RichiesteDao()
-        //val webService = ClientRetrofit.setService(UserRestService::class.java) //TODO:FRA roba tua
-        //repository = RichiesteRepository(richiesteDao, webService) //TODO: finche non c'è il web serv. uso quello sotto
-        repository = RichiesteRepository(richiesteDao)
-
+        val webService = ClientRetrofit.setService(RequestRestService::class.java) as RequestRestService
+        repository = RichiesteRepository(richiesteDao, webService)
     }
 
 
