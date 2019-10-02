@@ -66,8 +66,9 @@ class CreaSchedaTabFragment: Fragment() {
 
 
     private fun addEsercizio(){
-        adapter.listaEsercizi.add(Esercizio())
-        adapter.notifyDataSetChanged()
+        val newListaEsercizi = ArrayList(adapter.listaEsercizi)
+        newListaEsercizi.add(Esercizio())
+        adapter.setListaEsercizi(newListaEsercizi)
     }
 
     fun getSchedaCreata(): ArrayList<Esercizio>{
