@@ -7,6 +7,8 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -17,6 +19,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
+import android.util.DisplayMetrics
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -32,10 +35,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
 import com.example.myfitness.R
 import com.example.myfitness.model.dataClasses.Scheda
 import com.example.myfitness.model.dataClasses.Utente
+import com.example.myfitness.utilis.ConnectionChecker
 import com.example.myfitness.utilis.ImageCompressor
+import com.example.myfitness.utilis.ImagePathRetriever.getRealPathFromURI
 import com.example.myfitness.view.activities.StartActivity
 import com.example.myfitness.viewmodel.SchedeViewModel
 import com.example.myfitness.viewmodel.UtentiViewModel
@@ -54,6 +61,7 @@ import kotlinx.android.synthetic.main.fragment_register_step2.*
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileNotFoundException
+import java.util.*
 
 
 class ProfileFragment : Fragment() {
@@ -63,6 +71,7 @@ class ProfileFragment : Fragment() {
     private lateinit var sharedPref: SharedPreferences
     private val USER_DATA_PREFERENCE: String = "USER_DATA_PREFERENCE"
     val USERNAME_KEY = "USERNAME"
+    private val TOKEN_KEY = "TOKEN"
     private lateinit var username: String
 
     // Picking photos
@@ -92,6 +101,7 @@ class ProfileFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         sharedPref = activity!!.getSharedPreferences(USER_DATA_PREFERENCE, Context.MODE_PRIVATE)
         username = sharedPref.getString(USERNAME_KEY, "") ?: ""
 
@@ -105,10 +115,6 @@ class ProfileFragment : Fragment() {
 
         utentiViewModel.setUsername(username)
         schedeViewModel.setUsername(username)
-
-        utentiViewModel.setImageUtente()
-        utentiViewModel.setImageAllenatore()
-
     }
 
     override fun onCreateView(
@@ -129,14 +135,12 @@ class ProfileFragment : Fragment() {
             impostaDatiUtente(view)
         })
 
-
         utentiViewModel.allenatore.observe(this, Observer {
             allenatore = it
             impostaAllenatoreCorrente(view)
         })
 
         setupUI(view)
-
 
         return view
     }
@@ -198,18 +202,13 @@ class ProfileFragment : Fragment() {
 
     private fun impostaDatiUtente(view: View){
         utente?.let {
-            val username: String = utente!!.usernameId
             val nome: String = utente!!.nome
             val cognome: String = utente!!.cognome
             val descrizione: String? = utente!!.descrizione
             val imageUri: String? = utente!!.imageURI
-            Log.d(TAG, "Profile image: $imageUri")
 
-            if(imageUri != null){
-                //TODO: prendi immagine dal file system e caricale nella imageview
-                Log.d(TAG, "Profile image: $imageUri")
+            if(imageUri != null)
                 loadImageIntoImageView(imageUri, view.profile_imageView)
-            }
 
             view.nome_textView.text = nome
             view.cognome_textView.text = cognome
@@ -224,15 +223,12 @@ class ProfileFragment : Fragment() {
         val msg: String
 
         if(!utente!!.flagAllenatore){
-            title = "Vuoi diventare allenatore?"
-            msg = "Diventanto allenatore potrai utilizzare tutte le funzionalità" +
-                    " di un utente semplice; in più, potrai ricevere richieste di schede da altri utenti. " +
-                    "Sei sicuro di voler diventare allenatore?"
+            title = resources.getString(R.string.vuoi_divent_allenatore)
+            msg = resources.getString(R.string.conf_divent_allenatore)
         }
         else{
-            title = "Vuoi tornare un utente semplice?"
-            msg = "Tornando utente semplice non riceverai più richieste di schede da altri utenti. " +
-                    "Sei sicuro di voler tornare utente semplice?"
+            title = resources.getString(R.string.vuoi_tornare_utente)
+            msg = resources.getString(R.string.conf_tornare_utente)
         }
 
         builder.setTitle(title)
@@ -256,10 +252,9 @@ class ProfileFragment : Fragment() {
         builder.show()
     }
 
-
     private fun impostaBottoneDiventaAllenatore(view: View){
-        val textDiventaAllenatore = "Diventa allenatore"
-        val textTornaUtente = "Torna utente semplice"
+        val textDiventaAllenatore = resources.getString(R.string.diventa_allenatore)
+        val textTornaUtente = resources.getString(R.string.torna_utente)
         utente?.let {
             if (it.flagAllenatore)
                 view.diventa_allenatore_button.text = textTornaUtente
@@ -327,6 +322,11 @@ class ProfileFragment : Fragment() {
                 R.id.popup_menu_item_logout -> {
                     logout()
                 }
+
+                R.id.popup_menu_item_switch_language -> {
+                    swapAppLocale()
+                    activity!!.recreate()
+                }
             }
             true
         })
@@ -336,6 +336,7 @@ class ProfileFragment : Fragment() {
 
     private fun logout(){
         sharedPref.edit().remove(USERNAME_KEY).apply()
+        sharedPref.edit().remove(TOKEN_KEY).apply()
         startActivity(Intent(activity!!.applicationContext, StartActivity::class.java))
         activity!!.finish()
     }
@@ -359,7 +360,6 @@ class ProfileFragment : Fragment() {
         isUserModifyingData = true
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun confirmChanges(view: View){
 
         // Salvo i dati del nuovo utente
@@ -406,27 +406,26 @@ class ProfileFragment : Fragment() {
         startActivityForResult(intent, IMAGE_PICK_CODE)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        val errorMsg = "errore nella selezione dell'immagine"
-
         if (data != null) {
             val contentURI = data.data
             try {
-                val realPath: String = getRealPathFromURI(contentURI!!)
+                val realPath: String = getRealPathFromURI(activity!!, contentURI!!)
                 file = File(realPath)
                 file?.let {
                     file = ImageCompressor.compressFile(file!!, activity!!)
                     serverImageUri = utentiViewModel.uploadImage(username, file!!)
-                    if(serverImageUri != null){
-                    loadImageIntoImageView(serverImageUri!!, profile_imageView)
-                    utente!!.imageURI = serverImageUri
-                    utentiViewModel.updateUtente(utente!!)
-                    } else
-                        Toast.makeText(activity!!, "Errore nel caricamento dell'immagine", Toast.LENGTH_SHORT).show()
                 }
 
+
+                if(serverImageUri != null){ //aggiorno immagine utente
+                    utentiViewModel.setImageUtente(serverImageUri!!)
+                    loadImageIntoImageView(serverImageUri!!, profile_imageView)
+                } else
+                    Toast.makeText(activity!!, "Errore nel caricamento dell'immagine", Toast.LENGTH_SHORT).show()
+
             } catch (e: FileNotFoundException) {
+                val errorMsg = "errore nella selezione dell'immagine"
                 Log.d(TAG, errorMsg + e.message)
             }
         }
@@ -477,10 +476,15 @@ class ProfileFragment : Fragment() {
     }
 
     private fun cambiaAllenatore(){
-        fragmentManager!!.beginTransaction().replace(
-            R.id.container_main,
-            AllenatoriFragment()
-        ).addToBackStack(null).commit()
+        if(ConnectionChecker.isConnectionAvailable(activity!!))
+            fragmentManager!!.beginTransaction().replace(
+                R.id.container_main,
+                AllenatoriFragment()
+            ).addToBackStack(null).commit()
+        else{
+            val msg = "Connessione alla rete non disponibile. Riprova in seguito"
+            Toast.makeText(activity!!, msg, Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun cambiaScheda(){
@@ -563,36 +567,65 @@ class ProfileFragment : Fragment() {
         }
     }
 
-
-    private fun getRealPathFromURI(contentURI: Uri): String {
-        val result: String
-        val cursor: Cursor? = activity!!.contentResolver.query(contentURI, null, null, null, null)
-        if (cursor == null) { // Source is Dropbox or other similar local file path
-            result = contentURI.path!!
-        } else {
-            cursor.moveToFirst()
-            val index: Int = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-            result = cursor.getString(index)
-            cursor.close()
-        }
-        return result
-    }
+    private fun swapAppLocale(){
+        var localCode = "it-IT"
+        val dm: DisplayMetrics = resources.displayMetrics
+        val config: Configuration = resources.configuration
+        Log.d(TAG, "PREVIOUS LOCALE: ${config.locale.toLanguageTag()}")
+        if(config.locale.toLanguageTag() == "it-IT")
+            localCode = "en"
+        config.setLocale(Locale(localCode.toLowerCase()))
+        resources.updateConfiguration(config, dm)
+   }
 
     private fun loadImageIntoImageView(imageURI: String, imageView: ImageView){
-        if(imageView == profile_imageView && utentiViewModel.utenteImage != null
-            && utentiViewModel.utente.value?.imageURI == imageURI)
-                imageView.setImageBitmap(utentiViewModel.utenteImage)
 
-        else if(imageView == allenatore_imageView && utentiViewModel.allenatoreImage != null)
-            imageView.setImageBitmap(utentiViewModel.allenatoreImage)
+        /*
+        if(imageView==profile_imageView && utentiViewModel.utenteImage!=null)
+            Glide.with(activity!!).load(utentiViewModel.utenteImage).into(imageView)
 
-        else {
-            Log.d(TAG, "Niente foto profilo dell'allenatore -> uso Glide")
-            Glide.with(activity!!)
-                .load(imageURI)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .into(imageView)
+        else if(imageView==allenatore_imageView && utentiViewModel.allenatoreImage!=null)
+            Glide.with(activity!!).load(utentiViewModel.allenatoreImage).into(imageView)
+
+         */
+        //else if(ConnectionChecker.isConnectionAvailable(activity!!)){ //devo prenderla dal server
+        if(ConnectionChecker.isConnectionAvailable(activity!!)){ //devo prenderla dal server
+            val token = sharedPref.getString(TOKEN_KEY, null)
+            if(token != null) {
+                val glideURL = GlideUrl(
+                    imageURI, LazyHeaders.Builder()
+                        .addHeader("Authorization", token)
+                        .build()
+                )
+                Glide.with(activity!!).load(glideURL).into(imageView)
+            }
         }
+
+        /*
+        if(imageView == profile_imageView){
+            if(utentiViewModel.utenteImage != null){ //carico quella nella cache
+                try{Glide.with(activity!!).load(utentiViewModel.utenteImage).into(imageView)}
+                catch (e: Exception){Log.d(TAG, e.message!!)}
+            } else{ //la scarico
+                if(ConnectionChecker.isConnectionAvailable(activity!!))
+                    Glide.with(activity!!).load(imageURI).into(imageView)
+            }
+        }
+
+        else if(imageView == allenatore_imageView){
+            if(utentiViewModel.allenatoreImage != null) //carico quella nella cache
+                Glide.with(activity!!).load(utentiViewModel.allenatoreImage).into(imageView)
+            else { //la scarico
+                if (ConnectionChecker.isConnectionAvailable(activity!!)) {
+                    val glideURL = GlideUrl(imageURI, LazyHeaders.Builder()
+                        .addHeader("Authorization", utentiViewModel.getToken()!!)
+                        .build())
+                    Glide.with(activity!!).load(glideURL).into(imageView)
+                }
+            }
+        }
+
+         */
+        else Log.d(TAG, "Errore -> loadImage (Unexpected)")
     }
 }

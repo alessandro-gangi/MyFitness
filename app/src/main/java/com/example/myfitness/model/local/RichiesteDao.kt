@@ -16,6 +16,9 @@ interface RichiesteDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun addRichiesta(richiesta: Richiesta): Long
 
+    @Query("SELECT * FROM richieste_table WHERE richiestaId = :richiestaID LIMIT 1")
+    fun getRichiesta(richiestaID: Int): Richiesta?
+
     @Query("SELECT * FROM richieste_table WHERE utente_usernameId = :utenteUsername AND allenatore_usernameId = :allenatoreUsername LIMIT 1")
     fun getRichiestaFromAtoB(utenteUsername: String, allenatoreUsername: String): Richiesta?
 

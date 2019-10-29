@@ -22,17 +22,17 @@
                 android:layout_marginEnd="@dimen/spacing_small">
 
             <TextView
-                    android:text="NOME"
+                    android:text="@string/nome"
                     android:textSize="@dimen/text_large"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/nome_richiedente_textView"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/richiedente_imageView"
                     app:layout_constraintTop_toTopOf="parent"
                     style="@style/TextAppearance.AppCompat.Title"
                     android:layout_margin="@dimen/spacing_large"/>
             <TextView
-                    android:text="COGNOME"
+                    android:text="@string/cognome"
                     android:textSize="@dimen/text_large"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_large"
                     android:layout_marginStart="@dimen/spacing_xlarge"
-                    android:text="la tipologia"
+                    android:text="@string/tipologia"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     app:layout_constraintStart_toEndOf="@+id/days_intest_textView"
@@ -69,7 +69,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/spacing_large"
-                    android:text="Giorni"
+                    android:text="@string/giorni"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     app:layout_constraintStart_toStartOf="parent"
@@ -80,7 +80,7 @@
                     style="@style/TextAppearance.AppCompat.Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="i giorni"
+                    android:text="@string/giorni"
                     app:layout_constraintTop_toBottomOf="@id/days_intest_textView"
                     app:layout_constraintStart_toStartOf="@id/days_intest_textView"
                     app:layout_constraintEnd_toEndOf="@id/days_intest_textView"/>
@@ -90,7 +90,7 @@
                     android:id="@+id/data_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="la data"
+                    android:text="@string/data"
                     android:textColor="@color/grey_20"
                     android:textSize="@dimen/text_medium"
                     app:layout_constraintStart_toStartOf="@id/nome_richiedente_textView"
@@ -108,14 +108,12 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/richiedente_imageView"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="@dimen/spacing_large"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="@dimen/spacing_medium"
                     android:src="@color/grey_20"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/cognome_richiedente_textView"
-                    app:layout_constraintVertical_bias="0.99"
+                    app:layout_constraintStart_toStartOf="parent"
                     tools:ignore="ContentDescription" />
 
 
@@ -123,9 +121,9 @@
                     android:id="@+id/inviaScheda_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="INVIA"
+                    android:text="@string/invia"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tipologia_textView"
                     android:textSize="@dimen/text_xmedium"
                     android:textStyle="bold"
                     android:textColor="@color/colorAccent"
@@ -133,11 +131,11 @@
             />
 
             <TextView
-                    android:text="Commento"
+                    android:text="@string/commento"
                     android:layout_width="270dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/commento_textView"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/numGiorni_textView"
                     app:layout_constraintTop_toBottomOf="@id/numGiorni_textView"
                     android:layout_margin="@dimen/spacing_large"
                     android:textStyle="italic"/>

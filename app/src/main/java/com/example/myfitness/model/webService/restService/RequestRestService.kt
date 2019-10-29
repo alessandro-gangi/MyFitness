@@ -8,24 +8,24 @@ import retrofit2.http.*
 interface RequestRestService {
 
     @GET("request/all")
-    fun listRequests(): Call<List<Scheda>>
+    fun listRequests(@Header("Authorization")token: String): Call<List<Scheda>>
 
     @POST("request/insert")
-    fun addRequest(@Body request: Richiesta): Call<String>
+    fun addRequest(@Header("Authorization")token: String, @Body request: Richiesta): Call<String>
 
     @DELETE("request/delete/{cardId}/")
-    fun deleteRequestById(@Path("cardId") cardId: Int): Call<String>
+    fun deleteRequestById(@Header("Authorization")token: String, @Path("cardId") cardId: Int): Call<String>
 
     @GET("request/exists/{requestId}/")
-    fun getRequestById(@Path("requestId") requestId: Int): Call<Richiesta>
+    fun getRequestById(@Header("Authorization")token: String, @Path("requestId") requestId: Int): Call<Richiesta>
 
     @PUT("request/update/{requestId}/")
-    fun updateRequestById(@Path("requestId") requestId: Int, @Body newRequest: Scheda): Call<Richiesta?>
+    fun updateRequestById(@Header("Authorization")token: String, @Path("requestId") requestId: Int, @Body newRequest: Scheda): Call<Richiesta?>
 
     @DELETE("request/delete/all")
-    fun deleteAllRequests(): Call<String>
+    fun deleteAllRequests(@Header("Authorization")token: String): Call<String>
 
     @GET("request/trainerRequests/{usernameId}/")
-    fun getTrainerRequests(@Path("usernameId") usernameId: String): Call<List<Richiesta?>>
+    fun getTrainerRequests(@Header("Authorization")token: String, @Path("usernameId") usernameId: String): Call<List<Richiesta?>>
 
 }

@@ -1,5 +1,6 @@
 package com.example.myfitness.model
 
+import android.util.JsonToken
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.myfitness.model.dataClasses.Richiesta
@@ -19,14 +20,14 @@ class RichiesteRepository (private val richiesteDao: RichiesteDao, private val w
 
     fun observeRichieste(username: String): LiveData<List<Richiesta>?> = richiesteDao.getObservableRichieste(username)
 
-    fun addRichiesta(request: Richiesta) {
+    fun addRichiesta(token: String, request: Richiesta) {
         var requestId = richiesteDao.addRichiesta(request)
         request.richiestaId = requestId.toInt()
 
-        webService.addRequest(request).also {
+        webService.addRequest(token, request).also {
             it.enqueue(object : Callback<String> {
                 override fun onResponse(call: Call<String>, response: Response<String>) {
-                    Log.d(TAG, response.body()!!.toString())
+                    Log.d(TAG, "AddRichiesta: ${response.body()}")
                 }
 
                 override fun onFailure(call: Call<String>, t: Throwable) {
@@ -39,12 +40,14 @@ class RichiesteRepository (private val richiesteDao: RichiesteDao, private val w
     //Bisogna farla anche per il server???
     fun getRichiestaFromAtoB(a: Utente, b: Utente): Richiesta? = richiesteDao.getRichiestaFromAtoB(a.usernameId, b.usernameId)
 
-    fun deleteRichiesta(request: Richiesta) {
+    fun getRichiesta(richiestaID: Int) = richiesteDao.getRichiesta(richiestaID)
+
+    fun deleteRichiesta(token: String, request: Richiesta) {
         richiesteDao.deleteRichiesta(request)
 
-        webService.deleteRequestById(request.richiestaId).enqueue(object : Callback<String> {
+        webService.deleteRequestById(token, request.richiestaId).enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
-                Log.d(TAG, response.body().toString())
+                Log.d(TAG, "DeleteRichiesta: ${response.body()}")
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
@@ -54,13 +57,14 @@ class RichiesteRepository (private val richiesteDao: RichiesteDao, private val w
     }
 
     //Recupero tutte le richieste per l'allenatore e per ogni richiesta faccio addRichiesta per il database in locale
-    fun fetchRichieste(usernameId: String) {
+    fun fetchRichieste(token: String, usernameId: String) {
 
-        webService.getTrainerRequests(usernameId).also {
+        webService.getTrainerRequests(token, usernameId).also {
             it.enqueue(object : Callback<List<Richiesta?>> {
                 override fun onResponse(call: Call<List<Richiesta?>>, response: Response<List<Richiesta?>>) {
-                    val trainerRequests = response.body()?.map {
+                    response.body()?.map {
                         request -> richiesteDao.addRichiesta(request!!)
+                        Log.d(TAG, "FetchRichieste: $request")
                     }
                 }
                 override fun onFailure(call: Call<List<Richiesta?>>, t: Throwable) {
@@ -70,6 +74,7 @@ class RichiesteRepository (private val richiesteDao: RichiesteDao, private val w
 
         }
     }
+
 
 
 }

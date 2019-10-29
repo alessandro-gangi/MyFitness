@@ -22,6 +22,8 @@ import kotlinx.android.synthetic.main.tab_visualizzazione_esercizi.view.*
 import java.lang.Exception
 import android.content.Intent
 import android.net.Uri
+import com.example.myfitness.utilis.AllineaDB
+import com.example.myfitness.utilis.ConnectionChecker
 import kotlinx.android.synthetic.main.dialog_modifica_esercizio.view.*
 
 
@@ -59,7 +61,7 @@ class VisualizzazioneEserciziFragment: Fragment() {
         schedeViewModel.schedeUtente.observe(this, Observer {
             if(it != null) {
                 //listaEsercizi = schedeViewModel.getSchedaGiornaliera(schedaId!!, numGiorno!!)
-                scheda = schedeViewModel.getScheda(schedaId!!)
+                scheda = schedeViewModel.getScheda(schedaId!!)!!
                 listaEsercizi = scheda.esercizi[numGiorno!!]
                 adapter.setListaEsercizi(listaEsercizi)
             }
@@ -88,6 +90,8 @@ class VisualizzazioneEserciziFragment: Fragment() {
             when (itemClicked) {
                 R.id.popup_menu_item_commento -> {
                     aggiungiCommento(numEsercizio)
+                    if(ConnectionChecker.isConnectionAvailable(activity!!) == false)
+                        AllineaDB.addSchedaToUpdate(scheda.schedaId)
                 }
 
                 R.id.popup_menu_item_guarda_video -> {
@@ -96,10 +100,14 @@ class VisualizzazioneEserciziFragment: Fragment() {
 
                 R.id.popup_menu_item_modifica_esercizio -> {
                     modificaEsercizio(numEsercizio)
+                    if(ConnectionChecker.isConnectionAvailable(activity!!) == false)
+                        AllineaDB.addSchedaToUpdate(scheda.schedaId)
                 }
 
                 R.id.popup_menu_item_elimina_esercizio -> {
                     eliminaEsercizio(numEsercizio)
+                    if(ConnectionChecker.isConnectionAvailable(activity!!) == false)
+                        AllineaDB.addSchedaToUpdate(scheda.schedaId)
                 }
             }
         else {
@@ -124,7 +132,7 @@ class VisualizzazioneEserciziFragment: Fragment() {
         builder.setView(view)
 
         builder.setPositiveButton(R.string.aggiungi) { dialog, p1 ->
-            val scheda: Scheda = schedeViewModel.getScheda(schedaId!!)
+            val scheda: Scheda = schedeViewModel.getScheda(schedaId!!)!!
             scheda.esercizi[numGiorno!!][numEsercizio].commento = commento.text.toString()
             schedeViewModel.updateScheda(scheda)
         }
@@ -150,7 +158,7 @@ class VisualizzazioneEserciziFragment: Fragment() {
         builder.setView(view)
 
         builder.setPositiveButton(R.string.aggiungi) { dialog, p1 ->
-            val scheda: Scheda = schedeViewModel.getScheda(schedaId!!)
+            val scheda: Scheda = schedeViewModel.getScheda(schedaId!!)!!
             if (serie.text.toString() != "")
                 scheda.esercizi[numGiorno!!][numEsercizio].serie = serie.text.toString().toInt()
             else
@@ -177,7 +185,7 @@ class VisualizzazioneEserciziFragment: Fragment() {
     }
 
     private fun eliminaEsercizio(numEsercizio: Int){
-        val scheda: Scheda = schedeViewModel.getScheda(schedaId!!)
+        val scheda: Scheda = schedeViewModel.getScheda(schedaId!!)!!
         scheda.esercizi[numGiorno!!].removeAt(numEsercizio)
         schedeViewModel.updateScheda(scheda)
     }

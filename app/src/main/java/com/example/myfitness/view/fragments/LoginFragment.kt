@@ -34,6 +34,8 @@ class LoginFragment : Fragment() {
 
     private lateinit var sharedPref: SharedPreferences
     private val USER_DATA_PREFERENCE: String = "USER_DATA_PREFERENCE"
+    private val USERNAME_KEY = "USERNAME"
+    private val TOKEN_KEY = "TOKEN"
 
 
 
@@ -79,17 +81,22 @@ class LoginFragment : Fragment() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+
     private fun login(username: String, password: String, view: View){
 
         view.username_login_editText.setBackgroundColor(Color.TRANSPARENT)
         view.password_login_editText.setBackgroundColor(Color.TRANSPARENT)
 
-        val response: Boolean = utentiViewModel.login(username, password)
-        if(response){
+        val token: String? = utentiViewModel.login(username, password)
+
+        Log.d(TAG, "Token: $token")
+
+        if(token != null){
             utentiViewModel.setUsername(username)
-            val USERNAME_KEY = "USERNAME"
+            utentiViewModel.setToken(token)
             sharedPref.edit().putString(USERNAME_KEY, username).apply()
+            sharedPref.edit().putString(TOKEN_KEY, token).apply()
+
             startActivity(Intent(this.context, MainActivity::class.java))
             activity!!.finish()
         }

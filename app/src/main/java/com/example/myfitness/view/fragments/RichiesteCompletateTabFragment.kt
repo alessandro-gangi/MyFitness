@@ -1,6 +1,7 @@
 package com.example.myfitness.view.fragments
 
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,14 +14,14 @@ import com.example.myfitness.view.adapters.RichiesteCompletateAdapter
 import kotlinx.android.synthetic.main.tab_richieste_completate.view.*
 
 
-class RichiesteCompletateTabFragment(clickListener: (scheda: Scheda, command: Char) -> Unit): Fragment() {
+class RichiesteCompletateTabFragment(activity: Context, clickListener: (scheda: Scheda, command: Char) -> Unit): Fragment() {
     val TAG = "RichiesteCompletateTabFragment"
 
 
 
     private lateinit var username: String
 
-    private val adapter: RichiesteCompletateAdapter = RichiesteCompletateAdapter(clickListener)
+    private val adapter: RichiesteCompletateAdapter = RichiesteCompletateAdapter(activity, clickListener)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +56,7 @@ class RichiesteCompletateTabFragment(clickListener: (scheda: Scheda, command: Ch
         val USERNAME = "USERNAME"
 
         @JvmStatic
-        fun newInstance(username: String, clickListener: (scheda: Scheda, command: Char) -> Unit) = RichiesteCompletateTabFragment(clickListener).apply {
+        fun newInstance(activity: Context, username: String, clickListener: (scheda: Scheda, command: Char) -> Unit) = RichiesteCompletateTabFragment(activity, clickListener).apply {
             arguments = Bundle().apply {
                 putString(USERNAME, username)
             }

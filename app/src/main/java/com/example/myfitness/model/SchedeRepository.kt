@@ -9,6 +9,7 @@ import com.example.myfitness.model.local.DataConverter
 import com.example.myfitness.model.local.SchedeDao
 import com.example.myfitness.model.webService.ClientRetrofit.gson
 import com.example.myfitness.model.webService.restService.CardRestService
+import com.example.myfitness.utilis.ConnectionChecker
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,11 +26,13 @@ class SchedeRepository(private val schedeDao: SchedeDao, private val webService:
 
     fun observeRichiesteCompletate(usernameId: String): LiveData<List<Scheda>?> = schedeDao.getRichiesteCompletate(usernameId)
 
-    fun addScheda(card: Scheda) {
+    //Aggiunge una nuova scheda
+    fun addScheda(token: String, card: Scheda) :Int {
         val cardId = schedeDao.addScheda(card)
+
         card.schedaId = cardId.toInt()
 
-        webService.addCard(card).also {
+        webService.addCard(token, card).also {
             it.enqueue(object : Callback<String> {
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     Log.d(TAG, response.body().toString())
@@ -40,12 +43,14 @@ class SchedeRepository(private val schedeDao: SchedeDao, private val webService:
                 }
             })
         }
+        return cardId.toInt()
     }
 
-    fun deleteScheda(cardId: Int) {
+    //Elimina la scheda con il determinato ID
+    fun deleteScheda(token: String, cardId: Int) {
         schedeDao.deleteScheda(cardId)
 
-        webService.deleteCard(cardId).enqueue(object : Callback<String> {
+        webService.deleteCard(token, cardId).enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 Log.d(TAG, response.body().toString())
             }
@@ -56,13 +61,14 @@ class SchedeRepository(private val schedeDao: SchedeDao, private val webService:
         })
     }
 
-    fun updateScheda(card: Scheda) {
+    //Aggiorna il contenuto di una scheda
+    fun updateScheda(token: String, card: Scheda) {
         schedeDao.updateScheda(card)
 
-        webService.updateCardById(card.schedaId, card).also {
+        webService.updateCardById(token, card.schedaId, card).also {
             it.enqueue(object : Callback<Scheda?> {
                 override fun onResponse(call: Call<Scheda?>, response: Response<Scheda?>) {
-                    val userUpdate = response.body()!!
+                    val userUpdate = response.body()
                     Log.d(TAG, userUpdate.toString())
                 }
 
@@ -73,26 +79,11 @@ class SchedeRepository(private val schedeDao: SchedeDao, private val webService:
         }
     }
 
+    //Restituisce la scheda con il determinato ID
     fun getScheda(cardId: Int) = schedeDao.getScheda(cardId)
 
-    fun getCardServer(cardId: Int): Scheda? {
-        var card: Scheda? = null
-
-        try {
-            val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
-            StrictMode.setThreadPolicy(policy)
-
-            card =  webService.getCardById(cardId).execute().body()
-
-        }catch (e : IOException) {
-            Log.d(TAG, e.message )
-        }
-
-        return card
-
-    }
-
-    fun setAsCurrentScheda(cardId: Int, usernameId: String) {
+    //Imposta la scheda come "scheda corrente"
+    fun setAsCurrentScheda(token: String, cardId: Int, usernameId: String) {
         schedeDao.removeCurrentScheda(usernameId)
         schedeDao.setAsCurrentScheda(cardId, usernameId)
 
@@ -100,87 +91,71 @@ class SchedeRepository(private val schedeDao: SchedeDao, private val webService:
             val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
             StrictMode.setThreadPolicy(policy)
 
-            webService.removeCurrentCard(usernameId)
+            webService.removeCurrentCard(token, usernameId)
 
         }catch (e : IOException) {
-            Log.d(TAG, e.message )
+            val msg = "setCurrentScheda(remove) ${e.message ?: ""}"
+            Log.d(TAG, msg)
         }
 
-        webService.setAsCurrentCard(usernameId, cardId).also {
+        webService.setAsCurrentCard(token, usernameId, cardId).also {
             it.enqueue(object : Callback<String> {
                 override fun onResponse(call: Call<String>, response: Response<String>) {
-                    Log.d(TAG, response.body()!!)
+                    Log.d(TAG, response.body().toString())
                 }
 
                 override fun onFailure(call: Call<String>, t: Throwable) {
-                    Log.d(TAG, t.message!!)
+                    val msg = "setCurrentScheda(set) ${t.message ?: ""}"
+                    Log.d(TAG, msg)
                 }
             })
         }
     }
 
-    fun removeCurrentScheda(usernameId: String) {
+    //Deseleziona la scheda da "scheda corrente"
+    fun removeCurrentScheda(token: String, usernameId: String) {
         schedeDao.removeCurrentScheda(usernameId)
 
-        webService.removeCurrentCard(usernameId).also {
+        webService.removeCurrentCard(token, usernameId).also {
             it.enqueue(object : Callback<String> {
                 override fun onResponse(call: Call<String>, response: Response<String>) {
-                    Log.d(TAG, response.body()!!)
+                    Log.d(TAG, response.body().toString())
                 }
 
                 override fun onFailure(call: Call<String>, t: Throwable) {
-                    Log.d(TAG, t.message!!)
+                    Log.d(TAG, t.message ?: "")
                 }
             })
         }
     }
 
-    fun getSchedaGiornaliera(id: Int, numGiorno: Int): ArrayList<Esercizio> {
-        return getScheda(id).esercizi[numGiorno]
-    }
-
-    fun deleteAllUserSchede(usernameId: String) {
-        schedeDao.deleteAllUserSchede(usernameId)
-
-        webService.deleteAllUserCards(usernameId).also {
-            it.enqueue(object : Callback<String> {
-                override fun onResponse(call: Call<String>, response: Response<String>) {
-                    Log.d(TAG, response.body()!!)
-                }
-
-                override fun onFailure(call: Call<String>, t: Throwable) {
-                    Log.d(TAG, t.message!!)
-                }
-            })
-        }
-    }
-
-    fun fetchSchedeUtente(usernameId: String){
+    //Recupera le schede dell'utente le inserisce nel db locale
+    fun fetchSchedeUtente(token: String, usernameId: String){
         try {
             val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
             StrictMode.setThreadPolicy(policy)
 
-            webService.getUserCards(usernameId).execute().body()?.map {
+            webService.getUserCards(token, usernameId).execute().body()?.map {
                     card -> schedeDao.addScheda(card)
             }
         }catch (e : IOException) {
-            Log.d(TAG, e.message )
+            val msg = "fetchSchedeUtente ${e.message ?: ""}"
+            Log.d(TAG, msg)
         }
     }
 
     //Recupera le schede completate dove username è autore ma non possessore e le inserisce nel db locale
-    fun fetchRichiesteCompletate(usernameId: String){
+    fun fetchRichiesteCompletate(token: String, usernameId: String){
         try {
             val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
             StrictMode.setThreadPolicy(policy)
 
-            webService.getCompletedRequest(usernameId).execute().body()?.map {
+            webService.getCompletedRequest(token, usernameId).execute().body()?.map {
                     card -> schedeDao.addScheda(card)
             }
         }catch (e : IOException) {
-            Log.d(TAG, e.message )
+            val msg = "fetchRichiesteCompletate ${e.message ?: ""}"
+            Log.d(TAG, msg)
         }
-
-        
     }
 }

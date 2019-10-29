@@ -17,37 +17,37 @@ interface CardRestService {
     fun listCards(): Call<List<Scheda>>
 
     @POST("card/insert")
-    fun addCard(@Body card: Scheda): Call<String>
+    fun addCard(@Header("Authorization")token: String, @Body card: Scheda): Call<String>
 
     @DELETE("card/delete/{cardId}/")
-    fun deleteCard(@Path("cardId") cardId: Int): Call<String>
+    fun deleteCard(@Header("Authorization")token: String, @Path("cardId") cardId: Int): Call<String>
 
     @GET("card/exists/{cardId}/")
-    fun getCardById(@Path("cardId") cardId: Int): Call<Scheda>
+    fun getCardById(@Header("Authorization")token: String, @Path("cardId") cardId: Int): Call<Scheda>
 
     @PUT("card/update/{cardId}/")
-    fun updateCardById(@Path("cardId") cardId: Int, @Body newCard: Scheda): Call<Scheda?>
+    fun updateCardById(@Header("Authorization")token: String, @Path("cardId") cardId: Int, @Body newCard: Scheda): Call<Scheda?>
 
     @DELETE("card/delete/all")
-    fun deleteAllCards(): Call<String>
+    fun deleteAllCards(@Header("Authorization")token: String): Call<String>
 
     @DELETE("card/deleteAllUserCards/{usernameId}/")
-    fun deleteAllUserCards(@Path("usernameId") username: String): Call<String>
+    fun deleteAllUserCards(@Header("Authorization")token: String, @Path("usernameId") username: String): Call<String>
 
     @PUT("/setAsCurrentCard/{usernameId}/{cardId}/")
-    fun setAsCurrentCard(@Path("usernameId") usernameId: String, @Path("cardId") cardId: Int): Call<String>
+    fun setAsCurrentCard(@Header("Authorization")token: String, @Path("usernameId") usernameId: String, @Path("cardId") cardId: Int): Call<String>
 
     @DELETE("card/removeCurrentCard/{usernameId}/")
-    fun removeCurrentCard(@Path("usernameId") usernameId: String): Call<String>
+    fun removeCurrentCard(@Header("Authorization")token: String, @Path("usernameId") usernameId: String): Call<String>
 
     @GET("card/getUserCards/{usernameId}/")
-    fun getUserCards(@Path("usernameId") usernameId: String): Call<List<Scheda>?>
+    fun getUserCards(@Header("Authorization")token: String, @Path("usernameId") usernameId: String): Call<List<Scheda>?>
 
     @GET("card/getCurrentCard/{usernameId}/")
-    fun getCurrentCard(@Path("usernameId") usernameId: String): Call<Scheda?>
+    fun getCurrentCard(@Header("Authorization")token: String, @Path("usernameId") usernameId: String): Call<Scheda?>
 
     @GET("card/getCompletedRequest/{usernameId}/")
-    fun getCompletedRequest(@Path("usernameId") usernameId: String): Call<List<Scheda>?>
+    fun getCompletedRequest(@Header("Authorization")token: String, @Path("usernameId") usernameId: String): Call<List<Scheda>?>
 
 }
 

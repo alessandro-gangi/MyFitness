@@ -23,7 +23,7 @@
         <NumberPicker
                 android:id="@+id/numGiorni_picker_crea_scheda_dialog"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"></NumberPicker>
+                android:layout_height="wrap_content"/>
 
     </LinearLayout>
 
@@ -35,7 +35,7 @@
                 android:id="@+id/tipologia_crea_scheda_dialog"
                 android:layout_width="120sp"
                 android:layout_height="wrap_content"
-                android:text="Tipologia"
+                android:text="@string/tipologia"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/spacing_large"/>
 
@@ -53,25 +53,25 @@
                         android:id="@+id/radio_forza_crea_scheda_dialog"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Forza"/>
+                        android:text="@string/forza"/>
 
                 <RadioButton
                         android:id="@+id/radio_massa_crea_scheda_dialog"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Massa"/>
+                        android:text="@string/massa"/>
 
                 <RadioButton
                         android:id="@+id/radio_definizione_crea_scheda_dialog"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Definizione"/>
+                        android:text="@string/definizione"/>
 
                 <RadioButton
                         android:id="@+id/radio_nonSpecificare_crea_scheda_dialog"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Non Specificare"
+                        android:text="@string/non_specificare"
                         android:checked="true"/>
             </RadioGroup>
 
@@ -83,7 +83,7 @@
             android:id="@+id/commento_crea_scheda_dialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Commento"
+            android:hint="@string/commento"
             android:inputType="text"
             android:maxLength="150"
             android:layout_gravity="start"

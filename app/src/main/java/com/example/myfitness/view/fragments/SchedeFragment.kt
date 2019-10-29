@@ -19,6 +19,8 @@ import com.example.myfitness.model.dataClasses.MockSchede
 import com.example.myfitness.model.dataClasses.Richiesta
 import com.example.myfitness.model.dataClasses.Scheda
 import com.example.myfitness.model.dataClasses.Utente
+import com.example.myfitness.utilis.AllineaDB
+import com.example.myfitness.utilis.ConnectionChecker
 import com.example.myfitness.viewmodel.RichiesteViewModel
 import com.example.myfitness.viewmodel.SchedeViewModel
 import com.example.myfitness.viewmodel.UtentiViewModel
@@ -63,14 +65,17 @@ class SchedeFragment : Fragment(){
         schedeViewModel = activity?.run {
             ViewModelProvider(this).get(SchedeViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
+        schedeViewModel.setUsername(username)
 
         utentiViewModel = activity?.run {
             ViewModelProvider(this).get(UtentiViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
+        utentiViewModel.setUsername(username)
 
         richiesteViewModel = activity?.run {
             ViewModelProvider(this).get(RichiesteViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
+        richiesteViewModel.setUsername(username)
 
     }
 
@@ -90,7 +95,7 @@ class SchedeFragment : Fragment(){
                 adapter.setListaSchede(it)
         })
 
-        activity!!.title = "Le tue schede"
+        activity!!.title = resources.getString(R.string.le_tue_schede)
 
 
         rootView.button_add_scheda.setOnClickListener {
@@ -167,8 +172,6 @@ class SchedeFragment : Fragment(){
         builder.setView(view)
 
         builder.setPositiveButton(R.string.richiedi) { _, _ ->
-
-            //TODO: al posto della roba sotto bisogna inviare la richiesta all'allenatore
             val richiesta = Richiesta(0,utente, allenatore!!,
                 currentDate, numGiorni, tipologia, commento.text.toString())
 
@@ -192,7 +195,7 @@ class SchedeFragment : Fragment(){
     private fun creaScheda(){
 
         val builder = AlertDialog.Builder(activity)
-        builder.setTitle("Crea una scheda")
+        builder.setTitle(resources.getString(R.string.crea_scheda))
 
         val view = layoutInflater.inflate(R.layout.dialog_crea_scheda, null)
 
@@ -260,12 +263,17 @@ class SchedeFragment : Fragment(){
             'D' -> {
 
                 schedeViewModel.deleteScheda(schedaId)
-                Log.d(TAG, "ID scheda cancellata: $schedaId")
+                if(ConnectionChecker.isConnectionAvailable(activity!!) == false)
+                    AllineaDB.addSchedaToDelete(schedaId)
             }
 
             'S' -> {
 
                 schedeViewModel.setAsCurrentScheda(schedaId)
+                //TODO: test -> non so se basta fare così
+                if(ConnectionChecker.isConnectionAvailable(activity!!) == false)
+                    AllineaDB.addSchedaToUpdate(schedaId)
+
                 fragmentManager!!.beginTransaction()
                     .replace(R.id.container_main,
                         ProfileFragment()).commit()

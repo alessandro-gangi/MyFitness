@@ -9,4 +9,8 @@
             android:id="@+id/popup_menu_item_logout"
             android:title="@string/logout"/>
 
+    <item
+            android:id="@+id/popup_menu_item_switch_language"
+            android:title="@string/cambia_lingua"/>
+
 </menu>

@@ -1,6 +1,7 @@
 package com.example.myfitness.viewmodel
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.*
 import com.example.myfitness.model.SchedeRepository
 import com.example.myfitness.model.dataClasses.Esercizio
@@ -13,6 +14,8 @@ import kotlinx.coroutines.launch
 
 open class SchedeViewModel (application: Application): AndroidViewModel(application){
     private val TAG = "SchedeViewModel"
+    private val USER_DATA_PREFERENCE: String = "USER_DATA_PREFERENCE"
+    private val TOKEN_KEY = "TOKEN"
 
     private val username: MutableLiveData<String> = MutableLiveData()
 
@@ -25,45 +28,57 @@ open class SchedeViewModel (application: Application): AndroidViewModel(applicat
     // Repo
     private val repository: SchedeRepository
 
+    // Token
+    private var token: String? = null
+
 
     init {
         val schedeDao = MyDatabase.getDatabase(application).SchedeDao()
         val webService = ClientRetrofit.setService(CardRestService::class.java) as CardRestService
         repository = SchedeRepository(schedeDao, webService)
+        token = application.getSharedPreferences(USER_DATA_PREFERENCE, Context.MODE_PRIVATE)
+            .getString(TOKEN_KEY, null)
     }
 
 
     fun setUsername(username: String){
         this.username.value = username
 
-        // scarica i dati dal server e li salva nel db (per adesso la commento)
-        if(schedeUtente == null || currentSchedaUtente == null)
-            viewModelScope.launch { repository.fetchSchedeUtente(username)}
-
-        if(richiesteCompletate == null)
-            viewModelScope.launch { repository.fetchRichiesteCompletate(username)}
-
-
+        if(token != null) {
+            viewModelScope.launch { repository.fetchSchedeUtente(token!!, username) }
+            viewModelScope.launch { repository.fetchRichiesteCompletate(token!!, username) }
+        }
     }
 
 
-    fun addScheda(scheda: Scheda) = viewModelScope.launch{repository.addScheda(scheda)}
+    fun addScheda(scheda: Scheda) :Int?{
+        if(token != null) viewModelScope.launch{repository.addScheda(token!!, scheda)}
+        return null
+    }
+    //fun addScheda(scheda: Scheda)= repository.addScheda(scheda)
 
-    fun updateScheda(scheda: Scheda) = viewModelScope.launch{repository.updateScheda(scheda)}
+    fun updateScheda(scheda: Scheda){
+        if(token != null) viewModelScope.launch{repository.updateScheda(token!!, scheda)}
+    }
 
-    fun deleteScheda(id: Int) = viewModelScope.launch {repository.deleteScheda(id)}
+    fun deleteScheda(id: Int){
+        if(token != null)viewModelScope.launch {repository.deleteScheda(token!!, id)}
+    }
 
-    fun getScheda(id: Int) : Scheda = repository.getScheda(id)
+    fun getScheda(id: Int) : Scheda?{
+        if(token != null) return repository.getScheda(id)
+        return null
+    }
 
-    fun setAsCurrentScheda(idScheda: Int) = viewModelScope.launch {repository.setAsCurrentScheda(idScheda, username.value!!)}
+    fun setAsCurrentScheda(idScheda: Int){
+        if(token != null)
+            viewModelScope.launch {repository.setAsCurrentScheda(token!!, idScheda, username.value!!)}
+    }
 
-    fun removeCurrentScheda() = viewModelScope.launch { repository.removeCurrentScheda(username.value!!) }
-
-    fun getSchedaGiornaliera(id: Int, numGiorno: Int) :ArrayList<Esercizio> = repository.getSchedaGiornaliera(id, numGiorno)
-
-    fun deleteAllUserSchede() = viewModelScope.launch { repository.deleteAllUserSchede(username.value!!) }
-
-
+    fun removeCurrentScheda(){
+        if(token != null && username.value != null)
+            viewModelScope.launch { repository.removeCurrentScheda(token!!, username.value!!) }
+    }
 
 
 }

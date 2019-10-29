@@ -15,6 +15,7 @@ import androidx.viewpager.widget.ViewPager
 import com.example.myfitness.R
 import com.example.myfitness.model.dataClasses.Richiesta
 import com.example.myfitness.model.dataClasses.Scheda
+import com.example.myfitness.utilis.ConnectionChecker
 import com.google.android.material.tabs.TabLayout
 import java.lang.Exception
 import com.example.myfitness.view.adapters.RichiestePagerAdapter
@@ -60,6 +61,7 @@ class RichiesteFragment : Fragment() {
         schedeViewModel = activity?.run {
             ViewModelProvider(this).get(SchedeViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
+        schedeViewModel.setUsername(username)
 
     }
 
@@ -68,7 +70,7 @@ class RichiesteFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_richieste, container, false)
 
-        activity!!.title = "Richieste"
+        activity!!.title = resources.getString(R.string.title_richieste)
 
         //imposto i tab con il pager
         setupViewPager(rootView.richieste_view_pager, rootView.richieste_tab_layout)
@@ -90,11 +92,13 @@ class RichiesteFragment : Fragment() {
 
     private fun setupViewPager(viewPager: ViewPager, tabLayout: TabLayout){
         adapter = RichiestePagerAdapter(childFragmentManager)
+        val inAttesaTitle = resources.getString(R.string.in_attesa)
+        val completateTitle = resources.getString(R.string.completate)
 
         adapter.addFragment(RichiesteInAttesaTabFragment
-            .newInstance(username) { richiesta, command -> onRichiestaInAttesaClicked(richiesta, command) }, title = "In attesa")
+            .newInstance(activity!!, username) { richiesta, command -> onRichiestaInAttesaClicked(richiesta, command) }, title = inAttesaTitle)
 
-        adapter.addFragment(RichiesteCompletateTabFragment.newInstance(username) { scheda, command -> onRichiestaCompletataClicked(scheda, command) }, title = "Completate")
+        adapter.addFragment(RichiesteCompletateTabFragment.newInstance(activity!!, username) { scheda, command -> onRichiestaCompletataClicked(scheda, command) }, title = completateTitle)
 
         viewPager.adapter= adapter
         tabLayout.setupWithViewPager(viewPager)
@@ -142,18 +146,23 @@ class RichiesteFragment : Fragment() {
 
     private fun inviaScheda(richiesta: Richiesta){
 
-        fragmentManager!!.beginTransaction()
-            .replace(R.id.container_main,
-                CreaSchedaFragment.newInstance(
-                    username = username,
-                    data = richiesta.data,
-                    tipologia = richiesta.tipologia,
-                    numGiorni = richiesta.numGiorni,
-                    commento = richiesta.commento,
-                    richiesta = richiesta)
-            )
-            .addToBackStack(null)
-            .commit()
+        if(ConnectionChecker.isConnectionAvailable(activity!!))
+            fragmentManager!!.beginTransaction()
+                .replace(R.id.container_main,
+                    CreaSchedaFragment.newInstance(
+                        username = username,
+                        data = richiesta.data,
+                        tipologia = richiesta.tipologia,
+                        numGiorni = richiesta.numGiorni,
+                        commento = richiesta.commento,
+                        richiesta = richiesta)
+                ).addToBackStack(null)
+                .commit()
+
+        else {
+            val errorMSg = "Connessione alla rete non disponibile. Riprova in seguito"
+            Toast.makeText(activity!!, errorMSg, Toast.LENGTH_LONG).show()
+        }
 
     }
 

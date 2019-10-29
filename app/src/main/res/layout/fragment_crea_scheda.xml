@@ -36,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@color/colorPrimary"
-                android:text="Fine"
+                android:text="@string/fine"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
         />

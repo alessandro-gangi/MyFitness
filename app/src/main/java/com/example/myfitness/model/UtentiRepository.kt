@@ -25,19 +25,14 @@ import kotlin.random.Random
 class UtentiRepository (private val utentiDao: UtentiDao, private val webService: UserRestService){
 
     val TAG = "UtentiRepository"
-    var utenteTmp: Utente? = null
-
 
     fun observeAllenatori(utente: Utente) = utentiDao.getObservableAllenatori((utente.usernameId))
     fun observeUtente(username: String): LiveData<Utente?> = utentiDao.getObservableUtente(username)
-    fun observeAllenatore(utente: Utente): LiveData<Utente?> = utentiDao.getObservableUtente(utente.allenatore ?: "")
+    fun observeAllenatore(utente: Utente): LiveData<Utente?> =
+        utentiDao.getObservableUtente(utente.allenatore ?: "")
 
 
     fun addUtente(utente: Utente) {
-
-        //TODO: In teoria basta aggiungere l'utente solo sul server
-        // perchè poi viene fatta dopo la fetch sulla base di dati locale
-
         utentiDao.addUtente(utente)
         webService.addUser(utente).also {
             it.enqueue(object : Callback<String> {
@@ -51,13 +46,10 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
         }
     }
 
-    fun deleteUtente(username: String) {
-
-        //TODO: In teoria basta eliminare l'utente solo dal server
-
+    fun deleteUtente(token: String, username: String) {
         utentiDao.deleteUtente(username)
 
-        webService.deleteUser(username)
+        webService.deleteUser(token, username)
             .enqueue(object : Callback<String> {
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     Log.d(TAG, response.body().toString())
@@ -69,30 +61,27 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
             })
     }
 
-    fun updateUtente(utente: Utente) {
+    fun updateUtente(token: String, utente: Utente) {
         utentiDao.updateUtente(utente)
 
-        webService.updateUserById(utente.usernameId, utente).also {
+        webService.updateUserById(token, utente.usernameId, utente).also {
             it.enqueue(object : Callback<Utente> {
                 override fun onResponse(call: Call<Utente>, response: Response<Utente>) {
-                    val userUpdate = response.body()!!
-                    Log.d(TAG, userUpdate.toString())
+                    Log.d(TAG, response.body().toString())
                 }
-
                 override fun onFailure(call: Call<Utente>, t: Throwable) {
-                    Log.d(TAG, t.message!!)
+                    Log.d(TAG, t.message ?: "")
                 }
             })
 
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
-    fun getUtente(username: String) :Utente?{
+    fun getUtente(token: String, username: String) :Utente?{
         var utente = utentiDao.getUtente(username)
 
         if(utente == null){
-            val utenteServer = fetchUtente(username)
+            val utenteServer = fetchUtente(token, username)
             if(utenteServer != null)
                 utentiDao.addUtente(utenteServer)
             utente = utenteServer
@@ -101,68 +90,45 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
         return utente
     }
 
-    fun getUtenti() = utentiDao.getObservableUtenti()
 
-    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
-    fun getUtentiServer(): List<Utente>? {
-
-        try {
-            val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
-
-            StrictMode.setThreadPolicy(policy)
-            return webService.listUsers().execute().body()
-
-        } catch (e: IOException) {
-            Log.d(TAG, e.message)
-        }
-        return null
-    }
-
-    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
-    fun fetchUtente(usernameId: String): Utente? {
+    fun fetchUtente(token: String, usernameId: String): Utente? {
         var utente: Utente? = null
 
         try {
             val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
-
             StrictMode.setThreadPolicy(policy)
-            return webService.getUserById(usernameId).execute().body()
+
+            utente = webService.getUserById(token, usernameId).execute().body()
 
         }catch (e : IOException) {
-            Log.d(TAG, e.message )
-
+            utente = null
+            Log.d(TAG, e.message ?: "")
+        }finally {
+            return utente
         }
-
-        return utente
     }
 
-    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
-    fun login(usr: String, pwd: String): Boolean{
-        var response = false
 
+
+    fun login(usr: String, pwd: String): String?{
+        var token: String? = null
         try {
             val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
-
             StrictMode.setThreadPolicy(policy)
-            val utente = webService.getUserById(usr).execute().body()
 
-            if(utente != null && pwd == utente.password)
-                response = true
-
-            if(!response)
-                Log.d(TAG, "accesso negato")
-
+            token = webService.login(usr, pwd).execute().body()
         }catch (e : IOException) {
-            Log.d(TAG, e.message )
+            Log.d(TAG, e.message ?: "" )
+            token = null
         }
-
-        return response
+        finally {
+            Log.d(TAG, "Token: $token")
+            return token
+        }
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
-    fun uploadImage(username: String, image: File): String? {
-
+    fun uploadImage(token: String, username: String, image: File): String? {
         var uri: String? = null
 
         val imagePart = MultipartBody.Part.createFormData(
@@ -173,20 +139,17 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
 
         try {
             val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
-
             StrictMode.setThreadPolicy(policy)
-            uri = webService.retrieveUri(imagePart).execute().body().toString()
-
-            Log.d("URI", uri)
+            uri = webService.retrieveUri(token, imagePart).execute().body().toString()
+            //uri = webService.retrieveUri(imagePart).execute().body().toString()
 
         }catch (e : IOException) {
-            Log.d(TAG, e.message )
+            uri = null
+            Log.d(TAG, e.message ?: "")
         }
-
-        return uri
-
+        finally {
+            return uri
+        }
     }
-
-
 
 }

@@ -107,10 +107,14 @@ class RegisterStep2Fragment : Fragment() {
 
     private fun setupImmagine(image: ImageView) {
         image.setOnClickListener {
-            preparePermissionForPickingImage()
-
-            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            startActivityForResult(intent, IMAGE_PICK_CODE)
+            val myPermission: String = Manifest.permission.READ_EXTERNAL_STORAGE
+            if (!isPermissionGranted(myPermission))
+                preparePermissionForPickingImage()
+            else{
+                val intent =
+                    Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                startActivityForResult(intent, IMAGE_PICK_CODE)
+            }
         }
 
     }
@@ -121,7 +125,6 @@ class RegisterStep2Fragment : Fragment() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun setupCompletaRegistrazioneButton(completaRegistrazione: Button, nome: EditText, cognome: EditText,
                                                  eta: EditText, genereRadioGroup: RadioGroup){
 
@@ -166,23 +169,20 @@ class RegisterStep2Fragment : Fragment() {
         }
     }
 
-    //handle result of picked image
-    @RequiresApi(Build.VERSION_CODES.O)
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val errorMsg = "errore nella selezione dell'immagine"
 
         if (data != null) {
             val contentURI = data.data
-            //val yourDrawable: Drawable
             try {
-                //val inputStream = activity!!.contentResolver.openInputStream(contentURI!!)
                 val realPath: String = getRealPathFromURI(contentURI!!)
                 file = File(realPath)
                 file?.let {
                     file = ImageCompressor.compressFile(file!!, activity!!)
                     serverImageUri = utentiViewModel.uploadImage(username!!, file!!)
 
-                    loadImageIntoImageView(serverImageUri!!, register_imageView)
+                    loadImageIntoImageView(contentURI, register_imageView)
                 }
 
             } catch (e: FileNotFoundException) {
@@ -279,7 +279,7 @@ class RegisterStep2Fragment : Fragment() {
         return result
     }
 
-    private fun loadImageIntoImageView(imageURI: String, imageView: ImageView){
+    private fun loadImageIntoImageView(imageURI: Uri, imageView: ImageView){
         Glide.with(activity!!)
             .load(imageURI)
             .diskCacheStrategy(DiskCacheStrategy.NONE)

@@ -71,7 +71,7 @@ class AllenatoriFragment : Fragment() {
             utente = it
         })
 
-        activity!!.title = "Scegli un allenatore"
+        activity!!.title = resources.getString(R.string.scegli_allenatore)
 
         setHasOptionsMenu(true)
 
@@ -116,6 +116,7 @@ class AllenatoriFragment : Fragment() {
         if(utente != null) {
             utente!!.allenatore = listaAllenatori[numAllenatore].usernameId
             utentiViewModel.updateUtente(utente!!)
+            utentiViewModel.setImageAllenatore(listaAllenatori[numAllenatore].imageURI!!)
 
             activity?.supportFragmentManager?.popBackStack()
         }

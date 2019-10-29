@@ -1,12 +1,18 @@
 package com.example.myfitness.view.adapters
 
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
 import com.example.myfitness.R
 import com.example.myfitness.model.dataClasses.Richiesta
 import kotlinx.android.synthetic.main.cardview_richiesta_in_attesa.view.*
@@ -15,24 +21,25 @@ import kotlin.collections.ArrayList
 import kotlin.contracts.contract
 
 
-class RichiesteInAttesaAdapter(val clickListener: (richiesta: Richiesta, command: Char) -> Unit): RecyclerView.Adapter<RichiestaInAttesaViewHolder>(){
+class RichiesteInAttesaAdapter(val activity: Context, val clickListener: (richiesta: Richiesta, command: Char) -> Unit): RecyclerView.Adapter<RichiestaInAttesaViewHolder>(){
     val TAG = "RichiesteInAttAdapt"
+    private val USER_DATA_PREFERENCE: String = "USER_DATA_PREFERENCE"
+    private  var sharedPref: SharedPreferences = activity.getSharedPreferences(USER_DATA_PREFERENCE, Context.MODE_PRIVATE)
+    private val TOKEN_KEY = "TOKEN"
 
     private var listaRichieste: ArrayList<Richiesta> = ArrayList()
 
 
     fun setListaRichieste(nuovaListaRichieste: List<Richiesta>){
-
-        Log.d(TAG, "ADAPTER-> vecchia lista: $listaRichieste")
-        Log.d(TAG, "ADAPTER-> update in arrivo: $nuovaListaRichieste")
-
         listaRichieste.clear()
         listaRichieste.addAll(nuovaListaRichieste)
         notifyDataSetChanged()
 
         //TODO: non so perchè il dato non si aggiorna in automatico
-        Log.d(TAG, "ADAPTER-> nuova lista richieste in attesa: $listaRichieste")
+        Log.d(TAG, "setListaSchede")
     }
+
+
 
 
     override fun getItemCount(): Int {
@@ -42,6 +49,8 @@ class RichiesteInAttesaAdapter(val clickListener: (richiesta: Richiesta, command
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RichiestaInAttesaViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val cell = layoutInflater.inflate(R.layout.cardview_richiesta_in_attesa, parent, false)
+        //TODO: test
+        //notifyDataSetChanged()
 
         return RichiestaInAttesaViewHolder(cell)
     }
@@ -64,12 +73,14 @@ class RichiesteInAttesaAdapter(val clickListener: (richiesta: Richiesta, command
             showPopupMenu(holder.threeDotsBtn, position)
         }
 
-        //TODO: implementa
-        // glide per caricare l'immagine dell'utente richiedente
+        if(listaRichieste[position].utente.imageURI != null)
+            loadImageIntoImageView(listaRichieste[position].utente.imageURI!!, holder.imageRichiedente)
+
 
         holder.inviaBtn.setOnClickListener {
-            Log.d(TAG, "Invia scheda!")
+            clickListener(listaRichieste[position], 'I')
         }
+        Log.d(TAG, "onBindViewHolder")
     }
 
 
@@ -94,6 +105,23 @@ class RichiesteInAttesaAdapter(val clickListener: (richiesta: Richiesta, command
 
         popup.show()
     }
+
+    private fun loadImageIntoImageView(imageURI: String, imageView: ImageView) {
+        val token = sharedPref.getString(TOKEN_KEY, null)
+        if (token != null) {
+            val glideURL = GlideUrl(
+                imageURI, LazyHeaders.Builder()
+                    .addHeader("Authorization", token)
+                    .build()
+            )
+            Glide.with(activity)
+                .load(glideURL)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .into(imageView)
+        }
+    }
+
 
 }
 

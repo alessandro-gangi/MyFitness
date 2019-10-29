@@ -23,7 +23,10 @@ import kotlinx.android.synthetic.main.fragment_crea_scheda.view.*
 import java.lang.Exception
 import com.example.myfitness.model.dataClasses.Esercizio
 import com.example.myfitness.model.dataClasses.Richiesta
+import com.example.myfitness.utilis.AllineaDB
+import com.example.myfitness.utilis.ConnectionChecker
 import com.example.myfitness.viewmodel.RichiesteViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_crea_scheda.*
 
 //TODO: questo fragment dovrà ricevere come parametro un oggetto utente
@@ -124,7 +127,10 @@ class CreaSchedaFragment(val richiesta: Richiesta?): Fragment() {
 
         //concludo
         if(controllaScheda(schedaCompleta)) {
-            schedeViewModel.addScheda(schedaCompleta)
+            val schedaId = schedeViewModel.addScheda(schedaCompleta)
+            if(ConnectionChecker.isConnectionAvailable(activity!!) == false && schedaId != null)
+                AllineaDB.addSchedaToAdd(schedaId)
+
 
             if(richiesta != null){
                 richiesteViewModel = activity?.run {
@@ -133,8 +139,12 @@ class CreaSchedaFragment(val richiesta: Richiesta?): Fragment() {
                 richiesteViewModel.deleteRichiesta(richiesta)
             }
 
-            Toast.makeText(activity, "Scheda inviata.", Toast.LENGTH_SHORT).show()
-            activity?.supportFragmentManager?.popBackStack()
+            Toast.makeText(activity, "Scheda creata.", Toast.LENGTH_SHORT).show()
+            fragmentManager!!.beginTransaction().replace(
+                R.id.container_main,
+                ProfileFragment()
+            ).commit()
+            activity!!.nav_view_main.selectedItemId = R.id.navigation_home
         }
 
     }

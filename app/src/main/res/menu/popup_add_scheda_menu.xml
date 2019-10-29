@@ -3,10 +3,10 @@
 
     <item
             android:id="@+id/popup_menu_item_richiedi"
-            android:title="Richiedi scheda"/>
+            android:title="@string/richiedi_scheda"/>
 
     <item
             android:id="@+id/popup_menu_item_crea"
-            android:title="Crea scheda"/>
+            android:title="@string/crea_scheda"/>
 
 </menu>

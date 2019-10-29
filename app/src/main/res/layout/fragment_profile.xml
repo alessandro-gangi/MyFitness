@@ -27,7 +27,7 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:contentDescription="immagine profilo"
+                    android:contentDescription="@string/immagine_profilo"
                     android:src="@color/grey_20"
                     app:civ_border_width="0dp"
                     app:civ_border_color="@color/colorAccent"
@@ -60,7 +60,7 @@
                     android:id="@+id/nome_textView"
                     app:layout_constraintStart_toEndOf="@id/profile_imageView"
                     app:layout_constraintTop_toTopOf="@+id/profile_imageView"
-                    android:text="Nome"
+                    android:text="@string/nome"
                     android:textStyle="bold"
                     android:layout_marginTop="@dimen/spacing_large"
                     android:layout_marginBottom="@dimen/spacing_large"
@@ -89,7 +89,7 @@
                     android:id="@+id/cognome_textView"
                     app:layout_constraintStart_toEndOf="@id/nome_textView"
                     app:layout_constraintTop_toTopOf="@+id/profile_imageView"
-                    android:text="Cognome"
+                    android:text="@string/cognome"
                     android:textStyle="bold"
                     android:layout_marginTop="@dimen/spacing_large"
                     android:layout_marginBottom="@dimen/spacing_large"
@@ -117,7 +117,7 @@
                     android:id="@+id/descrizione_textView"
                     app:layout_constraintStart_toEndOf="@id/profile_imageView"
                     app:layout_constraintTop_toBottomOf="@+id/nome_textView"
-                    android:text="Breve descrizione"
+                    android:text="@string/descrizione"
                     android:layout_margin="@dimen/spacing_large"
                     android:textStyle="italic"
                     android:maxLines="5"
@@ -129,7 +129,7 @@
                     android:id="@+id/descrizione_editText"
                     app:layout_constraintStart_toEndOf="@id/profile_imageView"
                     app:layout_constraintTop_toBottomOf="@+id/cognome_editText"
-                    android:hint="Breve descrizione"
+                    android:hint="@string/descrizione"
                     android:layout_margin="@dimen/spacing_large"
                     android:textStyle="italic"
                     android:maxLines="5"
@@ -162,7 +162,7 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:text="Il tuo allenatore"
+                        android:text="@string/il_tuo_allenatore"
                         android:layout_margin="@dimen/spacing_xlarge"
                         style="@style/TextAppearance.AppCompat.Title"
                         android:textSize="30sp"
@@ -205,7 +205,7 @@
 
 
                 <TextView
-                        android:text="Breve descrizione"
+                        android:text="@string/descrizione"
                         android:layout_width="220dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/descrizioneAllenatore_textView"
@@ -242,7 +242,7 @@
                     android:layout_height="wrap_content"
                     android:maxWidth="300dp"
                     android:textSize="22sp"
-                    android:text="Non hai ancora selezionato un allenatore. Selezionane uno."
+                    android:text="@string/ness_allenatore_slez"
                     android:layout_margin="@dimen/spacing_medium"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -273,7 +273,7 @@
                     android:paddingBottom="@dimen/spacing_xlarge">
 
                 <TextView
-                        android:text="La tua scheda"
+                        android:text="@string/la_tua_scheda"
                         android:textSize="@dimen/text_xlarge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -299,7 +299,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/spacing_xlarge"
                         android:textAlignment="center"
-                        android:text="la tipologia"
+                        android:text="@string/tipologia"
                         android:textColor="@color/black"
                         app:layout_constraintStart_toEndOf="@id/esercizi_intest_textView"
                         app:layout_constraintTop_toBottomOf="@id/data_textView"/>
@@ -309,7 +309,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/spacing_xlarge"
-                        android:text="Giorni"
+                        android:text="@string/giorni"
                         android:textAlignment="center"
                         android:textColor="@color/black"
                         app:layout_constraintStart_toStartOf="parent"
@@ -320,7 +320,7 @@
                         style="@style/TextAppearance.AppCompat.Title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="i giorni"
+                        android:text="@string/giorni"
                         app:layout_constraintTop_toBottomOf="@id/days_intest_textView"
                         app:layout_constraintStart_toStartOf="@id/days_intest_textView"
                         app:layout_constraintEnd_toEndOf="@id/days_intest_textView"/>
@@ -331,7 +331,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/spacing_xlarge"
-                        android:text="Esercizi"
+                        android:text="@string/esercizi"
                         android:textAlignment="center"
                         android:textColor="@color/black"
                         app:layout_constraintStart_toEndOf="@id/days_intest_textView"
@@ -342,7 +342,7 @@
                         style="@style/TextAppearance.AppCompat.Title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="3"
+                        android:text="@string/esercizi"
                         app:layout_constraintTop_toBottomOf="@id/esercizi_intest_textView"
                         app:layout_constraintStart_toStartOf="@id/esercizi_intest_textView"
                         app:layout_constraintEnd_toEndOf="@id/esercizi_intest_textView"/>
@@ -352,7 +352,7 @@
                         android:id="@+id/data_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="la data"
+                        android:text="@string/data"
                         android:textColor="@color/grey_20"
                         android:textSize="@dimen/text_medium"
                         app:layout_constraintStart_toStartOf="@id/title_scheda_textView"
@@ -362,7 +362,7 @@
                         android:id="@+id/autore_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="autore"
+                        android:text="@string/autore"
                         android:layout_marginStart="@dimen/spacing_medium"
                         android:textColor="@color/grey_20"
                         android:textSize="@dimen/text_medium"
@@ -384,7 +384,7 @@
                         android:id="@+id/start_scheda_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="START"
+                        android:text="@string/start"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:textSize="@dimen/text_xmedium"
@@ -410,7 +410,7 @@
                     android:layout_height="wrap_content"
                     android:maxWidth="300dp"
                     android:textSize="22sp"
-                    android:text="Non hai ancora selezionato la tua scheda attuale. Selezionane una."
+                    android:text="@string/ness_scheda_slez"
                     android:layout_margin="@dimen/spacing_medium"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -432,7 +432,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorAccent"
-            android:text="Diventa allenatore"
+            android:text="@string/diventa_allenatore"
             android:textColor="@color/white"
             android:layout_gravity="bottom"/>
 

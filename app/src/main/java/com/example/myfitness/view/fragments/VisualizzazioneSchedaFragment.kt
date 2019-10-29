@@ -42,7 +42,7 @@ class VisualizzazioneSchedaFragment : Fragment() {
             ViewModelProvider(this).get(SchedeViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
-        scheda = schedeViewModel.getScheda(schedaID!!)
+        scheda = schedeViewModel.getScheda(schedaID!!)!!
 
 
     }

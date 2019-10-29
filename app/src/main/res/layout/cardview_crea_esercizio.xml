@@ -60,7 +60,7 @@
 
             <EditText
                     android:hint="@string/recupero"
-                    android:inputType="number"
+                    android:inputType="numberDecimal"
                     android:layout_width="100sp"
                     android:layout_height="wrap_content"
                     android:id="@+id/recuperoEsercizio_editText"

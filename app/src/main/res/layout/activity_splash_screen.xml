@@ -10,7 +10,7 @@
     <TextView
             android:id="@+id/splsh_textView"
             android:layout_marginTop="100dp"
-            android:text="MyFitness"
+            android:text="@string/app_name"
             android:textSize="60sp"
             android:textAlignment="center"
             android:textColor="@color/white"
@@ -34,7 +34,7 @@
             android:layout_marginTop="@dimen/spacing_xxxlarge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Allenarsi non è mai stato così facile"
+            android:text="@string/app_subtitle"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textStyle="bold"

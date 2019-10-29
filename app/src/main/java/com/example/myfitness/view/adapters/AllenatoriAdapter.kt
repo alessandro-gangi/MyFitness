@@ -1,6 +1,7 @@
 package com.example.myfitness.view.adapters
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,8 @@ import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
 import com.example.myfitness.R
 import com.example.myfitness.model.dataClasses.Utente
 import kotlinx.android.synthetic.main.cardview_allenatore.view.*
@@ -17,6 +20,10 @@ import kotlinx.android.synthetic.main.cardview_allenatore.view.*
 
 class AllenatoriAdapter(val activity: Context, val menuClickListener: (numAllenatore: Int, itemClicked: Int) -> Unit): RecyclerView.Adapter<AllenatoreViewHolder>(){
     val TAG = "AllenatoriAdapter"
+    // SharedPref
+    private var sharedPref: SharedPreferences
+    private val USER_DATA_PREFERENCE: String = "USER_DATA_PREFERENCE"
+    private val TOKEN_KEY = "TOKEN"
 
     private var listaAllenatori: ArrayList<Utente>
 
@@ -25,6 +32,7 @@ class AllenatoriAdapter(val activity: Context, val menuClickListener: (numAllena
     init {
         listaAllenatori = ArrayList()
         listaAllenatoriCopy = ArrayList()
+        sharedPref = activity.getSharedPreferences(USER_DATA_PREFERENCE, Context.MODE_PRIVATE)
     }
 
     fun setListaAllenatori(nuovaListaAllenatori: List<Utente>){
@@ -88,12 +96,20 @@ class AllenatoriAdapter(val activity: Context, val menuClickListener: (numAllena
 
 
 
-    private fun loadImageIntoImageView(imageURI: String, imageView: ImageView){
-        Glide.with(activity)
-            .load(imageURI)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .skipMemoryCache(true)
-            .into(imageView)
+    private fun loadImageIntoImageView(imageURI: String, imageView: ImageView) {
+        val token = sharedPref.getString(TOKEN_KEY, null)
+        if (token != null) {
+            val glideURL = GlideUrl(
+                imageURI, LazyHeaders.Builder()
+                    .addHeader("Authorization", token)
+                    .build()
+            )
+            Glide.with(activity)
+                .load(glideURL)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .into(imageView)
+        }
     }
 
 

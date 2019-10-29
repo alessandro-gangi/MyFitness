@@ -416,6 +416,161 @@ public final class RichiesteDao_Impl implements RichiesteDao {
   }
 
   @Override
+  public Richiesta getRichiesta(final int richiestaID) {
+    final String _sql = "SELECT * FROM richieste_table WHERE richiestaId = ? LIMIT 1";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
+    int _argIndex = 1;
+    _statement.bindLong(_argIndex, richiestaID);
+    __db.assertNotSuspendingTransaction();
+    final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+    try {
+      final int _cursorIndexOfRichiestaId = CursorUtil.getColumnIndexOrThrow(_cursor, "richiestaId");
+      final int _cursorIndexOfData = CursorUtil.getColumnIndexOrThrow(_cursor, "data");
+      final int _cursorIndexOfNumGiorni = CursorUtil.getColumnIndexOrThrow(_cursor, "numGiorni");
+      final int _cursorIndexOfTipologia = CursorUtil.getColumnIndexOrThrow(_cursor, "tipologia");
+      final int _cursorIndexOfCommento = CursorUtil.getColumnIndexOrThrow(_cursor, "commento");
+      final int _cursorIndexOfUsernameId = CursorUtil.getColumnIndexOrThrow(_cursor, "utente_usernameId");
+      final int _cursorIndexOfMail = CursorUtil.getColumnIndexOrThrow(_cursor, "utente_mail");
+      final int _cursorIndexOfPassword = CursorUtil.getColumnIndexOrThrow(_cursor, "utente_password");
+      final int _cursorIndexOfFlagAllenatore = CursorUtil.getColumnIndexOrThrow(_cursor, "utente_flagAllenatore");
+      final int _cursorIndexOfNome = CursorUtil.getColumnIndexOrThrow(_cursor, "utente_nome");
+      final int _cursorIndexOfCognome = CursorUtil.getColumnIndexOrThrow(_cursor, "utente_cognome");
+      final int _cursorIndexOfEta = CursorUtil.getColumnIndexOrThrow(_cursor, "utente_eta");
+      final int _cursorIndexOfDescrizione = CursorUtil.getColumnIndexOrThrow(_cursor, "utente_descrizione");
+      final int _cursorIndexOfImageURI = CursorUtil.getColumnIndexOrThrow(_cursor, "utente_imageURI");
+      final int _cursorIndexOfPeso = CursorUtil.getColumnIndexOrThrow(_cursor, "utente_peso");
+      final int _cursorIndexOfAltezza = CursorUtil.getColumnIndexOrThrow(_cursor, "utente_altezza");
+      final int _cursorIndexOfGenere = CursorUtil.getColumnIndexOrThrow(_cursor, "utente_genere");
+      final int _cursorIndexOfAllenatore = CursorUtil.getColumnIndexOrThrow(_cursor, "utente_allenatore");
+      final int _cursorIndexOfUsernameId_1 = CursorUtil.getColumnIndexOrThrow(_cursor, "allenatore_usernameId");
+      final int _cursorIndexOfMail_1 = CursorUtil.getColumnIndexOrThrow(_cursor, "allenatore_mail");
+      final int _cursorIndexOfPassword_1 = CursorUtil.getColumnIndexOrThrow(_cursor, "allenatore_password");
+      final int _cursorIndexOfFlagAllenatore_1 = CursorUtil.getColumnIndexOrThrow(_cursor, "allenatore_flagAllenatore");
+      final int _cursorIndexOfNome_1 = CursorUtil.getColumnIndexOrThrow(_cursor, "allenatore_nome");
+      final int _cursorIndexOfCognome_1 = CursorUtil.getColumnIndexOrThrow(_cursor, "allenatore_cognome");
+      final int _cursorIndexOfEta_1 = CursorUtil.getColumnIndexOrThrow(_cursor, "allenatore_eta");
+      final int _cursorIndexOfDescrizione_1 = CursorUtil.getColumnIndexOrThrow(_cursor, "allenatore_descrizione");
+      final int _cursorIndexOfImageURI_1 = CursorUtil.getColumnIndexOrThrow(_cursor, "allenatore_imageURI");
+      final int _cursorIndexOfPeso_1 = CursorUtil.getColumnIndexOrThrow(_cursor, "allenatore_peso");
+      final int _cursorIndexOfAltezza_1 = CursorUtil.getColumnIndexOrThrow(_cursor, "allenatore_altezza");
+      final int _cursorIndexOfGenere_1 = CursorUtil.getColumnIndexOrThrow(_cursor, "allenatore_genere");
+      final int _cursorIndexOfAllenatore_1 = CursorUtil.getColumnIndexOrThrow(_cursor, "allenatore_allenatore");
+      final Richiesta _result;
+      if(_cursor.moveToFirst()) {
+        final int _tmpRichiestaId;
+        _tmpRichiestaId = _cursor.getInt(_cursorIndexOfRichiestaId);
+        final String _tmpData;
+        _tmpData = _cursor.getString(_cursorIndexOfData);
+        final int _tmpNumGiorni;
+        _tmpNumGiorni = _cursor.getInt(_cursorIndexOfNumGiorni);
+        final String _tmpTipologia;
+        _tmpTipologia = _cursor.getString(_cursorIndexOfTipologia);
+        final String _tmpCommento;
+        _tmpCommento = _cursor.getString(_cursorIndexOfCommento);
+        final Utente _tmpUtente;
+        if (! (_cursor.isNull(_cursorIndexOfUsernameId) && _cursor.isNull(_cursorIndexOfMail) && _cursor.isNull(_cursorIndexOfPassword) && _cursor.isNull(_cursorIndexOfFlagAllenatore) && _cursor.isNull(_cursorIndexOfNome) && _cursor.isNull(_cursorIndexOfCognome) && _cursor.isNull(_cursorIndexOfEta) && _cursor.isNull(_cursorIndexOfDescrizione) && _cursor.isNull(_cursorIndexOfImageURI) && _cursor.isNull(_cursorIndexOfPeso) && _cursor.isNull(_cursorIndexOfAltezza) && _cursor.isNull(_cursorIndexOfGenere) && _cursor.isNull(_cursorIndexOfAllenatore))) {
+          final String _tmpUsernameId;
+          _tmpUsernameId = _cursor.getString(_cursorIndexOfUsernameId);
+          final String _tmpMail;
+          _tmpMail = _cursor.getString(_cursorIndexOfMail);
+          final String _tmpPassword;
+          _tmpPassword = _cursor.getString(_cursorIndexOfPassword);
+          final boolean _tmpFlagAllenatore;
+          final int _tmp;
+          _tmp = _cursor.getInt(_cursorIndexOfFlagAllenatore);
+          _tmpFlagAllenatore = _tmp != 0;
+          final String _tmpNome;
+          _tmpNome = _cursor.getString(_cursorIndexOfNome);
+          final String _tmpCognome;
+          _tmpCognome = _cursor.getString(_cursorIndexOfCognome);
+          final Integer _tmpEta;
+          if (_cursor.isNull(_cursorIndexOfEta)) {
+            _tmpEta = null;
+          } else {
+            _tmpEta = _cursor.getInt(_cursorIndexOfEta);
+          }
+          final String _tmpDescrizione;
+          _tmpDescrizione = _cursor.getString(_cursorIndexOfDescrizione);
+          final String _tmpImageURI;
+          _tmpImageURI = _cursor.getString(_cursorIndexOfImageURI);
+          final Double _tmpPeso;
+          if (_cursor.isNull(_cursorIndexOfPeso)) {
+            _tmpPeso = null;
+          } else {
+            _tmpPeso = _cursor.getDouble(_cursorIndexOfPeso);
+          }
+          final Integer _tmpAltezza;
+          if (_cursor.isNull(_cursorIndexOfAltezza)) {
+            _tmpAltezza = null;
+          } else {
+            _tmpAltezza = _cursor.getInt(_cursorIndexOfAltezza);
+          }
+          final char _tmpGenere;
+          _tmpGenere = (char) _cursor.getInt(_cursorIndexOfGenere);
+          final String _tmpAllenatore_1;
+          _tmpAllenatore_1 = _cursor.getString(_cursorIndexOfAllenatore);
+          _tmpUtente = new Utente(_tmpUsernameId,_tmpMail,_tmpPassword,_tmpFlagAllenatore,_tmpNome,_tmpCognome,_tmpEta,_tmpDescrizione,_tmpImageURI,_tmpPeso,_tmpAltezza,_tmpGenere,_tmpAllenatore_1);
+        }  else  {
+          _tmpUtente = null;
+        }
+        final Utente _tmpAllenatore;
+        if (! (_cursor.isNull(_cursorIndexOfUsernameId_1) && _cursor.isNull(_cursorIndexOfMail_1) && _cursor.isNull(_cursorIndexOfPassword_1) && _cursor.isNull(_cursorIndexOfFlagAllenatore_1) && _cursor.isNull(_cursorIndexOfNome_1) && _cursor.isNull(_cursorIndexOfCognome_1) && _cursor.isNull(_cursorIndexOfEta_1) && _cursor.isNull(_cursorIndexOfDescrizione_1) && _cursor.isNull(_cursorIndexOfImageURI_1) && _cursor.isNull(_cursorIndexOfPeso_1) && _cursor.isNull(_cursorIndexOfAltezza_1) && _cursor.isNull(_cursorIndexOfGenere_1) && _cursor.isNull(_cursorIndexOfAllenatore_1))) {
+          final String _tmpUsernameId_1;
+          _tmpUsernameId_1 = _cursor.getString(_cursorIndexOfUsernameId_1);
+          final String _tmpMail_1;
+          _tmpMail_1 = _cursor.getString(_cursorIndexOfMail_1);
+          final String _tmpPassword_1;
+          _tmpPassword_1 = _cursor.getString(_cursorIndexOfPassword_1);
+          final boolean _tmpFlagAllenatore_1;
+          final int _tmp_1;
+          _tmp_1 = _cursor.getInt(_cursorIndexOfFlagAllenatore_1);
+          _tmpFlagAllenatore_1 = _tmp_1 != 0;
+          final String _tmpNome_1;
+          _tmpNome_1 = _cursor.getString(_cursorIndexOfNome_1);
+          final String _tmpCognome_1;
+          _tmpCognome_1 = _cursor.getString(_cursorIndexOfCognome_1);
+          final Integer _tmpEta_1;
+          if (_cursor.isNull(_cursorIndexOfEta_1)) {
+            _tmpEta_1 = null;
+          } else {
+            _tmpEta_1 = _cursor.getInt(_cursorIndexOfEta_1);
+          }
+          final String _tmpDescrizione_1;
+          _tmpDescrizione_1 = _cursor.getString(_cursorIndexOfDescrizione_1);
+          final String _tmpImageURI_1;
+          _tmpImageURI_1 = _cursor.getString(_cursorIndexOfImageURI_1);
+          final Double _tmpPeso_1;
+          if (_cursor.isNull(_cursorIndexOfPeso_1)) {
+            _tmpPeso_1 = null;
+          } else {
+            _tmpPeso_1 = _cursor.getDouble(_cursorIndexOfPeso_1);
+          }
+          final Integer _tmpAltezza_1;
+          if (_cursor.isNull(_cursorIndexOfAltezza_1)) {
+            _tmpAltezza_1 = null;
+          } else {
+            _tmpAltezza_1 = _cursor.getInt(_cursorIndexOfAltezza_1);
+          }
+          final char _tmpGenere_1;
+          _tmpGenere_1 = (char) _cursor.getInt(_cursorIndexOfGenere_1);
+          final String _tmpAllenatore_2;
+          _tmpAllenatore_2 = _cursor.getString(_cursorIndexOfAllenatore_1);
+          _tmpAllenatore = new Utente(_tmpUsernameId_1,_tmpMail_1,_tmpPassword_1,_tmpFlagAllenatore_1,_tmpNome_1,_tmpCognome_1,_tmpEta_1,_tmpDescrizione_1,_tmpImageURI_1,_tmpPeso_1,_tmpAltezza_1,_tmpGenere_1,_tmpAllenatore_2);
+        }  else  {
+          _tmpAllenatore = null;
+        }
+        _result = new Richiesta(_tmpRichiestaId,_tmpUtente,_tmpAllenatore,_tmpData,_tmpNumGiorni,_tmpTipologia,_tmpCommento);
+      } else {
+        _result = null;
+      }
+      return _result;
+    } finally {
+      _cursor.close();
+      _statement.release();
+    }
+  }
+
+  @Override
   public Richiesta getRichiestaFromAtoB(final String utenteUsername,
       final String allenatoreUsername) {
     final String _sql = "SELECT * FROM richieste_table WHERE utente_usernameId = ? AND allenatore_usernameId = ? LIMIT 1";

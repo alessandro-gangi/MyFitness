@@ -1,6 +1,7 @@
 package com.example.myfitness.view.fragments
 
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -14,14 +15,14 @@ import com.example.myfitness.view.adapters.RichiesteInAttesaAdapter
 import kotlinx.android.synthetic.main.tab_richieste_in_attesa.view.*
 
 
-class RichiesteInAttesaTabFragment(clickListener: (richiesta: Richiesta, command: Char) -> Unit): Fragment() {
+class RichiesteInAttesaTabFragment(activity: Context, clickListener: (richiesta: Richiesta, command: Char) -> Unit): Fragment() {
     val TAG = "RichiesteInAttTabFrag"
 
 
 
     private lateinit var username: String
 
-    private val adapter: RichiesteInAttesaAdapter = RichiesteInAttesaAdapter(clickListener)
+    private val adapter: RichiesteInAttesaAdapter = RichiesteInAttesaAdapter(activity, clickListener)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +61,7 @@ class RichiesteInAttesaTabFragment(clickListener: (richiesta: Richiesta, command
         val USERNAME = "USERNAME"
 
         @JvmStatic
-        fun newInstance(username: String, clickListener: (richiesta: Richiesta, command: Char) -> Unit) = RichiesteInAttesaTabFragment(clickListener).apply {
+        fun newInstance(activity: Context, username: String, clickListener: (richiesta: Richiesta, command: Char) -> Unit) = RichiesteInAttesaTabFragment(activity, clickListener).apply {
             arguments = Bundle().apply {
                 putString(USERNAME, username)
             }

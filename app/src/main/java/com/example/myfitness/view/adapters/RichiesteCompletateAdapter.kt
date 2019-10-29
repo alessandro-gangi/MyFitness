@@ -1,6 +1,8 @@
 package com.example.myfitness.view.adapters
 
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.transition.Scene
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
 import com.example.myfitness.R
 import com.example.myfitness.model.dataClasses.Richiesta
 import com.example.myfitness.model.dataClasses.Scheda
@@ -16,9 +22,11 @@ import kotlin.collections.ArrayList
 
 
 
-class RichiesteCompletateAdapter(val clickListener: (scheda: Scheda, command: Char) -> Unit): RecyclerView.Adapter<RichiestaCompletataViewHolder>(){
+class RichiesteCompletateAdapter(val activity: Context, val clickListener: (scheda: Scheda, command: Char) -> Unit): RecyclerView.Adapter<RichiestaCompletataViewHolder>(){
     val TAG = "RichiesteCompletateAdapter"
-
+    private val USER_DATA_PREFERENCE: String = "USER_DATA_PREFERENCE"
+    private  var sharedPref: SharedPreferences = activity.getSharedPreferences(USER_DATA_PREFERENCE, Context.MODE_PRIVATE)
+    private val TOKEN_KEY = "TOKEN"
 
 
     var listaRichiesteCompletate: ArrayList<Scheda> = ArrayList()
@@ -54,13 +62,29 @@ class RichiesteCompletateAdapter(val clickListener: (scheda: Scheda, command: Ch
             "definizione" -> holder.tipologiaImg.setImageResource(R.drawable.ic_tipologia_definizione)
         }
 
-        holder.itemView.setOnClickListener {
+        holder.apriBtn.setOnClickListener {
             clickListener(listaRichiesteCompletate[position], 'V')
         }
 
-        //TODO: implementa
-        // glide per caricare l'immagine dell'utente richiedente
+        if(listaRichiesteCompletate[position].possessore.imageURI != null)
+            loadImageIntoImageView(listaRichiesteCompletate[position].possessore.imageURI!!, holder.imageRichiedente)
 
+    }
+
+    private fun loadImageIntoImageView(imageURI: String, imageView: ImageView) {
+        val token = sharedPref.getString(TOKEN_KEY, null)
+        if (token != null) {
+            val glideURL = GlideUrl(
+                imageURI, LazyHeaders.Builder()
+                    .addHeader("Authorization", token)
+                    .build()
+            )
+            Glide.with(activity)
+                .load(glideURL)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .into(imageView)
+        }
     }
 
 
@@ -74,6 +98,7 @@ class RichiestaCompletataViewHolder(itemView: View): RecyclerView.ViewHolder(ite
     var tipologia: TextView
     var tipologiaImg: ImageView
     var imageRichiedente: ImageView
+    var apriBtn: TextView
 
 
     init {
@@ -84,6 +109,7 @@ class RichiestaCompletataViewHolder(itemView: View): RecyclerView.ViewHolder(ite
         tipologia = itemView.tipologia_textView
         tipologiaImg = itemView.tipologia_imageView
         imageRichiedente = itemView.richiedente_imageView
+        apriBtn = itemView.apri_textView
     }
 
 

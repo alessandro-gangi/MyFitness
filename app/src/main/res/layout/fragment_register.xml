@@ -17,7 +17,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:text="MyFitness"
+                android:text="@string/app_name"
                 android:textStyle="bold"
                 android:textSize="80sp"
                 android:layout_margin="@dimen/spacing_large"
@@ -85,7 +85,7 @@
 
         <Button
                 android:id="@+id/continua_registration_button"
-                android:text="Prosegui"
+                android:text="@string/prosegui"
                 android:drawableEnd="@drawable/ic_ic_arrow_forward_24px"
                 android:drawableTint="@android:color/white"
                 android:layout_width="wrap_content"
