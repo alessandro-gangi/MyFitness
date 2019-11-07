@@ -134,14 +134,17 @@ class RegisterStep2Fragment : Fragment() {
             val genere: Char = sessoCheckedRadioButton.text[0]
 
             if(controllaCorrettezzaDati(nome.text.toString(), cognome.text.toString(), eta.text.toString().toInt())) {
+                if(file != null){
+                    serverImageUri = utentiViewModel.uploadImage(username!!, file!!)
+                    Log.d(TAG, "ServerImageURI: ${serverImageUri}")
+                }
                 val nuovoUtente = Utente(
                     username!!, mail!!, password!!, false, nome.text.toString(),
                     cognome.text.toString(), eta.text.toString().toInt(), null, serverImageUri, null, null,
                     genere, null)
-                if(file != null)
-                    utentiViewModel.uploadImage(username!!, file!!)
 
                 utentiViewModel.addUtente(nuovoUtente)
+
                 Toast.makeText(activity, "Registrazione avvenuta correttamente",Toast.LENGTH_LONG).show()
                 passaAlLogin()
             }
@@ -180,7 +183,7 @@ class RegisterStep2Fragment : Fragment() {
                 file = File(realPath)
                 file?.let {
                     file = ImageCompressor.compressFile(file!!, activity!!)
-                    serverImageUri = utentiViewModel.uploadImage(username!!, file!!)
+                    //serverImageUri = utentiViewModel.uploadImage(username!!, file!!)
 
                     loadImageIntoImageView(contentURI, register_imageView)
                 }

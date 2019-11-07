@@ -28,7 +28,7 @@ interface UserRestService {
 
     @Multipart
     @POST("user/save/image")
-    fun retrieveUri(@Header("Authorization")token: String, @Part profileImage: MultipartBody.Part): Call<URI>
+    fun retrieveUri(@Part profileImage: MultipartBody.Part): Call<URI>
     //fun retrieveUri(@Part profileImage: MultipartBody.Part): Call<URI>
 
 }

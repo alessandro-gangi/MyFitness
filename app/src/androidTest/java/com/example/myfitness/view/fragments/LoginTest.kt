@@ -37,7 +37,7 @@ class LoginTest{
     @Test
     fun testLoginUsername() {
         onView(withId(R.id.username_login_editText)).check(matches((isDisplayed())))
-        onView(withId(R.id.username_login_editText)).perform(clearText(),typeText("Testing user"))
+        onView(withId(R.id.username_login_editText)).perform(clearText(),typeText("Testing_user"))
     }
 
     @Test

@@ -128,7 +128,7 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
     }
 
 
-    fun uploadImage(token: String, username: String, image: File): String? {
+    fun uploadImage(username: String, image: File): String? {
         var uri: String? = null
 
         val imagePart = MultipartBody.Part.createFormData(
@@ -140,7 +140,7 @@ class UtentiRepository (private val utentiDao: UtentiDao, private val webService
         try {
             val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
             StrictMode.setThreadPolicy(policy)
-            uri = webService.retrieveUri(token, imagePart).execute().body().toString()
+            uri = webService.retrieveUri(imagePart).execute().body().toString()
             //uri = webService.retrieveUri(imagePart).execute().body().toString()
 
         }catch (e : IOException) {

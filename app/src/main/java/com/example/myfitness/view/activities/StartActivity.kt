@@ -58,18 +58,6 @@ class StartActivity : AppCompatActivity() {
     }
 
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
-
-    override fun onStop() {
-        super.onStop()
-        //QUESTO FINISH SERVIVA PER NON POTER TORNARE INDIETRO DALLA SUCCESSIVA ACTIVITY
-        //if(utente è loggato)
-        //  finish()
-    }
-
     private fun allineaDB(){
         AllineaDB.initialize(this)
         Log.d(TAG, "Schede to add -> ${AllineaDB.getSchedeToAdd()}")

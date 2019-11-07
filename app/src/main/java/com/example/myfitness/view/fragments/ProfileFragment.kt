@@ -323,10 +323,6 @@ class ProfileFragment : Fragment() {
                     logout()
                 }
 
-                R.id.popup_menu_item_switch_language -> {
-                    swapAppLocale()
-                    activity!!.recreate()
-                }
             }
             true
         })
@@ -567,30 +563,18 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun swapAppLocale(){
-        var localCode = "it-IT"
-        val dm: DisplayMetrics = resources.displayMetrics
-        val config: Configuration = resources.configuration
-        Log.d(TAG, "PREVIOUS LOCALE: ${config.locale.toLanguageTag()}")
-        if(config.locale.toLanguageTag() == "it-IT")
-            localCode = "en"
-        config.setLocale(Locale(localCode.toLowerCase()))
-        resources.updateConfiguration(config, dm)
-   }
 
-    private fun loadImageIntoImageView(imageURI: String, imageView: ImageView){
-
-        /*
+    private fun loadImageIntoImageView(imageURI: String?, imageView: ImageView){
         if(imageView==profile_imageView && utentiViewModel.utenteImage!=null)
             Glide.with(activity!!).load(utentiViewModel.utenteImage).into(imageView)
 
         else if(imageView==allenatore_imageView && utentiViewModel.allenatoreImage!=null)
             Glide.with(activity!!).load(utentiViewModel.allenatoreImage).into(imageView)
 
-         */
-        //else if(ConnectionChecker.isConnectionAvailable(activity!!)){ //devo prenderla dal server
-        if(ConnectionChecker.isConnectionAvailable(activity!!)){ //devo prenderla dal server
+        else if(ConnectionChecker.isConnectionAvailable(activity!!)){ //devo prenderla dal server
+        //if(ConnectionChecker.isConnectionAvailable(activity!!)){ //devo prenderla dal server
             val token = sharedPref.getString(TOKEN_KEY, null)
+            Log.d(TAG,"TOKEN: ${token}, URI: ${imageURI!!.isEmpty()}")
             if(token != null) {
                 val glideURL = GlideUrl(
                     imageURI, LazyHeaders.Builder()
@@ -601,31 +585,6 @@ class ProfileFragment : Fragment() {
             }
         }
 
-        /*
-        if(imageView == profile_imageView){
-            if(utentiViewModel.utenteImage != null){ //carico quella nella cache
-                try{Glide.with(activity!!).load(utentiViewModel.utenteImage).into(imageView)}
-                catch (e: Exception){Log.d(TAG, e.message!!)}
-            } else{ //la scarico
-                if(ConnectionChecker.isConnectionAvailable(activity!!))
-                    Glide.with(activity!!).load(imageURI).into(imageView)
-            }
-        }
-
-        else if(imageView == allenatore_imageView){
-            if(utentiViewModel.allenatoreImage != null) //carico quella nella cache
-                Glide.with(activity!!).load(utentiViewModel.allenatoreImage).into(imageView)
-            else { //la scarico
-                if (ConnectionChecker.isConnectionAvailable(activity!!)) {
-                    val glideURL = GlideUrl(imageURI, LazyHeaders.Builder()
-                        .addHeader("Authorization", utentiViewModel.getToken()!!)
-                        .build())
-                    Glide.with(activity!!).load(glideURL).into(imageView)
-                }
-            }
-        }
-
-         */
         else Log.d(TAG, "Errore -> loadImage (Unexpected)")
     }
 }

@@ -145,9 +145,7 @@ class UtentiViewModel (application: Application): AndroidViewModel(application){
     fun addUtente(utente: Utente) = viewModelScope.launch { repository.addUtente(utente) }
 
     fun uploadImage(username: String, image: File) :String?{
-        if (token != null)
-                return repository.uploadImage(token!!, username, image)
-        return null
+        return repository.uploadImage(username, image)
     }
 
     fun getUtente(username: String) :Utente?{
